@@ -6,13 +6,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ConnectionPanel extends JPanel {
+    public JPanel panel;
     JScrollPane scrollPane;
     public JButton backButton;
+    public JButton a;
 
     public ConnectionPanel() {
         this.setLayout(new BorderLayout());
 
-        JPanel panel = new JPanel();
+        panel = new JPanel();
 
         JLabel label = new JLabel("PLAY MULTIPLAYER");
         label.setVerticalAlignment(JLabel.CENTER);
@@ -30,8 +32,8 @@ public class ConnectionPanel extends JPanel {
         panel.setLayout(new VerticalLayout(1477, 75));
 
         scrollPane = new JScrollPane(panel);
-
-        panel.add(new JButton("12313"));
+        a = new JButton("12313a");
+        panel.add(a);
         panel.add(new JButton("12313"));
         panel.add(new JButton("12313"));
         panel.add(new JButton("12313"));
