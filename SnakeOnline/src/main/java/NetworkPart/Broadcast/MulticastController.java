@@ -54,7 +54,7 @@ public class MulticastController extends Thread {
                 System.out.println("высота поля: " + config.getHeight());
                 System.out.println("статичное количество еды: " + config.getFoodStatic());
                 System.out.println("количество еды на каждого игрока :" + config.getFoodPerPlayer());
-                System.out.println("задержка: " + config.getDelayMs());
+                System.out.println("задержка: " + config.getPingDelayMs());
                 System.out.println("вероятность: " + config.getDeadFoodProb());
                 //где еще 2???
                 SnakesProto.GamePlayers g;

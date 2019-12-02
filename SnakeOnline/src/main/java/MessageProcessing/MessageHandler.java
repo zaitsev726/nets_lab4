@@ -2,11 +2,13 @@ package MessageProcessing;
 
 import me.ippolitov.fit.snakes.SnakesProto;
 
+import java.net.InetAddress;
+
 public class MessageHandler {
 
     public MessageHandler(){}
 
-    public void handlingMessage(SnakesProto.GameMessage message){
+    public void handlingMessage(SnakesProto.GameMessage message, InetAddress address, int port, long msg_seq){
 
         switch (message.getTypeCase()) {
             case PING:
@@ -15,6 +17,7 @@ public class MessageHandler {
                 break;
             case ACK:
             case STATE:
+
             case ANNOUNCEMENT:
                 /*Something going bad*/
                 return;

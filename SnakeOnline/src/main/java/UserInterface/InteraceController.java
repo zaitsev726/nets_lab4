@@ -1,6 +1,7 @@
 package UserInterface;
 
 import NetworkPart.GlobalController;
+import SnakeGame.GameController;
 import UserInterface.ConnectionPage.ConnectionPanel;
 import UserInterface.Frames.Window;
 import UserInterface.GamePage.GamePanel;
@@ -32,6 +33,8 @@ public class InteraceController extends Thread {
 
     private int heightSnakeField;
     private int widthSnakeField;
+
+    private GameController gameController = null;
 
     private static InteraceController instance;
 
@@ -221,6 +224,8 @@ public class InteraceController extends Thread {
 
                     widthSnakeField = 20;
                     heightSnakeField = 20;
+                    // public GameController(int width, int height, int foodStatic, float foodPerPlayer ,int delay, float deadFoodProb)
+                    gameController = new GameController(widthSnakeField,heightSnakeField,3,(float)3.2,300,(float)1.1);
                     gamePanel.addGameField(widthSnakeField, heightSnakeField);
                     gamePanel.gameField.initGame(widthSnakeField, heightSnakeField);
                     gamePanel.setFocusable(true);
@@ -257,7 +262,7 @@ public class InteraceController extends Thread {
         List<SnakesProto.GamePlayer> players = message.getPlayers().getPlayersList();
         String hostName ="unknown";
         for(int i = 0; i < players.size(); i ++){
-            if(players.get(i).getId() == 0)
+            if(players.get(i).getId() == 0)                 //переделать по IP
                 hostName = players.get(i).getName();
         }
 
@@ -265,8 +270,8 @@ public class InteraceController extends Thread {
                 "Длина: " + message.getConfig().getHeight() + " " +
                 "StaticFood: " + message.getConfig().getFoodStatic() + " " +
                 "FoodPerPlayer: " + message.getConfig().getFoodPerPlayer() + " " +
-                "Delay: " + message.getConfig().getDelayMs() + " " +
-                "Prob: " + message.getConfig().getDelayMs() + " " +
+                "Delay: " + message.getConfig().getPingDelayMs() + " " +
+                "Prob: " + message.getConfig().getDeadFoodProb() + " " +
                 "Host: " + hostName + " " +
                 "Can join: " + message.getCanJoin());
         /*
@@ -277,5 +282,11 @@ public class InteraceController extends Thread {
         connectionPanel.panel.add(button);
         window.revalidate();
         window.repaint();
+    }
+
+    public void sendState(SnakesProto.GameState state){
+        /*/
+        апгрейт стейта в gameField
+         */
     }
 }

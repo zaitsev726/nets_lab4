@@ -28,7 +28,7 @@ public class MessageReceiver extends Thread{
                 byte[] a1 = Arrays.copyOf(dp.getData(), dp.getLength());
 
                 SnakesProto.GameMessage message = SnakesProto.GameMessage.parseFrom(a1);
-                handler.handlingMessage(message);
+                handler.handlingMessage(message, dp.getAddress(), dp.getPort(),message.getMsgSeq());
             }
         } catch (IOException e) {
             e.printStackTrace();

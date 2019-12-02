@@ -1,7 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="451534b3-aff1-4650-a504-49655ddbeba0" name="Default Changelist" comment="" />
+    <list default="true" id="451534b3-aff1-4650-a504-49655ddbeba0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageCreator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageManagement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/Players.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/NetworkPart/Broadcast/MulticastController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/Broadcast/MulticastController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/MessageReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/MessageReceiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/InteraceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/InteraceController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/ippolitov/fit/snakes/SnakesProto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/ippolitov/fit/snakes/SnakesProto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/snakes.proto" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/snakes.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/SnakeOnline.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/NetworkPart/Broadcast/MulticastController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/NetworkPart/Broadcast/MulticastController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/NetworkSocket.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/NetworkSocket.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$10.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$11.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$12.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$8.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$9.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameConfig$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameConfig$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameConfig$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameConfig$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameConfigOrBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameConfigOrBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$AckMsg$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$AckMsg$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$AckMsg$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$AckMsg$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$AckMsg.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$AckMsg.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$AnnouncementMsg$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$AnnouncementMsg$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$AnnouncementMsg$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$AnnouncementMsg$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$AnnouncementMsg.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$AnnouncementMsg.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$ErrorMsg$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$ErrorMsg$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$ErrorMsg$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$ErrorMsg$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$ErrorMsg.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$ErrorMsg.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$JoinMsg$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$JoinMsg$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$JoinMsg$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$JoinMsg$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$JoinMsg.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$JoinMsg.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$JoinMsgOrBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$JoinMsgOrBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$PingMsg$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$PingMsg$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$PingMsg$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$PingMsg$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$PingMsg.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$PingMsg.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$RoleChangeMsg$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$RoleChangeMsg$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$RoleChangeMsg$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$RoleChangeMsg$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$RoleChangeMsg.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$RoleChangeMsg.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$StateMsg$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$StateMsg$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$StateMsg$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$StateMsg$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$StateMsg.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$StateMsg.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$SteerMsg$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$SteerMsg$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$SteerMsg$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$SteerMsg$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$SteerMsg$Direction$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$SteerMsg$Direction.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$SteerMsg.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$SteerMsg.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$SteerMsgOrBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$SteerMsgOrBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$TypeCase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage$TypeCase.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GamePlayer$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GamePlayer$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GamePlayer$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GamePlayer$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GamePlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GamePlayer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GamePlayerOrBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GamePlayerOrBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GamePlayers$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GamePlayers$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GamePlayers$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GamePlayers$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GamePlayers.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GamePlayers.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Coord$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Coord$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Coord$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Coord$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Coord.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Coord.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Snake$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Snake$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Snake$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Snake$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Snake$SnakeState$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Snake$SnakeState$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Snake$SnakeState.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Snake$SnakeState.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Snake.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$Snake.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$SnakeOrBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState$SnakeOrBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto$GameState.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/ippolitov/fit/snakes/SnakesProto.class" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -31,6 +117,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="MavenImportPreferences">
     <option name="importingSettings">
       <MavenImportingSettings>
@@ -39,6 +128,7 @@
     </option>
   </component>
   <component name="ProjectId" id="1TVuBtkoP1GX6H5tgEVwbbNCc1l" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
     <option name="autoscrollToSource" value="true" />
@@ -56,7 +146,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.19695045" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -67,7 +157,24 @@
       <recent name="D:\proga\IdeaProjects\SnakeOnline\src" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn compile" />
+    </option>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="SnakeOnline" />
@@ -75,23 +182,37 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="SnakeOnline [compile]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="compile" />
+              </list>
+            </option>
+            <option name="pomFileName" value="pom.xml" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
+        <item itemvalue="Maven.SnakeOnline [compile]" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -122,6 +243,19 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="WindowStateProjectService">
     <state x="811" y="249" key="#com.intellij.ide.util.MemberChooser" timestamp="1575039234872">
