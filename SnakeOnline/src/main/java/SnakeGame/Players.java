@@ -53,7 +53,7 @@ public class Players {
                 .build();
 
         snakes.add(snake);
-        GameController.addSnake(snake);
+        GameController.paintSnake(snake);
 
         ID++;
     }
@@ -92,7 +92,7 @@ public class Players {
                     .build();
 
             snakes.add(snake);
-            GameController.addSnake(snake);
+            GameController.paintSnake(snake);
 
             MessageCreator.createNewAckMsg(msg_seq,ID);
             ID++;
@@ -148,5 +148,9 @@ public class Players {
                 return a;
         }
         return null;
+    }
+
+    public List<SnakesProto.GameState.Snake> getSnakes() {
+        return snakes;
     }
 }

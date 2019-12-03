@@ -1,12 +1,13 @@
 package SnakeGame;
 
-import NetworkPart.GlobalController;
+import me.ippolitov.fit.snakes.SnakesProto;
 import me.ippolitov.fit.snakes.SnakesProto.GameMessage;
 import me.ippolitov.fit.snakes.SnakesProto.GamePlayer;
 import me.ippolitov.fit.snakes.SnakesProto.GameState;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameController {
     private static int width;
@@ -61,6 +62,7 @@ public class GameController {
         return host_IP;
     }
 
+    /*возващает координаты для 1 змеи*/
     public static int[] randomCoord() {
         int[] a = new int[2];
         a[0] = (int) (Math.random() * width);
@@ -68,6 +70,7 @@ public class GameController {
         return a;
     }
 
+    /*возвращает координаты куда можно вставить змею или пустой массив*/
     public static int[] getCoord() {
         //Map<int[], Integer> map = new HashMap<>();
         int[] a = new int[2];
@@ -93,17 +96,14 @@ public class GameController {
         return null;
     }
 
-    public static void addSnake(GameState.Snake snake) {
-        ArrayList coords = (ArrayList) snake.getPointsList();
-        int ID = 0;
-        for (int i = 0; i < Players.getInstance().getPlayers().size(); i++) {
-            if (Players.getInstance().getPlayers().get(i).getIpAddress().equals(GlobalController.getInstance().getIP().toString()) &&
-                    Players.getInstance().getPlayers().get(i).getPort() == GlobalController.getInstance().getPort())
-                ID = Players.getInstance().getPlayers().get(i).getId();
-            /*костыльный метод */
-        }
-        int head = 1;
-        int tail = 2;
+    /*рисует змею на экране*/
+    public static void paintSnake(GameState.Snake snake) {
+        List coords = snake.getPointsList();
+        int ID = snake.getPlayerId();
+
+        int tail = ID++;
+        int head = 0 - tail;
+
 
         if (snake.getPlayerId() == ID) {
             head += 2;
@@ -142,12 +142,33 @@ public class GameController {
         }
     }
 
-    /*
-        1-голова обычной змеи
-        2-тело обычной змеи
-        3-голова нашей змеи
-        4-телонашейзмеи
-     */
+    public void makeNextStep(){
+        List snakes = Players.getInstance().getSnakes();
+
+        for(int i = 0; i < width; i ++){
+            for(int j = 0; j < height; j++){
+                if(gameField[i][j] < 0){
+                    int head = gameField[i][j];
+                    GameState.Snake snake = null;
+                    for(int k = 0; k < snakes.size(); k ++){
+                        if((((GameState.Snake)snakes.get(k)).getPlayerId()*2) == (-head))
+                            snake = (GameState.Snake) snakes.get(k);
+                    }
+                    if(snake == null)
+                        return;
+                    SnakesProto.Direction direction = snake.getHeadDirection();
+                    switch (direction){
+                        case UP:
+                            gameField[i][j] = -head;
+                            
+                        case LEFT:
+                        case DOWN:
+                        case RIGHT:
+                    }
+                }
+            }
+        }
+    }
 
     public GameState createNewState() {
 
