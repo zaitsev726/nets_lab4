@@ -7,6 +7,7 @@ import me.ippolitov.fit.snakes.SnakesProto.GameState;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class GameController {
@@ -16,12 +17,20 @@ public class GameController {
     private float foodPerPlayer;
     private int delay;
     private float deadFoodProb;
+    private int pingDelay;
+    private int nodeTimeout;
 
     private static int[][] gameField;
-
+    private int stateOrder;
 
     private static boolean owner = false;
     private static String host_IP = "";
+
+    private List<Event> crashHeads = new ArrayList<>();
+    private List<Event> appleHeads = new ArrayList<>();
+    private List<Integer> deadSnakes = new ArrayList<>();
+    private List<Event> apples = new ArrayList<>();
+
 
     public GameController(GameMessage.AnnouncementMsg connect, InetAddress IP) {
         /*connection*/
@@ -34,17 +43,22 @@ public class GameController {
 
     }
 
-    public GameController(int width, int height, int foodStatic,
-                          float foodPerPlayer, int delay, float deadFoodProb) {
+    public GameController(int width, int height, int foodStatic, float foodPerPlayer,
+                          int delay, float deadFoodProb, int pingDelay, int nodeTimeout) {
         /*create your game*/
+
         GameController.width = width;
         GameController.height = height;
         this.foodStatic = foodStatic;
         this.foodPerPlayer = foodPerPlayer;
         this.delay = delay;
         this.deadFoodProb = deadFoodProb;
-        gameField = new int[width][height];
+        this.pingDelay = pingDelay;
+        this.nodeTimeout = nodeTimeout;
 
+        gameField = new int[width][height];
+        stateOrder = 1;
+        crashHeads = new ArrayList<>();
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++)
                 gameField[i][j] = 0;
@@ -122,16 +136,14 @@ public class GameController {
                 if (x1 == x2) {
                     if (y1 > y2) {
                         y1--;
-                    }
-                    else {
+                    } else {
                         y1++;
                     }
                 }
                 if (y1 == y2) {
                     if (x1 > x2) {
                         x1--;
-                    }
-                    else {
+                    } else {
                         x1++;
                     }
                 }
@@ -142,35 +154,351 @@ public class GameController {
         }
     }
 
-    public void makeNextStep(){
+    public void makeNextStep() {
         List snakes = Players.getInstance().getSnakes();
+        ArrayList<GamePlayer> players = Players.getInstance().getPlayers();
+        GameState.Snake snake = null;
 
-        for(int i = 0; i < width; i ++){
-            for(int j = 0; j < height; j++){
-                if(gameField[i][j] < 0){
-                    int head = gameField[i][j];
-                    GameState.Snake snake = null;
-                    for(int k = 0; k < snakes.size(); k ++){
-                        if((((GameState.Snake)snakes.get(k)).getPlayerId()*2) == (-head))
-                            snake = (GameState.Snake) snakes.get(k);
-                    }
-                    if(snake == null)
-                        return;
-                    SnakesProto.Direction direction = snake.getHeadDirection();
-                    switch (direction){
-                        case UP:
-                            gameField[i][j] = -head;
-                            
-                        case LEFT:
-                        case DOWN:
-                        case RIGHT:
-                    }
+        for (int k = 0; k < snakes.size(); k++) {
+            snake = (GameState.Snake) snakes.get(k);
+            if (snake == null)
+                continue;
+            int tail = snake.getPlayerId() + 1;
+            int head = 0 - tail;
+
+            int i = snake.getPoints(0).getX();
+            int j = snake.getPoints(0).getY();
+
+            gameField[i][j] = tail;
+            SnakesProto.Direction direction = snake.getHeadDirection();
+            switch (direction) {
+                case UP:
+                    j--;
+                    if (j < 0)
+                        j = height - 1;
+                case LEFT:
+                    i--;
+                    if (i < 0)
+                        i = width - 1;
+                case DOWN:
+                    j++;
+                    if (j >= height)
+                        j = 0;
+                case RIGHT:
+                    i++;
+                    if (i >= width)
+                        i = 0;
+            }
+
+            if (gameField[i][j] > 1) {
+                crashHeads.add(new Event(i, j, head));
+            }
+            if (gameField[i][j] == 1) {
+                appleHeads.add(new Event(i, j, head));
+                Iterator<Event> iterator = apples.iterator();
+                while (iterator.hasNext()){
+                    Event e = iterator.next();
+                    if(e.getX() == i && e.getY() == j)
+                        apples.remove(e);
+                }
+
+                gameField[i][j] = head;
+            }
+            if (gameField[i][j] == 0) {
+                GameState.Snake.Builder builder = snake.toBuilder();
+                builder.setPoints(0,GameState.Coord.newBuilder().setX(i).setY(j).build());
+                snake = builder.build();
+                gameField[i][j] = head;
+            }
+
+        }
+
+        checkDeadHeadToHead();
+        checkDeadHeadToTail();
+        moveTail(snakes);
+        checkLastDead();
+        removeDeadSnakes(snakes, players);
+        addApples(players);
+        createNewState();
+        setCoords(snakes);
+    }
+
+    private void checkDeadHeadToHead(){
+        Iterator<Event> iterator = crashHeads.iterator();
+        while (iterator.hasNext()){
+            Event e = iterator.next();
+            int i = e.getX();
+            int j = e.getY();
+            int head = e.getHost_head();
+
+            if(gameField[i][j] < 0 && gameField[i][j] != head){
+                int head2 = gameField[i][j];
+                deadSnakes.add(head);
+                if(!deadSnakes.contains(head2))
+                    deadSnakes.add(head2);
+                crashHeads.remove(e);
+            }
+        }
+    }
+
+    private void checkDeadHeadToTail(){
+        Iterator<Event> iterator = crashHeads.iterator();
+        while(iterator.hasNext()){
+            Event e = iterator.next();
+            int i = e.getX();
+            int j = e.getY();
+            int head = e.getHost_head();
+
+            if(gameField[i][j] > 1){
+                int tail2 = gameField[i][j];
+                if(deadSnakes.contains(-tail2)){
+                    deadSnakes.add(head);
+                    crashHeads.remove(e);
                 }
             }
         }
     }
 
+    private void moveTail(List<GameState.Snake> snakes){
+        for (int k = 0; k < snakes.size(); k++) {
+            GameState.Snake snake = snakes.get(k);
+            if (snake == null)
+                continue;
+            int tail = snake.getPlayerId() + 1;
+            int head = 0 - tail;
+            boolean appleHead = false;
+            if(!deadSnakes.contains(head)){
+
+                for(int i = 0; i < appleHeads.size(); i++){
+                    if(head == appleHeads.get(i).getHost_head()) {
+                        appleHead = true;
+                        continue;
+                    }//выйдет ли из цикла???
+                }
+                if(!appleHead) {
+
+                    List<GameState.Coord> coords = snake.getPointsList();
+                    GameState.Coord c = coords.get(coords.size()-1);
+                    coords.remove(c);
+                    int x = c.getX();
+                    int y = c.getY();
+                    gameField[x][y] = 0;
+
+                    if(gameField[x-1][y] == tail){
+                        x--;
+                    }else if(gameField[x+1][y] == tail){
+                        x++;
+                    }else if (gameField[x][y-1] == tail){
+                        y--;
+                    }else if (gameField[x][y+1] == tail){
+                        y++;
+                    }
+
+                   /* GameState.Coord a = GameState.Coord.newBuilder()
+                            .setX(x)
+                            .setY(y)
+                            .build();                       раскомментить в случае переделывания setCoords();
+                    if(!coords.contains(a))
+                        coords.add(a);*/
+                    gameField[x][y] = tail;
+                }
+            }
+        }
+    }
+
+    private void checkLastDead(){
+        Iterator<Event> iterator = crashHeads.iterator();
+        while (iterator.hasNext()){
+            Event e = iterator.next();
+            int i = e.getX();
+            int j = e.getY();
+            int head = e.getHost_head();
+
+            if(gameField[i][j] > 1){
+                deadSnakes.add(head);
+                crashHeads.remove(e);
+            }
+        }
+    }
+
+    private void removeDeadSnakes(List<GameState.Snake> snakes,  ArrayList<GamePlayer> players ) {
+
+        //восстановление яблок
+        for(int i = 0; i < appleHeads.size(); i ++){
+            if(deadSnakes.contains(appleHeads.get(i).getHost_head())){
+                gameField[appleHeads.get(i).getX()][appleHeads.get(i).getY()] = 1;
+                apples.add(new Event(appleHeads.get(i).getX(), appleHeads.get(i).getY(), 0));
+            }
+        }
+
+        for(int i = 0; i < width; i++){
+            for(int j = 0; j < height; j++){
+                for(int k = 0; k < deadSnakes.size(); k ++){
+                    if(gameField[i][j] == deadSnakes.get(k)){
+                        if(Math.random() > deadFoodProb){
+                            gameField[i][j] = 1;
+                            apples.add(new Event(i,j,0));
+                        }
+                        else
+                            gameField[i][j] = 0;
+                    }
+                }
+            }
+        }
+
+            Iterator<GameState.Snake> iterator = snakes.iterator();
+        while(iterator.hasNext()){
+            GameState.Snake snake = iterator.next();
+            int ID = snake.getPlayerId()+1;
+            for(int i = 0; i < deadSnakes.size(); i ++){
+                if(ID == deadSnakes.get(i))
+                    snakes.remove(snake);
+                    Iterator<GamePlayer> iter = players.iterator();
+                    while(iter.hasNext()){
+                        GamePlayer player = iter.next();
+                        if((player.getId() + 1) == ID){
+                            players.remove(player);
+                        }
+                    }
+            }
+        }
+    }
+
+    private void addApples(List<GamePlayer> players){
+        while(apples.size() < (players.size()*foodPerPlayer + foodStatic )){
+            int x = (int) (Math.random()*width), y = (int) (Math.random()*height);
+            while (gameField[x][y] != 0){
+            x = (int) (Math.random()*width);
+            y = (int) (Math.random()*height);
+            }
+            gameField[x][y] = 1;
+            apples.add(new Event(x,y,0));
+        }
+    }
+
+    /*подлежит переделыванию?*/
+    private void setCoords(List<GameState.Snake> snakes){
+        for(int k = 0; k < snakes.size(); k++){
+            GameState.Snake.Builder snake = snakes.get(k).toBuilder();
+            int tail = snake.getPlayerId()+1;
+            int head = 0 - tail;
+            int score = 0;
+            boolean nearby = true;
+            int i = snake.getPoints(0).getX();
+            int j = snake.getPoints(0).getY();
+            SnakesProto.Direction direction = null;
+            snake.clearPoints();
+            snake.addPoints(GameState.Coord.newBuilder().setX(i).setY(j).build());
+            while(nearby){
+                //лево
+                if(i - 1 < 0) {
+                    if (gameField[width - 1][j] == tail){
+                        if(direction != SnakesProto.Direction.LEFT && direction != null){
+                            snake.addPoints(GameState.Coord.newBuilder().setX(width-1).setY(j).build());
+                        }
+                        direction = SnakesProto.Direction.LEFT;
+                        i = width - 1;
+                        score++;
+                    }
+                }
+                else {
+                    if (gameField[i - 1][j] == tail) {
+                        /*if(direction == null){
+                            direction = SnakesProto.Direction.LEFT;
+                            i--;
+                        }
+                        if(direction != SnakesProto.Direction.LEFT){
+                            direction = SnakesProto.Direction.LEFT;
+                            snake.addPoints(GameState.Coord.newBuilder().setX(i-1).setY(j).build());
+                            i--;
+                        }*/
+                        if(direction != SnakesProto.Direction.LEFT && direction != null){
+                            snake.addPoints(GameState.Coord.newBuilder().setX(i-1).setY(j).build());
+                        }
+                        direction = SnakesProto.Direction.LEFT;
+                        i--;
+                        score++;
+                    }
+                }
+                //право
+                if(i + 1 > width){
+                    if(gameField[0][j] == tail){
+                        if(direction != SnakesProto.Direction.RIGHT && direction != null){
+                            snake.addPoints(GameState.Coord.newBuilder().setX(0).setY(j).build());
+                        }
+                        direction = SnakesProto.Direction.RIGHT;
+                        i = 0;
+                        score++;
+                    }
+                }
+                else {
+                    if (gameField[i + 1][j] == tail) {
+                        if(direction != SnakesProto.Direction.RIGHT && direction != null){
+                            snake.addPoints(GameState.Coord.newBuilder().setX(i+1).setY(j).build());
+                        }
+                        direction = SnakesProto.Direction.RIGHT;
+                        i++;
+                        score++;
+                    }
+                }
+
+                if(j - 1 < 0){
+                    if(gameField[i][height-1] == tail){
+                        if(direction != SnakesProto.Direction.UP && direction != null){
+                            snake.addPoints(GameState.Coord.newBuilder().setX(i).setY(height-1).build());
+                        }
+                        direction = SnakesProto.Direction.UP;
+                        j = height - 1;
+                        score++;
+                    }
+                }
+                else {
+                    if (gameField[i][j - 1] == tail) {
+                        if(direction != SnakesProto.Direction.UP && direction != null){
+                            snake.addPoints(GameState.Coord.newBuilder().setX(i).setY(j - 1).build());
+                        }
+                        direction = SnakesProto.Direction.UP;
+                        j--;
+                        score++;
+                    }
+                }
+                //вверх
+                if(gameField[i][j-1] == tail){}
+                //вниз
+                if(gameField[i][j+1] == tail){}
+            }
+        }
+
+    }
+
     public GameState createNewState() {
+        SnakesProto.GameConfig config = SnakesProto.GameConfig.newBuilder()
+                .setWidth(width)
+                .setHeight(height)
+                .setFoodStatic(foodStatic)
+                .setFoodPerPlayer(foodPerPlayer)
+                .setStateDelayMs(delay)
+                .setDeadFoodProb(deadFoodProb)
+                .setPingDelayMs(pingDelay)
+                .setNodeTimeoutMs(nodeTimeout)
+                .build();
+
+        List<GamePlayer> list = Players.getInstance().getPlayers();
+        SnakesProto.GamePlayers.Builder playersBuilder = SnakesProto.GamePlayers.newBuilder();
+        for(int i = 0; i < list.size(); i ++){
+            playersBuilder.addPlayers(list.get(i));
+        }
+
+        List<GameState.Snake> list2 = Players.getInstance().getSnakes();
+        GameState.Builder stateBuilder = GameState.newBuilder();
+
+        for(int i = 0; i < list2.size(); i++){
+            stateBuilder.addSnakes(list2.get(i));
+        }
+
+        stateBuilder.setStateOrder(stateOrder)
+                    .setConfig(config)
+                    .setPlayers(playersBuilder.build());
 
         return null;
     }
