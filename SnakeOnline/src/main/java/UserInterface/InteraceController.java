@@ -224,8 +224,9 @@ public class InteraceController extends Thread {
 
                     widthSnakeField = 20;
                     heightSnakeField = 20;
-                    // public GameController(int width, int height, int foodStatic, float foodPerPlayer ,int delay, float deadFoodProb)
-                    gameController = new GameController(widthSnakeField,heightSnakeField,3,(float)3.2,300,(float)1.1);
+                    // public GameController(int width, int height, int foodStatic, float foodPerPlayer,
+                //                          int delay, float deadFoodProb, int pingDelay, int nodeTimeout)
+                    gameController = new GameController(widthSnakeField,heightSnakeField,3,(float)3.2,300,(float)1.1,1000,1000);
                     gamePanel.addGameField(widthSnakeField, heightSnakeField);
                     gamePanel.gameField.initGame(widthSnakeField, heightSnakeField);
                     gamePanel.setFocusable(true);

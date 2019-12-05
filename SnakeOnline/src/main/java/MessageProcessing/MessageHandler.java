@@ -1,5 +1,6 @@
 package MessageProcessing;
 
+import NetworkPart.NetSocket.SteerMsgQueue;
 import me.ippolitov.fit.snakes.SnakesProto;
 
 import java.net.InetAddress;
@@ -14,6 +15,7 @@ public class MessageHandler {
             case PING:
                 break;
             case STEER:
+                SteerMsgQueue.getInstance().addNewDirection(message.getSteer(),address,port);
                 break;
             case ACK:
             case STATE:

@@ -14,7 +14,6 @@ public class Players {
 
     private ArrayList<SnakesProto.GamePlayer> players;
     private List<SnakesProto.GameState.Snake> snakes = new ArrayList<>();
-
     private int ID = 1;
     private boolean hasDeputy = false;
 
@@ -102,7 +101,7 @@ public class Players {
     public void setPlayers(ArrayList<SnakesProto.GamePlayer> p){
         players = p;
     }
-
+    public void setSnakes(List<SnakesProto.GameState.Snake> p){snakes = p;}
     public ArrayList<SnakesProto.GamePlayer> getPlayers() {
         return players;
     }

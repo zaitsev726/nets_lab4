@@ -1,5 +1,6 @@
 package SnakeGame;
 
+import NetworkPart.NetSocket.SteerMsgQueue;
 import me.ippolitov.fit.snakes.SnakesProto;
 import me.ippolitov.fit.snakes.SnakesProto.GameMessage;
 import me.ippolitov.fit.snakes.SnakesProto.GamePlayer;
@@ -9,6 +10,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class GameController {
     private static int width;
@@ -113,48 +115,57 @@ public class GameController {
         List coords = snake.getPointsList();
         int ID = snake.getPlayerId();
 
-        int tail = ID++;
-        int head = 0 + (-1)^3 * tail;
+        int tail = ID + 1;
+        int head = 0 - tail;
 
 
-        GameState.Coord coord1 = (GameState.Coord) coords.get(0);
-        gameField[coord1.getX()][coord1.getY()] = head;
+        GameState.Coord coord = (GameState.Coord) coords.get(0);
+        int currentX = coord.getX();
+        int currentY = coord.getY();
+
+        gameField[currentX][currentY] = head;
+
         for (int i = 1; i < coords.size(); i++) {
-            /*координаты относительные должны быть!*/
-            GameState.Coord coord2 = (GameState.Coord) coords.get(i);
-            int x1 = coord1.getX();
-            int y1 = coord1.getY();
-            int x2 = coord2.getX();
-            int y2 = coord2.getY();
-            while (x1 != x2 && y1 != y2) {
-                if (x1 == x2) {
-                    if (y1 > y2) {
-                        y1--;
-                    } else {
-                        y1++;
+            coord = (GameState.Coord) coords.get(i);
+            int x = coord.getX();
+            int y = coord.getY();
+            //!(x == 0 && y == 0)
+            while (x != 0 || y != 0) {
+                if (x != 0) {
+                    if (x > 0) {
+                        currentX++;
+                        x--;
+                    }
+                    if (x < 0) {
+                        currentX--;
+                        x++;
                     }
                 }
-                if (y1 == y2) {
-                    if (x1 > x2) {
-                        x1--;
-                    } else {
-                        x1++;
+                if (y != 0) {
+                    if (y > 0) {
+                        currentY++;
+                        y--;
+                    }
+                    if (y < 0) {
+                        currentY--;
+                        y++;
                     }
                 }
-                gameField[x1][y1] = tail;
-
+                gameField[currentX][currentY] = tail;
             }
-            coord1 = coord2;
         }
     }
 
     public void makeNextStep() {
-        List snakes = Players.getInstance().getSnakes();
+        List<GameState.Snake> snakes = Players.getInstance().getSnakes();
+        List<GameState.Snake> updatedSnakes = new ArrayList<>();
         ArrayList<GamePlayer> players = Players.getInstance().getPlayers();
+        Map<Integer, SnakesProto.Direction> newDirections = SteerMsgQueue.getInstance().getMap();
+
         GameState.Snake snake = null;
 
         for (int k = 0; k < snakes.size(); k++) {
-            snake = (GameState.Snake) snakes.get(k);
+            snake = snakes.get(k);
             if (snake == null)
                 continue;
             int tail = snake.getPlayerId() + 1;
@@ -164,7 +175,30 @@ public class GameController {
             int j = snake.getPoints(0).getY();
 
             gameField[i][j] = tail;
-            SnakesProto.Direction direction = snake.getHeadDirection();
+            SnakesProto.Direction direction;
+            if (newDirections.containsKey(snake.getPlayerId())) {
+                //если повернули то надо добавить "угол"
+                GameState.Snake.Builder builder = snake.toBuilder();
+                List<GameState.Coord> coords = builder.getPointsList();
+                direction = newDirections.get(snake.getPlayerId());
+                switch (direction) {
+                    case UP:
+                        coords.add(1, GameState.Coord.newBuilder().setX(0).setY(1).build());
+                    case DOWN:
+                        coords.add(1, GameState.Coord.newBuilder().setX(0).setY(-1).build());
+                    case LEFT:
+                        coords.add(1, GameState.Coord.newBuilder().setX(1).setY(0).build());
+                    case RIGHT:
+                        coords.add(1, GameState.Coord.newBuilder().setX(-1).setY(0).build());
+                }
+                builder.clearPoints();
+                for (int p = 0; p < coords.size(); p++) {
+                    builder.addPoints(coords.get(p));
+                }
+                snake = builder.build();
+            } else {
+                direction = snake.getHeadDirection();
+            }
             switch (direction) {
                 case UP:
                     j--;
@@ -190,62 +224,67 @@ public class GameController {
             if (gameField[i][j] == 1) {
                 appleHeads.add(new Event(i, j, head));
                 Iterator<Event> iterator = apples.iterator();
-                while (iterator.hasNext()){
+                while (iterator.hasNext()) {
                     Event e = iterator.next();
-                    if(e.getX() == i && e.getY() == j)
+                    if (e.getX() == i && e.getY() == j)
                         apples.remove(e);
                 }
 
-                gameField[i][j] = head;         //добавить голову?
-            }
-            if (gameField[i][j] == 0) {
                 GameState.Snake.Builder builder = snake.toBuilder();
-                builder.setPoints(0,GameState.Coord.newBuilder().setX(i).setY(j).build());
+                builder.setPoints(0, GameState.Coord.newBuilder().setX(i).setY(j).build());
                 snake = builder.build();
                 gameField[i][j] = head;
             }
-
+            if (gameField[i][j] == 0) {
+                GameState.Snake.Builder builder = snake.toBuilder();
+                builder.setPoints(0, GameState.Coord.newBuilder().setX(i).setY(j).build());
+                snake = builder.build();
+                gameField[i][j] = head;
+            }
+            updatedSnakes.add(snake);
+            //добавлять снейки в новый лист !!
         }
 
         checkDeadHeadToHead();
         checkDeadHeadToTail();
-        moveTail(snakes);
+        moveTail(updatedSnakes, newDirections);
         checkLastDead();
-        removeDeadSnakes(snakes, players);
+        removeDeadSnakes(updatedSnakes, players);
         addApples(players);
         createNewState();
-        setCoords(snakes);
+       // setCoords(updatedSnakes);
+        Players.getInstance().setSnakes(updatedSnakes);
     }
 
-    private void checkDeadHeadToHead(){
+    private void checkDeadHeadToHead() {
         Iterator<Event> iterator = crashHeads.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             Event e = iterator.next();
             int i = e.getX();
             int j = e.getY();
             int head = e.getHost_head();
 
-            if(gameField[i][j] < 0 && gameField[i][j] != head){
+            if (gameField[i][j] < 0 && gameField[i][j] != head) {
                 int head2 = gameField[i][j];
                 deadSnakes.add(head);
-                if(!deadSnakes.contains(head2))
+                if (!deadSnakes.contains(head2))
                     deadSnakes.add(head2);
                 crashHeads.remove(e);
             }
         }
     }
 
-    private void checkDeadHeadToTail(){
+    private void checkDeadHeadToTail() {
         Iterator<Event> iterator = crashHeads.iterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             Event e = iterator.next();
             int i = e.getX();
             int j = e.getY();
             int head = e.getHost_head();
 
-            if(gameField[i][j] > 1){
+            if (gameField[i][j] > 1) {
                 int tail2 = gameField[i][j];
-                if(deadSnakes.contains(-tail2)){
+                if (deadSnakes.contains(-tail2)) {
                     deadSnakes.add(head);
                     crashHeads.remove(e);
                 }
@@ -253,7 +292,7 @@ public class GameController {
         }
     }
 
-    private void moveTail(List<GameState.Snake> snakes){
+    private void moveTail(List<GameState.Snake> snakes, Map<Integer, SnakesProto.Direction> map) {
         for (int k = 0; k < snakes.size(); k++) {
             GameState.Snake snake = snakes.get(k);
             if (snake == null)
@@ -261,86 +300,71 @@ public class GameController {
             int tail = snake.getPlayerId() + 1;
             int head = 0 - tail;
             boolean appleHead = false;
-            if(!deadSnakes.contains(head)){
+            if (!deadSnakes.contains(head)) {
 
-                for(int i = 0; i < appleHeads.size(); i++){
-                    if(head == appleHeads.get(i).getHost_head()) {
+                for (int i = 0; i < appleHeads.size(); i++) {
+                    if (head == appleHeads.get(i).getHost_head()) {
+                        //если скушали яблоко
                         appleHead = true;
+                        SnakesProto.Direction direction = snake.getHeadDirection();
+                        if (!map.containsKey(snake.getPlayerId())) {
+                            switch (direction) {
+                                case UP:
+                                    snake = snake.toBuilder().setPoints(1, GameState.Coord.newBuilder()
+                                                                                .setX(0)
+                                                                                .setY(snake.getPoints(1).getY() + 1).build()).build();
+                                case DOWN:
+                                    snake = snake.toBuilder().setPoints(1, GameState.Coord.newBuilder()
+                                            .setX(0)
+                                            .setY(snake.getPoints(1).getY() - 1).build()).build();
+                                case RIGHT:
+                                    snake = snake.toBuilder().setPoints(1, GameState.Coord.newBuilder()
+                                            .setX(snake.getPoints(1).getX() - 1)
+                                            .setY(0).build()).build();
+                                case LEFT:
+                                    snake = snake.toBuilder().setPoints(1, GameState.Coord.newBuilder()
+                                            .setX(snake.getPoints(1).getX() + 1)
+                                            .setY(0).build()).build();
+                            }
+                        }
                     }
                 }
-                if(!appleHead) {
-
+                if (!appleHead) {
+                    //если не скушали яблоко
                     List<GameState.Coord> coords = snake.getPointsList();
-                    GameState.Coord c = coords.get(coords.size()-1);
-                    int x = c.getX();
-                    int y = c.getY();
 
-                    coords.remove(c);
-
-                    gameField[x][y] = 0;
-                    /*
-                   надо смотреть по предпоследней координате
-                    if(gameField[x-1][y] == tail){
+                    GameState.Coord lastPointOfTail = coords.get(coords.size() - 1);
+                    int x = lastPointOfTail.getX();
+                    int y = lastPointOfTail.getY();
+                    //!(x == 0 && y == 0)
+                    if (x > 0)
                         x--;
-                    }else if(gameField[x+1][y] == tail){
+                    if (x < 0)
                         x++;
-                    }else if (gameField[x][y-1] == tail){
+                    if (y > 0)
                         y--;
-                    }else if (gameField[x][y+1] == tail){
+                    if (y < 0)
                         y++;
-                    }*/
 
-                    GameState.Coord a = GameState.Coord.newBuilder()
-                            .setX(x)
-                            .setY(y)
-                            .build();
+                    coords.remove(coords.size() - 1);
+                    if (!(x == 0 && y == 0))
+                        coords.add(GameState.Coord.newBuilder().setX(x).setY(y).build());
 
-                    GameState.Coord prev = coords.get(coords.size() -2 );
-
-                    if(prev.getX() > 0){
-                        if(prev.getX() > x){
-                            coords.remove(prev);
-                            prev = null;
-                        }
-                    }
-                    if(prev.getX() < 0){
-                        if(prev.getX() < x){
-                            coords.remove(prev);
-                            prev = null;
-                        }
-                    }
-                    if(prev.getY() > 0){
-                        if(prev.getY() > y){
-                            coords.remove(prev);
-                            prev = null;
-                        }
-                    }
-
-                    if(prev.getY() < 0){
-                        if(prev.getY() < y){
-                            coords.remove(prev);
-                            prev = null;
-                        }
-                    }
-
-                    if(!a.equals(prev))
-                        coords.add(a);
-
-                    gameField[x][y] = tail;         //там уже лежит tail вроде бы
                 }
             }
         }
     }
 
-    private void checkLastDead(){
+
+    private void checkLastDead() {
         Iterator<Event> iterator = crashHeads.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             Event e = iterator.next();
             int i = e.getX();
             int j = e.getY();
             int head = e.getHost_head();
 
-            if(gameField[i][j] > 1){
+            if (gameField[i][j] > 1) {
                 deadSnakes.add(head);
                 crashHeads.remove(e);
             }
@@ -350,65 +374,65 @@ public class GameController {
         }
     }
 
-    private void removeDeadSnakes(List<GameState.Snake> snakes,  ArrayList<GamePlayer> players ) {
+    private void removeDeadSnakes(List<GameState.Snake> snakes, ArrayList<GamePlayer> players) {
 
         //восстановление яблок
-        for(int i = 0; i < appleHeads.size(); i ++){
-            if(deadSnakes.contains(appleHeads.get(i).getHost_head())){
+        for (int i = 0; i < appleHeads.size(); i++) {
+            if (deadSnakes.contains(appleHeads.get(i).getHost_head())) {
                 gameField[appleHeads.get(i).getX()][appleHeads.get(i).getY()] = 1;
                 apples.add(new Event(appleHeads.get(i).getX(), appleHeads.get(i).getY(), 0));
             }
         }
 
-        for(int i = 0; i < width; i++){
-            for(int j = 0; j < height; j++){
-                for(int k = 0; k < deadSnakes.size(); k ++){
-                    if(gameField[i][j] == deadSnakes.get(k)){
-                        if(Math.random() > deadFoodProb){
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                for (int k = 0; k < deadSnakes.size(); k++) {
+                    if (gameField[i][j] == deadSnakes.get(k)) {
+                        if (Math.random() > deadFoodProb) {
                             gameField[i][j] = 1;
-                            apples.add(new Event(i,j,0));
-                        }
-                        else
+                            apples.add(new Event(i, j, 0));
+                        } else
                             gameField[i][j] = 0;
                     }
                 }
             }
         }
 
-            Iterator<GameState.Snake> iterator = snakes.iterator();
-        while(iterator.hasNext()){
+        Iterator<GameState.Snake> iterator = snakes.iterator();
+        while (iterator.hasNext()) {
             GameState.Snake snake = iterator.next();
-            int ID = snake.getPlayerId()+1;
-            for(int i = 0; i < deadSnakes.size(); i ++){
-                if(ID == deadSnakes.get(i))
+            int ID = snake.getPlayerId() + 1;
+            for (int i = 0; i < deadSnakes.size(); i++) {
+                if (ID == deadSnakes.get(i))
                     snakes.remove(snake);
-                    Iterator<GamePlayer> iter = players.iterator();
-                    while(iter.hasNext()){
-                        GamePlayer player = iter.next();
-                        if((player.getId() + 1) == ID){
-                            players.remove(player);
-                        }
+                Iterator<GamePlayer> iter = players.iterator();
+                while (iter.hasNext()) {
+                    GamePlayer player = iter.next();
+                    if ((player.getId() + 1) == ID) {
+                        players.remove(player);
                     }
+                }
             }
         }
+        Players.getInstance().setPlayers(players);
     }
 
-    private void addApples(List<GamePlayer> players){
-        while(apples.size() < (players.size()*foodPerPlayer + foodStatic )){
-            int x = (int) (Math.random()*width), y = (int) (Math.random()*height);
-            while (gameField[x][y] != 0){
-            x = (int) (Math.random()*width);
-            y = (int) (Math.random()*height);
+    private void addApples(List<GamePlayer> players) {
+        while (apples.size() < (players.size() * foodPerPlayer + foodStatic)) {
+            int x = (int) (Math.random() * width), y = (int) (Math.random() * height);
+            while (gameField[x][y] != 0) {
+                x = (int) (Math.random() * width);
+                y = (int) (Math.random() * height);
             }
             gameField[x][y] = 1;
-            apples.add(new Event(x,y,0));
+            apples.add(new Event(x, y, 0));
         }
     }
 
-    private void setCoords(List<GameState.Snake> snakes){
-        for(int k = 0; k < snakes.size(); k++){
+    private void setCoords(List<GameState.Snake> snakes) {
+        for (int k = 0; k < snakes.size(); k++) {
             GameState.Snake.Builder snake = snakes.get(k).toBuilder();
-            int tail = snake.getPlayerId()+1;
+            int tail = snake.getPlayerId() + 1;
             int head = 0 - tail;
             int score = 0;
             boolean nearby = true;
@@ -419,7 +443,7 @@ public class GameController {
             snake.addPoints(GameState.Coord.newBuilder().setX(i).setY(j).build());
 
 
-            while (nearby){
+            while (nearby) {
                 //чекнуть лист смены направлений
             }
         }
@@ -440,20 +464,20 @@ public class GameController {
 
         List<GamePlayer> list = Players.getInstance().getPlayers();
         SnakesProto.GamePlayers.Builder playersBuilder = SnakesProto.GamePlayers.newBuilder();
-        for(int i = 0; i < list.size(); i ++){
+        for (int i = 0; i < list.size(); i++) {
             playersBuilder.addPlayers(list.get(i));
         }
 
         List<GameState.Snake> list2 = Players.getInstance().getSnakes();
         GameState.Builder stateBuilder = GameState.newBuilder();
 
-        for(int i = 0; i < list2.size(); i++){
+        for (int i = 0; i < list2.size(); i++) {
             stateBuilder.addSnakes(list2.get(i));
         }
 
         stateBuilder.setStateOrder(stateOrder)
-                    .setConfig(config)
-                    .setPlayers(playersBuilder.build());
+                .setConfig(config)
+                .setPlayers(playersBuilder.build());
 
         return null;
     }
