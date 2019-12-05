@@ -31,7 +31,6 @@ public class GameController {
     private List<Integer> deadSnakes = new ArrayList<>();
     private List<Event> apples = new ArrayList<>();
 
-
     public GameController(GameMessage.AnnouncementMsg connect, InetAddress IP) {
         /*connection*/
 
@@ -65,7 +64,6 @@ public class GameController {
 
         owner = true;
         host_IP = "";
-
     }
 
     public static boolean getOwner() {
@@ -116,13 +114,8 @@ public class GameController {
         int ID = snake.getPlayerId();
 
         int tail = ID++;
-        int head = 0 - tail;
+        int head = 0 + (-1)^3 * tail;
 
-
-        if (snake.getPlayerId() == ID) {
-            head += 2;
-            tail += 2;
-        }
 
         GameState.Coord coord1 = (GameState.Coord) coords.get(0);
         gameField[coord1.getX()][coord1.getY()] = head;
@@ -191,7 +184,7 @@ public class GameController {
                         i = 0;
             }
 
-            if (gameField[i][j] > 1) {
+            if (gameField[i][j] > 1 || gameField[i][j] < -1) {
                 crashHeads.add(new Event(i, j, head));
             }
             if (gameField[i][j] == 1) {
@@ -273,8 +266,7 @@ public class GameController {
                 for(int i = 0; i < appleHeads.size(); i++){
                     if(head == appleHeads.get(i).getHost_head()) {
                         appleHead = true;
-                        continue;
-                    }//выйдет ли из цикла???
+                    }
                 }
                 if(!appleHead) {
 
@@ -286,7 +278,8 @@ public class GameController {
                     coords.remove(c);
 
                     gameField[x][y] = 0;
-
+                    /*
+                   надо смотреть по предпоследней координате
                     if(gameField[x-1][y] == tail){
                         x--;
                     }else if(gameField[x+1][y] == tail){
@@ -295,7 +288,7 @@ public class GameController {
                         y--;
                     }else if (gameField[x][y+1] == tail){
                         y++;
-                    }
+                    }*/
 
                     GameState.Coord a = GameState.Coord.newBuilder()
                             .setX(x)
@@ -351,6 +344,9 @@ public class GameController {
                 deadSnakes.add(head);
                 crashHeads.remove(e);
             }
+            /*
+            добавить постановку головы на поле
+             */
         }
     }
 
@@ -409,8 +405,6 @@ public class GameController {
         }
     }
 
-
-
     private void setCoords(List<GameState.Snake> snakes){
         for(int k = 0; k < snakes.size(); k++){
             GameState.Snake.Builder snake = snakes.get(k).toBuilder();
@@ -424,9 +418,7 @@ public class GameController {
             SnakesProto.Direction direction = snake.getHeadDirection();
             snake.addPoints(GameState.Coord.newBuilder().setX(i).setY(j).build());
 
-            /*
-            поменять направление на противоположное
-             */
+
             while (nearby){
                 //чекнуть лист смены направлений
             }

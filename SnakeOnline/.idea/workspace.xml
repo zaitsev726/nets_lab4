@@ -3,9 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="451534b3-aff1-4650-a504-49655ddbeba0" name="Default Changelist" comment="">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       <change afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/Event.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/GameController.java" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+>>>>>>> Stashed changes
 =======
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
 >>>>>>> Stashed changes
