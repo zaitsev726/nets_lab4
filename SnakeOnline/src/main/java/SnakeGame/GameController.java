@@ -127,6 +127,7 @@ public class GameController {
         GameState.Coord coord1 = (GameState.Coord) coords.get(0);
         gameField[coord1.getX()][coord1.getY()] = head;
         for (int i = 1; i < coords.size(); i++) {
+            /*координаты относительные должны быть!*/
             GameState.Coord coord2 = (GameState.Coord) coords.get(i);
             int x1 = coord1.getX();
             int y1 = coord1.getY();
@@ -202,7 +203,7 @@ public class GameController {
                         apples.remove(e);
                 }
 
-                gameField[i][j] = head;
+                gameField[i][j] = head;         //добавить голову?
             }
             if (gameField[i][j] == 0) {
                 GameState.Snake.Builder builder = snake.toBuilder();
@@ -279,9 +280,11 @@ public class GameController {
 
                     List<GameState.Coord> coords = snake.getPointsList();
                     GameState.Coord c = coords.get(coords.size()-1);
-                    coords.remove(c);
                     int x = c.getX();
                     int y = c.getY();
+
+                    coords.remove(c);
+
                     gameField[x][y] = 0;
 
                     if(gameField[x-1][y] == tail){
@@ -294,13 +297,43 @@ public class GameController {
                         y++;
                     }
 
-                   /* GameState.Coord a = GameState.Coord.newBuilder()
+                    GameState.Coord a = GameState.Coord.newBuilder()
                             .setX(x)
                             .setY(y)
-                            .build();                       раскомментить в случае переделывания setCoords();
-                    if(!coords.contains(a))
-                        coords.add(a);*/
-                    gameField[x][y] = tail;
+                            .build();
+
+                    GameState.Coord prev = coords.get(coords.size() -2 );
+
+                    if(prev.getX() > 0){
+                        if(prev.getX() > x){
+                            coords.remove(prev);
+                            prev = null;
+                        }
+                    }
+                    if(prev.getX() < 0){
+                        if(prev.getX() < x){
+                            coords.remove(prev);
+                            prev = null;
+                        }
+                    }
+                    if(prev.getY() > 0){
+                        if(prev.getY() > y){
+                            coords.remove(prev);
+                            prev = null;
+                        }
+                    }
+
+                    if(prev.getY() < 0){
+                        if(prev.getY() < y){
+                            coords.remove(prev);
+                            prev = null;
+                        }
+                    }
+
+                    if(!a.equals(prev))
+                        coords.add(a);
+
+                    gameField[x][y] = tail;         //там уже лежит tail вроде бы
                 }
             }
         }
@@ -376,7 +409,8 @@ public class GameController {
         }
     }
 
-    /*подлежит переделыванию?*/
+
+
     private void setCoords(List<GameState.Snake> snakes){
         for(int k = 0; k < snakes.size(); k++){
             GameState.Snake.Builder snake = snakes.get(k).toBuilder();
@@ -386,86 +420,15 @@ public class GameController {
             boolean nearby = true;
             int i = snake.getPoints(0).getX();
             int j = snake.getPoints(0).getY();
-            SnakesProto.Direction direction = null;
-            snake.clearPoints();
-            snake.addPoints(GameState.Coord.newBuilder().setX(i).setY(j).build());
-            while(nearby){
-                //лево
-                if(i - 1 < 0) {
-                    if (gameField[width - 1][j] == tail){
-                        if(direction != SnakesProto.Direction.LEFT && direction != null){
-                            snake.addPoints(GameState.Coord.newBuilder().setX(width-1).setY(j).build());
-                        }
-                        direction = SnakesProto.Direction.LEFT;
-                        i = width - 1;
-                        score++;
-                    }
-                }
-                else {
-                    if (gameField[i - 1][j] == tail) {
-                        /*if(direction == null){
-                            direction = SnakesProto.Direction.LEFT;
-                            i--;
-                        }
-                        if(direction != SnakesProto.Direction.LEFT){
-                            direction = SnakesProto.Direction.LEFT;
-                            snake.addPoints(GameState.Coord.newBuilder().setX(i-1).setY(j).build());
-                            i--;
-                        }*/
-                        if(direction != SnakesProto.Direction.LEFT && direction != null){
-                            snake.addPoints(GameState.Coord.newBuilder().setX(i-1).setY(j).build());
-                        }
-                        direction = SnakesProto.Direction.LEFT;
-                        i--;
-                        score++;
-                    }
-                }
-                //право
-                if(i + 1 > width){
-                    if(gameField[0][j] == tail){
-                        if(direction != SnakesProto.Direction.RIGHT && direction != null){
-                            snake.addPoints(GameState.Coord.newBuilder().setX(0).setY(j).build());
-                        }
-                        direction = SnakesProto.Direction.RIGHT;
-                        i = 0;
-                        score++;
-                    }
-                }
-                else {
-                    if (gameField[i + 1][j] == tail) {
-                        if(direction != SnakesProto.Direction.RIGHT && direction != null){
-                            snake.addPoints(GameState.Coord.newBuilder().setX(i+1).setY(j).build());
-                        }
-                        direction = SnakesProto.Direction.RIGHT;
-                        i++;
-                        score++;
-                    }
-                }
 
-                if(j - 1 < 0){
-                    if(gameField[i][height-1] == tail){
-                        if(direction != SnakesProto.Direction.UP && direction != null){
-                            snake.addPoints(GameState.Coord.newBuilder().setX(i).setY(height-1).build());
-                        }
-                        direction = SnakesProto.Direction.UP;
-                        j = height - 1;
-                        score++;
-                    }
-                }
-                else {
-                    if (gameField[i][j - 1] == tail) {
-                        if(direction != SnakesProto.Direction.UP && direction != null){
-                            snake.addPoints(GameState.Coord.newBuilder().setX(i).setY(j - 1).build());
-                        }
-                        direction = SnakesProto.Direction.UP;
-                        j--;
-                        score++;
-                    }
-                }
-                //вверх
-                if(gameField[i][j-1] == tail){}
-                //вниз
-                if(gameField[i][j+1] == tail){}
+            SnakesProto.Direction direction = snake.getHeadDirection();
+            snake.addPoints(GameState.Coord.newBuilder().setX(i).setY(j).build());
+
+            /*
+            поменять направление на противоположное
+             */
+            while (nearby){
+                //чекнуть лист смены направлений
             }
         }
 
