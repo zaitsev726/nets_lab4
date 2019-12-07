@@ -2,19 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="451534b3-aff1-4650-a504-49655ddbeba0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/SteerMsgQueue.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/GameField.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SnakeOnline/META-INF/SnakeOnline.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/GameController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/Players.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/Players.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/InteraceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/InteraceController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/FieldKeyListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/FieldKeyListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/GameField.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/GameFieldPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/GameController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/GameController$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/GameController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/GameController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$12.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/Players.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/Players.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +66,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="extract.method.default.visibility" value="private" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -88,18 +88,6 @@
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn compile" />
-    </option>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
     </option>
   </component>
   <component name="RunManager" selected="Application.Main">
@@ -142,6 +130,18 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -167,6 +167,7 @@
       <workItem from="1574943256579" duration="8413000" />
       <workItem from="1575033180193" duration="7827000" />
       <workItem from="1575425604823" duration="2392000" />
+      <workItem from="1575697089916" duration="5126000" />
     </task>
     <servers />
   </component>
@@ -191,25 +192,37 @@
       <screen x="93" y="0" width="1827" height="1080" />
     </state>
     <state x="811" y="249" key="#com.intellij.ide.util.MemberChooser/93.0.1827.1080@93.0.1827.1080" timestamp="1575039234871" />
-    <state width="1784" height="220" key="GridCell.Tab.0.bottom" timestamp="1575436893275">
+    <state x="695" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1575697608620">
       <screen x="93" y="0" width="1827" height="1080" />
     </state>
-    <state width="1784" height="220" key="GridCell.Tab.0.bottom/93.0.1827.1080@93.0.1827.1080" timestamp="1575436893275" />
-    <state width="1784" height="220" key="GridCell.Tab.0.center" timestamp="1575436893275">
+    <state x="695" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/93.0.1827.1080@93.0.1827.1080" timestamp="1575697608620" />
+    <state width="1784" height="220" key="GridCell.Tab.0.bottom" timestamp="1575702833303">
       <screen x="93" y="0" width="1827" height="1080" />
     </state>
-    <state width="1784" height="220" key="GridCell.Tab.0.center/93.0.1827.1080@93.0.1827.1080" timestamp="1575436893275" />
-    <state width="1784" height="220" key="GridCell.Tab.0.left" timestamp="1575436893275">
+    <state width="1784" height="220" key="GridCell.Tab.0.bottom/93.0.1827.1080@93.0.1827.1080" timestamp="1575702833303" />
+    <state width="1784" height="220" key="GridCell.Tab.0.center" timestamp="1575702833303">
       <screen x="93" y="0" width="1827" height="1080" />
     </state>
-    <state width="1784" height="220" key="GridCell.Tab.0.left/93.0.1827.1080@93.0.1827.1080" timestamp="1575436893275" />
-    <state width="1784" height="220" key="GridCell.Tab.0.right" timestamp="1575436893275">
+    <state width="1784" height="220" key="GridCell.Tab.0.center/93.0.1827.1080@93.0.1827.1080" timestamp="1575702833303" />
+    <state width="1784" height="220" key="GridCell.Tab.0.left" timestamp="1575702833302">
       <screen x="93" y="0" width="1827" height="1080" />
     </state>
-    <state width="1784" height="220" key="GridCell.Tab.0.right/93.0.1827.1080@93.0.1827.1080" timestamp="1575436893275" />
-    <state x="669" y="235" width="672" height="678" key="search.everywhere.popup" timestamp="1575041833488">
+    <state width="1784" height="220" key="GridCell.Tab.0.left/93.0.1827.1080@93.0.1827.1080" timestamp="1575702833302" />
+    <state width="1784" height="220" key="GridCell.Tab.0.right" timestamp="1575702833303">
       <screen x="93" y="0" width="1827" height="1080" />
     </state>
-    <state x="669" y="235" width="672" height="678" key="search.everywhere.popup/93.0.1827.1080@93.0.1827.1080" timestamp="1575041833488" />
+    <state width="1784" height="220" key="GridCell.Tab.0.right/93.0.1827.1080@93.0.1827.1080" timestamp="1575702833303" />
+    <state x="536" y="194" key="Maven.ArtifactSearchDialog" timestamp="1575697743742">
+      <screen x="93" y="0" width="1827" height="1080" />
+    </state>
+    <state x="536" y="194" key="Maven.ArtifactSearchDialog/93.0.1827.1080@93.0.1827.1080" timestamp="1575697743742" />
+    <state x="736" y="305" key="extract.method.dialog" timestamp="1575702011210">
+      <screen x="93" y="0" width="1827" height="1080" />
+    </state>
+    <state x="736" y="305" key="extract.method.dialog/93.0.1827.1080@93.0.1827.1080" timestamp="1575702011210" />
+    <state x="669" y="235" width="672" height="678" key="search.everywhere.popup" timestamp="1575701952152">
+      <screen x="93" y="0" width="1827" height="1080" />
+    </state>
+    <state x="669" y="235" width="672" height="678" key="search.everywhere.popup/93.0.1827.1080@93.0.1827.1080" timestamp="1575701952152" />
   </component>
 </project>

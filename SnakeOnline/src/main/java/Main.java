@@ -4,7 +4,6 @@ import UserInterface.InteraceController;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-
         InteraceController i = InteraceController.getInstance();
 
         MulticastController controller = new MulticastController();

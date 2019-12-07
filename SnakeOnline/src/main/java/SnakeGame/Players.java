@@ -9,10 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Players {
-
+    /*
+    плейрс отвечает за хранение змей и игроков
+    > должен добавлять новых игроков в спискок
+    > должен добавлять новых змей в список, и запрашивать их отрисовку
+    > назначает роли игрокам
+     */
     private static Players instance;
-
-    private ArrayList<SnakesProto.GamePlayer> players;
+    private ArrayList<SnakesProto.GamePlayer> players = new ArrayList<>();
     private List<SnakesProto.GameState.Snake> snakes = new ArrayList<>();
     private int ID = 1;
     private boolean hasDeputy = false;
@@ -39,20 +43,8 @@ public class Players {
                 .setScore(2)
                 .build());
 
-        int[] randomCoord = GameController.randomCoord();
-        SnakesProto.Direction direction = randomDirection();
-        int [] b = tailCoord(randomCoord, direction);
-
-        SnakesProto.GameState.Snake snake = SnakesProto.GameState.Snake.newBuilder()
-                .setPlayerId(ID)
-                .setHeadDirection(direction)
-                .setState(SnakesProto.GameState.Snake.SnakeState.ALIVE)
-                .addPoints(coord(randomCoord[0], randomCoord[1]))
-                .addPoints(coord(b[0],b[1]))
-                .build();
-
-        snakes.add(snake);
-        GameController.paintSnake(snake);
+        int[] randomCoord = GameField.randomCoord();
+        createNewSnake(randomCoord);
 
         ID++;
     }
@@ -79,23 +71,30 @@ public class Players {
                     .setScore(2)
                     .build());
 
-            int [] a = GameController.getCoord();
-            SnakesProto.Direction direction = randomDirection();
-            int [] b = tailCoord(a, direction);
-            SnakesProto.GameState.Snake snake = SnakesProto.GameState.Snake.newBuilder()
-                    .setPlayerId(ID)
-                    .setHeadDirection(direction)
-                    .setState(SnakesProto.GameState.Snake.SnakeState.ALIVE)
-                    .addPoints(coord(a[0],a[1]))
-                    .addPoints(coord(b[0],b[1]))
-                    .build();
-
-            snakes.add(snake);
-            GameController.paintSnake(snake);
+            int [] a = GameField.getCoordForSpawn();
+            createNewSnake(a);
 
             MessageCreator.createNewAckMsg(msg_seq,ID);
             ID++;
         }
+    }
+
+    private void createNewSnake(int[] a) {
+        SnakesProto.Direction direction = randomDirection();
+        int [] b = tailCoord(a, direction);
+        if(b == null)
+            return;
+        SnakesProto.GameState.Snake snake = SnakesProto.GameState.Snake.newBuilder()
+                .setPlayerId(ID)
+                .setHeadDirection(direction)
+                .setState(SnakesProto.GameState.Snake.SnakeState.ALIVE)
+                .addPoints(coord(a[0],a[1]))
+                .addPoints(coord(b[0],b[1]))
+                .build();
+
+        snakes.add(snake);
+
+        GameField.paintNewSnake(snake);
     }
 
     public void setPlayers(ArrayList<SnakesProto.GamePlayer> p){
@@ -105,10 +104,9 @@ public class Players {
     public ArrayList<SnakesProto.GamePlayer> getPlayers() {
         return players;
     }
+    public List<SnakesProto.GameState.Snake> getSnakes() { return snakes; }
+    private SnakesProto.GameState.Coord coord(int x, int y){ return SnakesProto.GameState.Coord.newBuilder().setX(x).setY(y).build(); }
 
-    private SnakesProto.GameState.Coord coord(int x, int y){
-        return SnakesProto.GameState.Coord.newBuilder().setX(x).setY(y).build();
-    }
     private SnakesProto.Direction randomDirection(){
         int random = (int) (Math.random() * 4);
         SnakesProto.Direction d;
@@ -130,6 +128,7 @@ public class Players {
         }
         return d;
     }
+
     private int[] tailCoord(int[] head, SnakesProto.Direction d){
         int[] a = new int[2];
         switch (d){
@@ -147,9 +146,5 @@ public class Players {
                 return a;
         }
         return null;
-    }
-
-    public List<SnakesProto.GameState.Snake> getSnakes() {
-        return snakes;
     }
 }

@@ -4,8 +4,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 class FieldKeyListener extends KeyAdapter {
-    GameField panel;
-    FieldKeyListener(GameField p){
+    GameFieldPanel panel;
+    FieldKeyListener(GameFieldPanel p){
         panel = p;
     }
 

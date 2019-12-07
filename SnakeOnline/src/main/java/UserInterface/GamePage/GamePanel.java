@@ -5,7 +5,7 @@ import UserInterface.Layouts.VerticalLayout;
 import javax.swing.*;
 import java.awt.*;
 public class GamePanel extends JPanel {
-    public GameField gameField;
+    public GameFieldPanel gameField;
     public JButton backButton;
 
     private JPanel snakePanel;
@@ -16,7 +16,7 @@ public class GamePanel extends JPanel {
     public GamePanel() {
         this.setLayout(null);
 
-        gameField = new GameField();
+        gameField = new GameFieldPanel();
         backButton = new JButton("BACK");
 
         snakePanel = new JPanel();

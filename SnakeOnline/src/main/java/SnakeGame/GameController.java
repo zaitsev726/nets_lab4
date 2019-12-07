@@ -13,6 +13,13 @@ import java.util.List;
 import java.util.Map;
 
 public class GameController {
+    /*
+    геймконтроллер отвечает за логику игры ( возможно надо переименовать)
+    > делает новый шаг
+    > добавляет яблоки
+    > убивает змей и превращает их в яблоки
+    ресурсы: списко игроков, список змейк, геймфилд
+     */
     private static int width;
     private static int height;
     private int foodStatic;
@@ -23,7 +30,7 @@ public class GameController {
     private int nodeTimeout;
 
     private static int[][] gameField;
-    private int stateOrder;
+    private int stateOrder = 1;
 
     private static boolean owner = false;
     private static String host_IP = "";
@@ -76,184 +83,108 @@ public class GameController {
         return host_IP;
     }
 
-    /*возващает координаты для 1 змеи*/
-    public static int[] randomCoord() {
-        int[] a = new int[2];
-        a[0] = (int) (Math.random() * width);
-        a[1] = (int) (Math.random() * height);
-        return a;
-    }
-
-    /*возвращает координаты куда можно вставить змею или пустой массив*/
-    public static int[] getCoord() {
-        //Map<int[], Integer> map = new HashMap<>();
-        int[] a = new int[2];
-
-        boolean canSpawn = false;
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                if (gameField[i][j] == 0) {
-                    for (int k = 0; k < 5; k++) {
-                        for (int m = 0; m < 5; m++) {
-                            if (gameField[k][m] != 0)
-                                canSpawn = true;
-                        }
-                    }
-                    if (canSpawn) {
-                        a[0] = i + 3;
-                        a[1] = j + 2;
-                        return a;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    /*рисует змею на экране*/
-    public static void paintSnake(GameState.Snake snake) {
-        List coords = snake.getPointsList();
-        int ID = snake.getPlayerId();
-
-        int tail = ID + 1;
-        int head = 0 - tail;
-
-
-        GameState.Coord coord = (GameState.Coord) coords.get(0);
-        int currentX = coord.getX();
-        int currentY = coord.getY();
-
-        gameField[currentX][currentY] = head;
-
-        for (int i = 1; i < coords.size(); i++) {
-            coord = (GameState.Coord) coords.get(i);
-            int x = coord.getX();
-            int y = coord.getY();
-            //!(x == 0 && y == 0)
-            while (x != 0 || y != 0) {
-                if (x != 0) {
-                    if (x > 0) {
-                        currentX++;
-                        x--;
-                    }
-                    if (x < 0) {
-                        currentX--;
-                        x++;
-                    }
-                }
-                if (y != 0) {
-                    if (y > 0) {
-                        currentY++;
-                        y--;
-                    }
-                    if (y < 0) {
-                        currentY--;
-                        y++;
-                    }
-                }
-                gameField[currentX][currentY] = tail;
-            }
-        }
-    }
-
     public void makeNextStep() {
         List<GameState.Snake> snakes = Players.getInstance().getSnakes();
         List<GameState.Snake> updatedSnakes = new ArrayList<>();
         ArrayList<GamePlayer> players = Players.getInstance().getPlayers();
         Map<Integer, SnakesProto.Direction> newDirections = SteerMsgQueue.getInstance().getMap();
 
-        GameState.Snake snake = null;
+        synchronized (Players.class) {
 
-        for (int k = 0; k < snakes.size(); k++) {
-            snake = snakes.get(k);
-            if (snake == null)
-                continue;
-            int tail = snake.getPlayerId() + 1;
-            int head = 0 - tail;
 
-            int i = snake.getPoints(0).getX();
-            int j = snake.getPoints(0).getY();
+            GameState.Snake snake = null;
 
-            gameField[i][j] = tail;
-            SnakesProto.Direction direction;
-            if (newDirections.containsKey(snake.getPlayerId())) {
-                //если повернули то надо добавить "угол"
-                GameState.Snake.Builder builder = snake.toBuilder();
-                List<GameState.Coord> coords = builder.getPointsList();
-                direction = newDirections.get(snake.getPlayerId());
+            for (int k = 0; k < snakes.size(); k++) {
+                snake = snakes.get(k);
+                if (snake == null)
+                    continue;
+                int tail = snake.getPlayerId() + 1;
+                int head = 0 - tail;
+
+                int i = snake.getPoints(0).getX();
+                int j = snake.getPoints(0).getY();
+
+                gameField[i][j] = tail;
+                SnakesProto.Direction direction;
+                if (newDirections.containsKey(snake.getPlayerId())) {
+                    //если повернули то надо добавить "угол"
+                    GameState.Snake.Builder builder = snake.toBuilder();
+                    List<GameState.Coord> coords = builder.getPointsList();
+                    direction = newDirections.get(snake.getPlayerId());
+                    switch (direction) {
+                        case UP:
+                            coords.add(1, GameState.Coord.newBuilder().setX(0).setY(1).build());
+                        case DOWN:
+                            coords.add(1, GameState.Coord.newBuilder().setX(0).setY(-1).build());
+                        case LEFT:
+                            coords.add(1, GameState.Coord.newBuilder().setX(1).setY(0).build());
+                        case RIGHT:
+                            coords.add(1, GameState.Coord.newBuilder().setX(-1).setY(0).build());
+                    }
+                    builder.clearPoints();
+                    for (int p = 0; p < coords.size(); p++) {
+                        builder.addPoints(coords.get(p));
+                    }
+                    snake = builder.build();
+                } else {
+                    direction = snake.getHeadDirection();
+                }
                 switch (direction) {
                     case UP:
-                        coords.add(1, GameState.Coord.newBuilder().setX(0).setY(1).build());
-                    case DOWN:
-                        coords.add(1, GameState.Coord.newBuilder().setX(0).setY(-1).build());
+                        j--;
+                        if (j < 0)
+                            j = height - 1;
                     case LEFT:
-                        coords.add(1, GameState.Coord.newBuilder().setX(1).setY(0).build());
+                        i--;
+                        if (i < 0)
+                            i = width - 1;
+                    case DOWN:
+                        j++;
+                        if (j >= height)
+                            j = 0;
                     case RIGHT:
-                        coords.add(1, GameState.Coord.newBuilder().setX(-1).setY(0).build());
-                }
-                builder.clearPoints();
-                for (int p = 0; p < coords.size(); p++) {
-                    builder.addPoints(coords.get(p));
-                }
-                snake = builder.build();
-            } else {
-                direction = snake.getHeadDirection();
-            }
-            switch (direction) {
-                case UP:
-                    j--;
-                    if (j < 0)
-                        j = height - 1;
-                case LEFT:
-                    i--;
-                    if (i < 0)
-                        i = width - 1;
-                case DOWN:
-                    j++;
-                    if (j >= height)
-                        j = 0;
-                case RIGHT:
-                    i++;
-                    if (i >= width)
-                        i = 0;
-            }
-
-            if (gameField[i][j] > 1 || gameField[i][j] < -1) {
-                crashHeads.add(new Event(i, j, head));
-            }
-            if (gameField[i][j] == 1) {
-                appleHeads.add(new Event(i, j, head));
-                Iterator<Event> iterator = apples.iterator();
-                while (iterator.hasNext()) {
-                    Event e = iterator.next();
-                    if (e.getX() == i && e.getY() == j)
-                        apples.remove(e);
+                        i++;
+                        if (i >= width)
+                            i = 0;
                 }
 
-                GameState.Snake.Builder builder = snake.toBuilder();
-                builder.setPoints(0, GameState.Coord.newBuilder().setX(i).setY(j).build());
-                snake = builder.build();
-                gameField[i][j] = head;
+                if (gameField[i][j] > 1 || gameField[i][j] < -1) {
+                    crashHeads.add(new Event(i, j, head));
+                }
+                if (gameField[i][j] == 1) {
+                    appleHeads.add(new Event(i, j, head));
+                    Iterator<Event> iterator = apples.iterator();
+                    while (iterator.hasNext()) {
+                        Event e = iterator.next();
+                        if (e.getX() == i && e.getY() == j)
+                            apples.remove(e);
+                    }
+
+                    GameState.Snake.Builder builder = snake.toBuilder();
+                    builder.setPoints(0, GameState.Coord.newBuilder().setX(i).setY(j).build());
+                    snake = builder.build();
+                    gameField[i][j] = head;
+                }
+                if (gameField[i][j] == 0) {
+                    GameState.Snake.Builder builder = snake.toBuilder();
+                    builder.setPoints(0, GameState.Coord.newBuilder().setX(i).setY(j).build());
+                    snake = builder.build();
+                    gameField[i][j] = head;
+                }
+                updatedSnakes.add(snake);
+                //добавлять снейки в новый лист !!
             }
-            if (gameField[i][j] == 0) {
-                GameState.Snake.Builder builder = snake.toBuilder();
-                builder.setPoints(0, GameState.Coord.newBuilder().setX(i).setY(j).build());
-                snake = builder.build();
-                gameField[i][j] = head;
-            }
-            updatedSnakes.add(snake);
-            //добавлять снейки в новый лист !!
+
+            checkDeadHeadToHead();
+            checkDeadHeadToTail();
+            moveTail(updatedSnakes, newDirections);
+            checkLastDead();
+            removeDeadSnakes(updatedSnakes, players);
+            addApples(players);
+            createNewState();
+            // setCoords(updatedSnakes);
+            Players.getInstance().setSnakes(updatedSnakes);
         }
-
-        checkDeadHeadToHead();
-        checkDeadHeadToTail();
-        moveTail(updatedSnakes, newDirections);
-        checkLastDead();
-        removeDeadSnakes(updatedSnakes, players);
-        addApples(players);
-        createNewState();
-       // setCoords(updatedSnakes);
-        Players.getInstance().setSnakes(updatedSnakes);
     }
 
     private void checkDeadHeadToHead() {
@@ -429,6 +360,7 @@ public class GameController {
         }
     }
 
+    //нужно ли?
     private void setCoords(List<GameState.Snake> snakes) {
         for (int k = 0; k < snakes.size(); k++) {
             GameState.Snake.Builder snake = snakes.get(k).toBuilder();
@@ -478,7 +410,12 @@ public class GameController {
         stateBuilder.setStateOrder(stateOrder)
                 .setConfig(config)
                 .setPlayers(playersBuilder.build());
-
+        stateOrder ++;
+        for(int i = 0; i < apples.size(); i ++){
+            stateBuilder.addFoods(GameState.Coord.newBuilder()
+                                    .setX(apples.get(i).getX())
+                                    .setY(apples.get(i).getY()))
+        }
         return null;
     }
     /*
