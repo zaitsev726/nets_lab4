@@ -1,8 +1,7 @@
 package NetworkPart.Broadcast;
 
 
-import NetworkPart.GlobalController;
-import UserInterface.InteraceController;
+import NetworkPart.NetworkController;
 import me.ippolitov.fit.snakes.SnakesProto;
 
 import java.io.IOException;
@@ -20,7 +19,7 @@ public class MulticastController extends Thread {
         try {
             multicastAddress =  InetAddress.getByName("239.192.0.4");
             multicastSocket = new MulticastSocket(multicastPort);
-            multicastSocket.setInterface(GlobalController.getInstance().getIP());
+            multicastSocket.setInterface(NetworkController.getInstance().getIP());
             multicastSocket.setSoTimeout(1000);
             multicastSocket.joinGroup(multicastAddress);
         } catch (UnknownHostException e) {
@@ -64,7 +63,7 @@ public class MulticastController extends Thread {
                     System.out.println("Имя игрока" + (i+1) +" "+ list.get(i).getName());
                 }
 
-                InteraceController.getInstance().addNewConnectButton(message);
+                //InterfaceController.getInstance().addNewConnectButton(message);
 
             }catch (SocketTimeoutException e){
 

@@ -1,12 +1,8 @@
 package MessageProcessing;
 
-import SnakeGame.GameController;
-import SnakeGame.Players;
 import me.ippolitov.fit.snakes.SnakesProto;
 
 import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -72,24 +68,24 @@ public class MessageManagement extends Thread {
 
 
     private void createPingPacket(SnakesProto.GameMessage message) {
-
+/*
         ArrayList players = Players.getInstance().getPlayers();
         for (int i = 0; i < players.size(); i++) {
             SnakesProto.GamePlayer g = (SnakesProto.GamePlayer) players.get(i);
             try {
-                if (!g.getIpAddress().equals("") && GameController.getOwner() == true) {
+                if (!g.getIpAddress().equals("") && GameLogic.getOwner() == true) {
 
                     messages.add(new DatagramPacket(message.toByteArray(), message.toByteArray().length,
                             InetAddress.getByName(g.getIpAddress().substring(1)), g.getPort()));
 
-                } else if (g.getIpAddress().equals("") && GameController.getOwner() == false) {
+                } else if (g.getIpAddress().equals("") && GameLogic.getOwner() == false) {
 
                     messages.add(new DatagramPacket(message.toByteArray(), message.toByteArray().length,
-                            InetAddress.getByName(GameController.getHost_IP().substring(1)), g.getPort()));
+                            InetAddress.getByName(GameLogic.getHost_IP().substring(1)), g.getPort()));
                 }
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 }

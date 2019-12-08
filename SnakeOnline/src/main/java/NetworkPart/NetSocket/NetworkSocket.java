@@ -1,6 +1,6 @@
 package NetworkPart.NetSocket;
 
-import NetworkPart.GlobalController;
+import NetworkPart.NetworkController;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -9,9 +9,9 @@ public class NetworkSocket {
     private Socket socket;
 
     public NetworkSocket(){
-        if(GlobalController.getInstance().getPort() != 0){
+        if(NetworkController.getInstance().getPort() != 0){
             try {
-                socket = new Socket(GlobalController.getInstance().getIP(), GlobalController.getInstance().getPort());
+                socket = new Socket(NetworkController.getInstance().getIP(), NetworkController.getInstance().getPort());
             } catch (IOException e) {
                 e.printStackTrace();
             }

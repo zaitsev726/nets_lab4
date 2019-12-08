@@ -10,13 +10,13 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
-public class GlobalController {
-    private static volatile GlobalController instance;
+public class NetworkController {
+    private static volatile NetworkController instance;
     private int port;
     private InetAddress IP;
     private NetworkSocket networkSocket;
 
-    private GlobalController(){
+    private NetworkController(){
 
         try {
             IP = getLocalAddress();
@@ -30,13 +30,13 @@ public class GlobalController {
 
     }
 
-    public static GlobalController getInstance(){
-        GlobalController localInstance = instance;
+    public static NetworkController getInstance(){
+        NetworkController localInstance = instance;
         if(localInstance == null){
-            synchronized (GlobalController.class){
+            synchronized (NetworkController.class){
                 localInstance = instance;
                 if(localInstance == null)
-                    instance = localInstance = new GlobalController();
+                    instance = localInstance = new NetworkController();
             }
         }
         return localInstance;

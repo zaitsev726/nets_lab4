@@ -2,18 +2,57 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="451534b3-aff1-4650-a504-49655ddbeba0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/GameField.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Global/ChangestateController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Global/GlobalController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/GameLogic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/apple.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/apple.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/enemyBody.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/enemyHead.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ourBody.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ourHead.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SnakeOnline.iml" beforeDir="false" afterPath="$PROJECT_DIR$/SnakeOnline.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageManagement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/NetworkPart/Broadcast/MulticastController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/Broadcast/MulticastController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/NetworkPart/GlobalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/NetworkController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/NetworkSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/NetworkSocket.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/GameField.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/GameField.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/Players.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/Players.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/FieldKeyListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/FieldKeyListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/GameField.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/GameFieldPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/GameFieldPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/GameFieldPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/InteraceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/InterfaceController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/NewGamePage/NewGamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/NewGamePage/NewGamePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/GameController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/GameController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageManagement$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageManagement$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageManagement.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageManagement.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/NetworkPart/Broadcast/MulticastController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/NetworkPart/Broadcast/MulticastController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/NetworkPart/GlobalController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/NetworkSocket.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/NetworkSocket.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/GameController$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/GameController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/GameController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/Players$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/Players$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/Players.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/Players.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/GamePage/FieldKeyListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/GamePage/FieldKeyListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/GamePage/GameField.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/GamePage/GamePanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/GamePage/GamePanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$10.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$11.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$12.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$6.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$7.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$8.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController$9.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InteraceController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/NewGamePage/NewGamePanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/NewGamePage/NewGamePanel.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +106,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="extract.method.default.visibility" value="private" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/UserInterface/GamePage" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -77,11 +116,16 @@
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Александр\IdeaProjects\github\nets_lab4\SnakeOnline\src\main" />
+      <recent name="C:\Users\Александр\IdeaProjects\github\nets_lab4\SnakeOnline\src\main\java\resources" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
       <recent name="NetworkPart" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Александр\IdeaProjects\github\nets_lab4\SnakeOnline\src\main\java\UserInterface\GamePage" />
       <recent name="D:\proga\IdeaProjects\SnakeOnline\src" />
     </key>
   </component>
@@ -188,41 +232,125 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
-    <state x="811" y="249" key="#com.intellij.ide.util.MemberChooser" timestamp="1575039234872">
-      <screen x="93" y="0" width="1827" height="1080" />
+    <state x="0" y="0" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1575790604565">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="0" y="0" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575790604565" />
+    <state x="755" y="240" key="#com.intellij.ide.util.MemberChooser" timestamp="1575818690592">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="755" y="240" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575818690592" />
     <state x="811" y="249" key="#com.intellij.ide.util.MemberChooser/93.0.1827.1080@93.0.1827.1080" timestamp="1575039234871" />
-    <state x="695" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1575697608620">
-      <screen x="93" y="0" width="1827" height="1080" />
+    <state x="756" y="404" width="407" height="241" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1575792357449">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="756" y="404" width="407" height="241" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575792357449" />
+    <state x="633" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1575727162145">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="633" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575727162145" />
     <state x="695" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/93.0.1827.1080@93.0.1827.1080" timestamp="1575697608620" />
-    <state width="1784" height="220" key="GridCell.Tab.0.bottom" timestamp="1575702833303">
-      <screen x="93" y="0" width="1827" height="1080" />
+    <state x="837" y="222" key="#xdebugger.evaluate" timestamp="1575824703861">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="837" y="222" key="#xdebugger.evaluate/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575824703861" />
+    <state width="1877" height="140" key="GridCell.Tab.0.bottom" timestamp="1575826716879">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="140" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575826716879" />
     <state width="1784" height="220" key="GridCell.Tab.0.bottom/93.0.1827.1080@93.0.1827.1080" timestamp="1575702833303" />
-    <state width="1784" height="220" key="GridCell.Tab.0.center" timestamp="1575702833303">
-      <screen x="93" y="0" width="1827" height="1080" />
+    <state width="1877" height="140" key="GridCell.Tab.0.center" timestamp="1575826716879">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state width="1877" height="140" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575826716879" />
     <state width="1784" height="220" key="GridCell.Tab.0.center/93.0.1827.1080@93.0.1827.1080" timestamp="1575702833303" />
-    <state width="1784" height="220" key="GridCell.Tab.0.left" timestamp="1575702833302">
-      <screen x="93" y="0" width="1827" height="1080" />
+    <state width="1877" height="140" key="GridCell.Tab.0.left" timestamp="1575826716879">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state width="1877" height="140" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575826716879" />
     <state width="1784" height="220" key="GridCell.Tab.0.left/93.0.1827.1080@93.0.1827.1080" timestamp="1575702833302" />
-    <state width="1784" height="220" key="GridCell.Tab.0.right" timestamp="1575702833303">
-      <screen x="93" y="0" width="1827" height="1080" />
+    <state width="1877" height="140" key="GridCell.Tab.0.right" timestamp="1575826716879">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state width="1877" height="140" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575826716879" />
     <state width="1784" height="220" key="GridCell.Tab.0.right/93.0.1827.1080@93.0.1827.1080" timestamp="1575702833303" />
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1575826657282">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575826657282" />
+    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1575826657282">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575826657282" />
+    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1575826657282">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575826657282" />
+    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1575826657282">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575826657282" />
     <state x="536" y="194" key="Maven.ArtifactSearchDialog" timestamp="1575697743742">
       <screen x="93" y="0" width="1827" height="1080" />
     </state>
     <state x="536" y="194" key="Maven.ArtifactSearchDialog/93.0.1827.1080@93.0.1827.1080" timestamp="1575697743742" />
+    <state width="968" height="528" key="XDebugger.FullValuePopup" timestamp="1575823432333">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="968" height="528" key="XDebugger.FullValuePopup/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575823432333" />
+    <state x="758" y="208" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1575790408215">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="758" y="208" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575790408215" />
+    <state x="769" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1575826211287">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="769" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575826211287" />
     <state x="736" y="305" key="extract.method.dialog" timestamp="1575702011210">
       <screen x="93" y="0" width="1827" height="1080" />
     </state>
     <state x="736" y="305" key="extract.method.dialog/93.0.1827.1080@93.0.1827.1080" timestamp="1575702011210" />
-    <state x="669" y="235" width="672" height="678" key="search.everywhere.popup" timestamp="1575701952152">
-      <screen x="93" y="0" width="1827" height="1080" />
+    <state x="616" y="240" width="672" height="677" key="run.anything.popup" timestamp="1575823633417">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="616" y="240" width="672" height="677" key="run.anything.popup/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575823633417" />
+    <state x="605" y="226" width="707" height="653" key="search.everywhere.popup" timestamp="1575824736565">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="605" y="226" width="707" height="653" key="search.everywhere.popup/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575824736565" />
     <state x="669" y="235" width="672" height="678" key="search.everywhere.popup/93.0.1827.1080@93.0.1827.1080" timestamp="1575701952152" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/SnakeGame/GameLogic.java</url>
+          <line>253</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/SnakeGame/GameLogic.java</url>
+          <line>199</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="apple" language="JAVA" />
+        <watch expression="((ToolkitImage)apple).width" custom="sun.awt.image.ToolkitImage" />
+        <watch expression="gameField[2]" />
+        <watch expression="gameField[8][9]" />
+        <watch expression="iterator" language="JAVA" />
+        <watch expression="iterator.hasNext()" language="JAVA" />
+        <watch expression="iterator.next()" language="JAVA" />
+        <watch expression="l" language="JAVA" />
+        <watch expression="coords.remove(0)" language="JAVA" />
+        <watch expression="coords.remove(coords.get(1));" language="JAVA" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/SnakeOnline$Main.ic" NAME="Main Coverage Results" MODIFIED="1575728242407" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

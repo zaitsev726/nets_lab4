@@ -1,7 +1,7 @@
 package UserInterface;
 
-import NetworkPart.GlobalController;
-import SnakeGame.GameController;
+import Global.GlobalController;
+import NetworkPart.NetworkController;
 import UserInterface.ConnectionPage.ConnectionPanel;
 import UserInterface.Frames.Window;
 import UserInterface.GamePage.GamePanel;
@@ -17,7 +17,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InteraceController extends Thread {
+public class InterfaceController {
     private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private int sizeWidth = 1520;
     private int sizeHeight = 1045;
@@ -31,28 +31,11 @@ public class InteraceController extends Thread {
     private ConnectionPanel connectionPanel;
     private NetInfoEntryPanel netInfoEntryPanel;
 
-    private int heightSnakeField;
-    private int widthSnakeField;
-
-    private GameController gameController = null;
-
-    private static InteraceController instance;
+    private GlobalController controller;
 
     private ArrayList<SnakesProto.GameMessage.AnnouncementMsg> multicastMessages;
 
-    public static InteraceController getInstance(){
-        InteraceController localInstance = instance;
-        if(localInstance == null){
-            synchronized (InteraceController.class){
-                localInstance = instance;
-                if(localInstance == null)
-                    instance = localInstance = new InteraceController();
-            }
-        }
-        return localInstance;
-    }
-
-    private InteraceController(){
+    public InterfaceController(GlobalController controller){
         multicastMessages = new ArrayList<>();
         window = new Window(sizeWidth,sizeHeight,locationX,locationY);
         menuPanel = new MenuPanel(sizeWidth,sizeHeight);
@@ -60,7 +43,7 @@ public class InteraceController extends Thread {
         gamePanel = new GamePanel();
         connectionPanel = new ConnectionPanel();
         netInfoEntryPanel = new NetInfoEntryPanel();
-
+        this.controller = controller;
 
         window.add(menuPanel);
         initializationListeners();
@@ -96,7 +79,7 @@ public class InteraceController extends Thread {
                                 "Введите число в диапазоне от 2000 до 6000, а не " + w);
                     }
                     else
-                        GlobalController.getInstance().setPort(w);
+                        NetworkController.getInstance().setPort(w);
 
                 } catch (NumberFormatException r) {
                     JOptionPane.showMessageDialog(window, "Вы некорректно ввели цифры для port!");
@@ -128,8 +111,7 @@ public class InteraceController extends Thread {
     private void initializationGameListeners() {
         gamePanel.backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(gamePanel.gameField.timer != null)
-                    gamePanel.gameField.timer.stop();
+                controller.removeGame();
                 window.remove(gamePanel);
                 window.add(newGamePanel);
                 window.revalidate();
@@ -180,7 +162,7 @@ public class InteraceController extends Thread {
                                 "Введите число в диапазоне от 10 до 100, а не " + w);
                     }
                     else
-                        setWidthSnakeField(w);
+                        controller.setWidth(w);
 
                 } catch (NumberFormatException r) {
                     JOptionPane.showMessageDialog(window, "Вы некорректно ввели цифры!");
@@ -197,7 +179,103 @@ public class InteraceController extends Thread {
                                 "Введите число в диапазоне от 10 до 100, а не " + w);
                     }
                     else
-                        setHeightSnakeField(w);
+                        controller.setHeight(w);
+                } catch (NumberFormatException r) {
+                    JOptionPane.showMessageDialog(window, "Вы некорректно ввели цифры!");
+                }
+            }
+        });
+
+        newGamePanel.foodStaticField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int w = Integer.parseInt(newGamePanel.foodStaticField.getText());
+                    if (w > 100 || w < 0) {
+                        JOptionPane.showMessageDialog(window,
+                                "Введите число в диапазоне от 0 до 100, а не " + w);
+                    }
+                    else
+                        controller.setFoodStatic(w);
+                } catch (NumberFormatException r) {
+                    JOptionPane.showMessageDialog(window, "Вы некорректно ввели цифры!");
+                }
+            }
+        });
+
+        newGamePanel.foodPerPlayerField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    float w = Float.parseFloat(newGamePanel.foodPerPlayerField.getText());
+                    if (w > 100 || w < 0) {
+                        JOptionPane.showMessageDialog(window,
+                                "Введите число в диапазоне от 0 до 100, а не " + w);
+                    }
+                    else
+                        controller.setFoodPerPlayer(w);
+                } catch (NumberFormatException r) {
+                    JOptionPane.showMessageDialog(window, "Вы некорректно ввели вещественное число!");
+                }
+            }
+        });
+
+        newGamePanel.stateDelayField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int w = Integer.parseInt(newGamePanel.stateDelayField.getText());
+                    if (w > 10000 || w < 1) {
+                        JOptionPane.showMessageDialog(window,
+                                "Введите число в диапазоне от 1 до 10000, а не " + w);
+                    }
+                    else
+                        controller.setStateDelay(w);
+                } catch (NumberFormatException r) {
+                    JOptionPane.showMessageDialog(window, "Вы некорректно ввели цифры!");
+                }
+            }
+        });
+
+        newGamePanel.deadFoodProbField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    float w = Float.parseFloat(newGamePanel.deadFoodProbField.getText());
+                    if (w > 1 || w < 0) {
+                        JOptionPane.showMessageDialog(window,
+                                "Введите число в диапазоне от 0 до 1, а не " + w);
+                    }
+                    else
+                        controller.setDeadFoodProb(w);
+                } catch (NumberFormatException r) {
+                    JOptionPane.showMessageDialog(window, "Вы некорректно ввели вещественное число!");
+                }
+            }
+        });
+
+        newGamePanel.pingDelayField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int w = Integer.parseInt(newGamePanel.pingDelayField.getText());
+                    if (w > 10000 || w < 1) {
+                        JOptionPane.showMessageDialog(window,
+                                "Введите число в диапазоне от 1 до 10000, а не " + w);
+                    }
+                    else
+                        controller.setPingDelay(w);
+                } catch (NumberFormatException r) {
+                    JOptionPane.showMessageDialog(window, "Вы некорректно ввели цифры!");
+                }
+            }
+        });
+
+        newGamePanel.nodeTimeoutField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int w = Integer.parseInt(newGamePanel.nodeTimeoutField.getText());
+                    if (w > 10000 || w < 1) {
+                        JOptionPane.showMessageDialog(window,
+                                "Введите число в диапазоне от 1 до 10000, а не " + w);
+                    }
+                    else
+                        controller.setNodeTimeout(w);
                 } catch (NumberFormatException r) {
                     JOptionPane.showMessageDialog(window, "Вы некорректно ввели цифры!");
                 }
@@ -215,20 +293,12 @@ public class InteraceController extends Thread {
 
         newGamePanel.continueButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-              /*  if(heightSnakeField < 10 || heightSnakeField > 100 ||
-                widthSnakeField < 10 || widthSnakeField > 100)                                     // раскоментить в случае тестов!
-                    JOptionPane.showMessageDialog(window, "Вы ввели неправильный размер поля!");
-                else {*/
                     window.remove(newGamePanel);
                     window.add(gamePanel);
-
-                    widthSnakeField = 20;
-                    heightSnakeField = 20;
-                    // public GameController(int width, int height, int foodStatic, float foodPerPlayer,
-                //                          int delay, float deadFoodProb, int pingDelay, int nodeTimeout)
-                    gameController = new GameController(widthSnakeField,heightSnakeField,3,(float)3.2,300,(float)1.1,1000,1000);
-                    gamePanel.addGameField(widthSnakeField, heightSnakeField);
-                    gamePanel.gameField.initGame(widthSnakeField, heightSnakeField);
+                    controller.initilizationGame();
+                    System.out.println(controller.getHeight());
+                    System.out.println(controller.getWidth());
+                    gamePanel.addGameField(controller.getWidth(),controller.getHeight());
                     gamePanel.setFocusable(true);
                     gamePanel.requestFocus();
                     window.revalidate();
@@ -236,19 +306,6 @@ public class InteraceController extends Thread {
                 }
             //}
         });
-    }
-
-    private void setHeightSnakeField(int value){
-        if(value > 100 || value < 10)
-            heightSnakeField = 0;
-        else
-            heightSnakeField = value;
-    }
-    private void setWidthSnakeField(int value){
-        if(value > 100 || value < 10)
-            widthSnakeField = 0;
-        else
-            widthSnakeField = value;
     }
 
     public synchronized void addNewConnectButton(SnakesProto.GameMessage.AnnouncementMsg message){
@@ -285,9 +342,7 @@ public class InteraceController extends Thread {
         window.repaint();
     }
 
-    public void sendState(SnakesProto.GameState state){
-        /*/
-        апгрейт стейта в gameField
-         */
+    public void repaintField(int[][] a){
+        gamePanel.gameField.repaintField(a,controller.getWidth(),controller.getHeight(),1);
     }
 }

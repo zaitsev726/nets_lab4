@@ -8,7 +8,6 @@ public class GamePanel extends JPanel {
     public GameFieldPanel gameField;
     public JButton backButton;
 
-    private JPanel snakePanel;
     private JPanel chatPanel;
     private JPanel scorePanel;
     private JPanel currentGamePanel;
@@ -19,12 +18,10 @@ public class GamePanel extends JPanel {
         gameField = new GameFieldPanel();
         backButton = new JButton("BACK");
 
-        snakePanel = new JPanel();
         chatPanel = new JPanel();
         scorePanel = new JPanel();
         currentGamePanel = new JPanel();
 
-        snakePanel.setBounds(5, 5, 1000, 1000);
 
         JScrollPane scorePane = new JScrollPane(scorePanel);
         JScrollPane chatPane = new JScrollPane(chatPanel);
@@ -39,7 +36,6 @@ public class GamePanel extends JPanel {
         scorePanel.setBackground(Color.green);
         gameField.setBackground(Color.black);
         chatPanel.setBackground(Color.CYAN);
-        snakePanel.setBackground(Color.DARK_GRAY);
 
         scorePanel.setLayout(new VerticalLayout(465, 25));
         scorePanel.add(new JLabel("123123"));
@@ -69,8 +65,6 @@ public class GamePanel extends JPanel {
         this.requestFocus();
         addKeyListener(new FieldKeyListener(gameField));
 
-       // this.add(gameField);
-        this.add(snakePanel);
         this.add(scorePane);
         this.add(currentPane);
         this.add(backButton);
@@ -79,10 +73,12 @@ public class GamePanel extends JPanel {
     }
 
     public void addGameField(int width, int height) {
+        System.out.println("YES");
         int size = gameField.getDOT_SIZE();
         int x = (1000 - width*size)/2;
         int y = (1000 - height*size)/2;
-        gameField.setBounds(x,y,width*size,height*16);
+        gameField.setBounds(x+5,y+5,width*size,height*size);
+        gameField.setBackground(Color.BLACK);
         this.add(gameField);
         this.repaint();
 
