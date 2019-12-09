@@ -89,7 +89,7 @@ public class Players {
                 players.add(player);
                 createNewSnake(a);
                 ID++;
-                queuePlayers.iterator();
+                iterator.remove();
             }
         }
     }

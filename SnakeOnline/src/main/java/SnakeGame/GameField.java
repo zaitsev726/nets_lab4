@@ -139,7 +139,7 @@ public class GameField {
             }
             List<SnakesProto.GameState.Snake> snakes = state.getSnakesList();
 
-            for (int i = 0; i < snakes.size(); i++) {
+            for (int i = 0; i < snakes.size(); i++) { 
                 SnakesProto.GameState.Snake snake = snakes.get(i);
                 paintSnake(snake);
             }
