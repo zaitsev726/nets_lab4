@@ -34,8 +34,6 @@ public class GameFieldPanel extends JPanel{
         this.height = height;
         this.ID = ID;
         repaint();
-
-
     }
 
     @Override

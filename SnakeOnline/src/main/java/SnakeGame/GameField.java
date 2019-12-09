@@ -84,7 +84,6 @@ public class GameField {
             }
         }
 
-
     }
 
     //рандомим координаты для первого игрока
@@ -129,14 +128,14 @@ public class GameField {
     public static int[][] updateField(SnakesProto.GameState state, boolean newGame) {
 
         synchronized (GameField.class) {
-            if (newGame || gameField == null) {
+
                 gameField = new int[state.getConfig().getWidth()][state.getConfig().getWidth()];
                 for (int i = 0; i < state.getConfig().getWidth(); i++) {
                     for (int j = 0; j < state.getConfig().getHeight(); j++) {
                         gameField[i][j] = 0;
                     }
                 }
-            }
+
             List<SnakesProto.GameState.Snake> snakes = state.getSnakesList();
 
             for (int i = 0; i < snakes.size(); i++) { 
