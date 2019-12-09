@@ -34,26 +34,34 @@ public class SteerMsgQueue {
         List<SnakesProto.GamePlayer> players = Players.getInstance().getPlayers();
         List<SnakesProto.GameState.Snake> snakes = Players.getInstance().getSnakes();
         for (int i = 0; i < players.size(); i++) {
+            System.out.println("дошел");
             SnakesProto.GamePlayer player = players.get(i);
             SnakesProto.GameState.Snake snake = null;
+
             for(int j = 0; j < snakes.size(); j ++){
                 if(snakes.get(j).getPlayerId() == player.getId())
                     snake = snakes.get(j);
             }
+            System.out.println(snake == null);
             if(snake != null) {
+
                 if (player.getPort() == port && player.getIpAddress().equals(ip_address)
                         && isOppositeDirection(snake, msg.getDirection())) {
                     ID = player.getId();
+                    System.out.println("пршел");
                 }
             }else
                 return;
         }
         if (ID != 0) {
+
             map.put(ID, msg.getDirection());
         }
     }
 
-    public Map<Integer, SnakesProto.Direction> getMap(){return map;}
+    public Map<Integer, SnakesProto.Direction> getMap(){
+        return map;
+    }
     private boolean isOppositeDirection(SnakesProto.GameState.Snake snake, SnakesProto.Direction direction){
         if((snake.getHeadDirection() == SnakesProto.Direction.RIGHT || snake.getHeadDirection() == SnakesProto.Direction.LEFT)
                 && (direction == SnakesProto.Direction.LEFT || direction == SnakesProto.Direction.RIGHT)){

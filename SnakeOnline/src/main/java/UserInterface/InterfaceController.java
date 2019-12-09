@@ -344,5 +344,7 @@ public class InterfaceController {
 
     public void repaintField(int[][] a){
         gamePanel.gameField.repaintField(a,controller.getWidth(),controller.getHeight(),1);
+        gamePanel.setFocusable(true);
+        gamePanel.requestFocus();
     }
 }

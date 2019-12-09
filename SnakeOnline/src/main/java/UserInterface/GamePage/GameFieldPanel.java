@@ -33,7 +33,10 @@ public class GameFieldPanel extends JPanel{
         this.width = width;
         this.height = height;
         this.ID = ID;
+
         repaint();
+        setFocusable(true);
+        requestFocus();
     }
 
     @Override

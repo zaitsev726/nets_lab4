@@ -55,7 +55,7 @@ public class GameField {
                 if (x != 0) {
                     if (x > 0) {
                         currentX++;
-                        if (currentX > width)
+                        if (currentX >= width)
                             currentX = 0;
                         x--;
                     }
@@ -69,7 +69,7 @@ public class GameField {
                 if (y != 0) {
                     if (y > 0) {
                         currentY++;
-                        if (currentY > height)
+                        if (currentY >= height)
                             currentY = 0;
                         y--;
                     }
@@ -153,7 +153,6 @@ public class GameField {
 
             return gameField;
         }
-
     }
 
     //отрисовываем новую змею

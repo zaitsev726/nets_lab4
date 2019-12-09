@@ -45,13 +45,21 @@ public class GameLogic {
         gameField = new int[width][height];
         stateOrder = 1;
         crashHeads = new ArrayList<>();
-        for (int i = 0; i < width; i++)///////////////////////////////////////////////////
-            for (int j = 0; j < height; j++)
-                gameField[i][j] = 0;
     }
 
     //новый шаг
-    public void makeNextStep() {
+    public void makeNextStep(){
+        crashHeads.clear();
+        appleHeads.clear();
+        deadSnakes.clear();
+        for(int i = 0; i < width; i++){
+            for(int j = 0; j < height; j++){
+                gameField[i][j] = 0;
+            }
+        }
+        for(int k =0; k <apples.size(); k++)
+            gameField[apples.get(k).getX()][apples.get(k).getY()] = 1;
+
         Players.getInstance().updatePlayers();
         ArrayList<GamePlayer> players = Players.getInstance().getPlayers();
         List<GameState.Snake> snakes = Players.getInstance().getSnakes();
@@ -162,22 +170,23 @@ public class GameLogic {
             updatedSnakes.add(snake);
             //добавлять снейки в новый лист !!
         }
-        for (int i = 0; i < width; i++) {
+
+        /* for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 System.out.print(gameField[i][j] + " ");
             }
             System.out.println("");
-        }
+        }*/
+
         checkDeadHeadToHead();
         checkDeadHeadToTail();
         updatedSnakes = moveTail(updatedSnakes, newDirections);
         checkLastDead(snakes);
         removeDeadSnakes(updatedSnakes, players);
         addApples(players);
-        // setCoords(updatedSnakes);
+
         Players.getInstance().setSnakes(updatedSnakes);
     }
-
 
     //проверяем голову с головой
     private void checkDeadHeadToHead() {
@@ -225,7 +234,7 @@ public class GameLogic {
             if (snake == null)
                 continue;
             int tail = snake.getPlayerId() + 1;
-            int head = 0 - tail;
+            int head = -tail;
             boolean appleHead = false;
             if (!deadSnakes.contains(head)) {
 
@@ -234,7 +243,7 @@ public class GameLogic {
                         //если скушали яблоко
                         appleHead = true;
                         SnakesProto.Direction direction = snake.getHeadDirection();
-                        if (!map.containsKey(snake.getPlayerId())) {
+                       /* if (!map.containsKey(snake.getPlayerId())) {
                             //хвост остается на месте после съедения яблока
                             switch (direction) {
                                 case UP:
@@ -254,7 +263,7 @@ public class GameLogic {
                                             .setX(snake.getPoints(1).getX() + 1)
                                             .setY(0).build()).build();
                             }
-                        }
+                        }*/
                     }
                 }
                 if (!appleHead) {
@@ -288,7 +297,6 @@ public class GameLogic {
         }
         return updatedSnakes;
     }
-
 
     //еще раз проверяем мертвые головы
     private void checkLastDead(List<GameState.Snake> snakes) {
@@ -374,7 +382,6 @@ public class GameLogic {
         }
     }
 
-
     //создаем новый стейт
     public GameState createNewState(int delay, int pingDelay, int nodeTimeout) {
         SnakesProto.GameConfig config = SnakesProto.GameConfig.newBuilder()
@@ -404,6 +411,7 @@ public class GameLogic {
         stateBuilder.setStateOrder(stateOrder)
                 .setConfig(config)
                 .setPlayers(playersBuilder.build());
+
         stateOrder++;
         for (int i = 0; i < apples.size(); i++) {
             stateBuilder.addFoods(GameState.Coord.newBuilder()

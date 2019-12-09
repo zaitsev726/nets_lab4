@@ -80,6 +80,9 @@ public class GamePanel extends JPanel {
         gameField.setBounds(x+5,y+5,width*size,height*size);
         gameField.setBackground(Color.BLACK);
         this.add(gameField);
+
+        setFocusable(true);
+        requestFocus();
         this.repaint();
 
     }

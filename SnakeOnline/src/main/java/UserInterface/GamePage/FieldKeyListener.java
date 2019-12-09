@@ -1,11 +1,46 @@
 package UserInterface.GamePage;
 
-import java.awt.event.KeyAdapter;
+import NetworkPart.NetSocket.SteerMsgQueue;
+import NetworkPart.NetworkController;
+import me.ippolitov.fit.snakes.SnakesProto;
 
-class FieldKeyListener extends KeyAdapter {
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+public class FieldKeyListener extends KeyAdapter {
     GameFieldPanel panel;
-    FieldKeyListener(GameFieldPanel p){
+    public FieldKeyListener(GameFieldPanel p){
         panel = p;
     }
 
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println("нажал");
+        try {
+            SnakesProto.GameMessage.SteerMsg.Builder steerMsg = SnakesProto.GameMessage.SteerMsg.newBuilder();
+            super.keyPressed(e);
+            int key = e.getKeyCode();
+            if (key == KeyEvent.VK_LEFT) {
+                steerMsg.setDirection(SnakesProto.Direction.LEFT);
+                SteerMsgQueue.getInstance().addNewDirection(steerMsg.build(), InetAddress.getByName(""), NetworkController.getInstance().getPort());
+            }
+            if (key == KeyEvent.VK_RIGHT) {
+                steerMsg.setDirection(SnakesProto.Direction.RIGHT);
+                SteerMsgQueue.getInstance().addNewDirection(steerMsg.build(), InetAddress.getByName(""), NetworkController.getInstance().getPort());
+            }
+            if (key == KeyEvent.VK_DOWN) {
+                steerMsg.setDirection(SnakesProto.Direction.DOWN);
+                SteerMsgQueue.getInstance().addNewDirection(steerMsg.build(), InetAddress.getByName(""), NetworkController.getInstance().getPort());
+            }
+            if (key == KeyEvent.VK_UP) {
+                steerMsg.setDirection(SnakesProto.Direction.UP);
+                SteerMsgQueue.getInstance().addNewDirection(steerMsg.build(), InetAddress.getByName(""), NetworkController.getInstance().getPort());
+            }
+
+        }catch (UnknownHostException ex) {
+                ex.printStackTrace();
+            }
+    }
 }

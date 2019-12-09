@@ -4,6 +4,7 @@ import NetworkPart.NetworkController;
 import me.ippolitov.fit.snakes.SnakesProto;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -35,14 +36,18 @@ public class Players {
     }
 
     public void addNewPlayerInQueue() {
-        queuePlayers.add(SnakesProto.GamePlayer.newBuilder()
-                .setName("как то получить имя")
-                .setId(0)
-                .setIpAddress("")
-                .setPort(NetworkController.getInstance().getPort())
-                .setRole(SnakesProto.NodeRole.MASTER)
-                .setScore(2)
-                .build());
+        try {
+            queuePlayers.add(SnakesProto.GamePlayer.newBuilder()
+                    .setName("как то получить имя")
+                    .setId(0)
+                    .setIpAddress(InetAddress.getByName("").toString())
+                    .setPort(NetworkController.getInstance().getPort())
+                    .setRole(SnakesProto.NodeRole.MASTER)
+                    .setScore(2)
+                    .build());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -85,7 +90,7 @@ public class Players {
                 queuePlayers.clear();
                 return;
             } else {
-                player.toBuilder().setId(ID);
+                player = player.toBuilder().setId(ID).build();
                 players.add(player);
                 createNewSnake(a);
                 ID++;
