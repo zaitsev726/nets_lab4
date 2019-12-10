@@ -13,8 +13,8 @@ public class GameController {
     public GameController(int width, int height, int foodStatic, float foodPerPlayer,
                           int delay, float deadFoodProb, int pingDelay, int nodeTimeout,
                           GlobalController controller) {
-        logic = new GameLogic(width,height,foodStatic,foodPerPlayer,deadFoodProb);
         field = new GameField(width,height);
+        logic = new GameLogic(width,height,foodStatic,foodPerPlayer,deadFoodProb);
         this.delay = delay;
         this.pingDelay = pingDelay;
         this.nodeTimeout = nodeTimeout;

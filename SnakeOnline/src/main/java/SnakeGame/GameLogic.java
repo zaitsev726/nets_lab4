@@ -52,11 +52,9 @@ public class GameLogic {
         crashHeads.clear();
         appleHeads.clear();
         deadSnakes.clear();
-        for(int i = 0; i < width; i++){
-            for(int j = 0; j < height; j++){
-                gameField[i][j] = 0;
-            }
-        }
+
+        gameField = GameField.getGameField();
+
         for(int k =0; k <apples.size(); k++)
             gameField[apples.get(k).getX()][apples.get(k).getY()] = 1;
 
@@ -89,13 +87,19 @@ public class GameLogic {
                 switch (direction) {
                     case UP:
                         coords.add(1, GameState.Coord.newBuilder().setX(0).setY(1).build());
+                        break;
                     case DOWN:
                         coords.add(1, GameState.Coord.newBuilder().setX(0).setY(-1).build());
+                        break;
                     case LEFT:
                         coords.add(1, GameState.Coord.newBuilder().setX(1).setY(0).build());
+                        break;
                     case RIGHT:
                         coords.add(1, GameState.Coord.newBuilder().setX(-1).setY(0).build());
+                        break;
                 }
+                builder.setHeadDirection(newDirections.get(snake.getPlayerId()));
+                newDirections.remove(snake.getPlayerId());
                 builder.clearPoints();
                 for (int p = 0; p < coords.size(); p++) {
                     builder.addPoints(coords.get(p));
@@ -146,6 +150,7 @@ public class GameLogic {
 
             if (gameField[i][j] > 1 || gameField[i][j] < -1) {
                 crashHeads.add(new Event(i, j, head));
+                System.out.println("***************************************************столкнулися");
             }
             if (gameField[i][j] == 1) {
                 appleHeads.add(new Event(i, j, head));
@@ -186,6 +191,7 @@ public class GameLogic {
         addApples(players);
 
         Players.getInstance().setSnakes(updatedSnakes);
+        GameField.setGameField(gameField);
     }
 
     //проверяем голову с головой
@@ -287,8 +293,9 @@ public class GameLogic {
                         coords.add(GameState.Coord.newBuilder().setX(x).setY(y).build());
 
                     GameState.Snake.Builder builder = snake.toBuilder();
+                    builder.clearPoints();
                     for (int i = 0; i < coords.size(); i++) {
-                        builder.setPoints(i, coords.get(i));
+                        builder.addPoints(coords.get(i));
                     }
                     snake = builder.build();
                 }
@@ -339,13 +346,15 @@ public class GameLogic {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 for (int k = 0; k < deadSnakes.size(); k++) {
-                    if (gameField[i][j] == deadSnakes.get(k)) {
-                        if (Math.random() > deadFoodProb) {
+                    if (gameField[i][j] == deadSnakes.get(k) ||
+                        gameField[i][j] == (-deadSnakes.get(k))) {
+                        if (Math.random() < deadFoodProb) {
                             gameField[i][j] = 1;
                             apples.add(new Event(i, j, 0));
                         } else
                             gameField[i][j] = 0;
                     }
+
                 }
             }
         }
@@ -355,7 +364,7 @@ public class GameLogic {
             GameState.Snake snake = iterator.next();
             int ID = snake.getPlayerId() + 1;
             for (int i = 0; i < deadSnakes.size(); i++) {
-                if (ID == deadSnakes.get(i))
+                if (ID == Math.abs(deadSnakes.get(i)))
                     iterator.remove();
                 Iterator<GamePlayer> iter = players.iterator();
                 while (iter.hasNext()) {

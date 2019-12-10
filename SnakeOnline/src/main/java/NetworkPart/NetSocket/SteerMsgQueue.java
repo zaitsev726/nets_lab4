@@ -54,7 +54,6 @@ public class SteerMsgQueue {
                 return;
         }
         if (ID != 0) {
-
             map.put(ID, msg.getDirection());
         }
     }

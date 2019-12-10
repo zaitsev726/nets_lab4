@@ -18,6 +18,13 @@ public class GameField {
     private static int width = 0;
     private static int height = 0;
 
+    public static int[][] getGameField() {
+        return gameField;
+    }
+
+    public static void setGameField(int[][] gameField) {
+        GameField.gameField = gameField;
+    }
 
     public GameField(int width, int height) {
         GameField.width = width;
@@ -37,7 +44,7 @@ public class GameField {
         int ID = snake.getPlayerId();
 
         int tail = ID + 1;
-        int head = 0 - tail;
+        int head = -tail;
 
 
         SnakesProto.GameState.Coord coord = (SnakesProto.GameState.Coord) coords.get(0);

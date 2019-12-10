@@ -93,6 +93,7 @@ public class Players {
                 player = player.toBuilder().setId(ID).build();
                 players.add(player);
                 createNewSnake(a);
+
                 ID++;
                 iterator.remove();
             }
@@ -112,6 +113,7 @@ public class Players {
                 .addPoints(coord(b[0], b[1]))
                 .build();
 
+        GameField.paintNewSnake(snake);
         snakes.add(snake);
     }
 
