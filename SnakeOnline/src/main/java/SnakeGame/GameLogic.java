@@ -48,14 +48,14 @@ public class GameLogic {
     }
 
     //новый шаг
-    public void makeNextStep(){
+    public void makeNextStep() {
         crashHeads.clear();
         appleHeads.clear();
         deadSnakes.clear();
 
         gameField = GameField.getGameField();
 
-        for(int k =0; k <apples.size(); k++)
+        for (int k = 0; k < apples.size(); k++)
             gameField[apples.get(k).getX()][apples.get(k).getY()] = 1;
 
         Players.getInstance().updatePlayers();
@@ -186,7 +186,7 @@ public class GameLogic {
         checkDeadHeadToHead();
         checkDeadHeadToTail();
         updatedSnakes = moveTail(updatedSnakes, newDirections);
-        checkLastDead(snakes);
+        updatedSnakes = checkLastDead(updatedSnakes);
         removeDeadSnakes(updatedSnakes, players);
         addApples(players);
 
@@ -277,20 +277,62 @@ public class GameLogic {
                     List<GameState.Coord> coords = snake.getPointsList();
                     GameState.Coord lastPointOfTail = coords.get(coords.size() - 1);
                     //!(x == 0 && y == 0)
-                    int x = lastPointOfTail.getX();
-                    int y = lastPointOfTail.getY();
-                    if (x > 0)
-                        x--;
-                    if (x < 0)
-                        x++;
-                    if (y > 0)
-                        y--;
-                    if (y < 0)
-                        y++;
+
+                    int currentX = lastPointOfTail.getX();
+                    int currentY = lastPointOfTail.getY();
+                    if (currentX > 0)
+                        currentX--;
+                    if (currentX < 0)
+                        currentX++;
+                    if (currentY > 0)
+                        currentY--;
+                    if (currentY < 0)
+                        currentY++;
                     coords = new ArrayList<>(coords);
                     coords.remove(coords.size() - 1);
-                    if (!(x == 0 && y == 0))
-                        coords.add(GameState.Coord.newBuilder().setX(x).setY(y).build());
+                    if (!(currentX == 0 && currentY == 0))
+                        coords.add(GameState.Coord.newBuilder().setX(currentX).setY(currentY).build());
+
+
+                    currentX = coords.get(0).getX();
+                    currentY = coords.get(0).getY();
+                    for (int i = 1; i < coords.size(); i++) {
+                        GameState.Coord coord = (SnakesProto.GameState.Coord) coords.get(i);
+                        int x = coord.getX();
+                        int y = coord.getY();
+                        //!(x == 0 && y == 0)
+                        while (x != 0 || y != 0) {
+                            if (x != 0) {
+                                if (x > 0) {
+                                    currentX++;
+                                    if (currentX >= width)
+                                        currentX = 0;
+                                    x--;
+                                }
+                                if (x < 0) {
+                                    currentX--;
+                                    if (currentX < 0)
+                                        currentX = width - 1;
+                                    x++;
+                                }
+                            }
+                            if (y != 0) {
+                                if (y > 0) {
+                                    currentY++;
+                                    if (currentY >= height)
+                                        currentY = 0;
+                                    y--;
+                                }
+                                if (y < 0) {
+                                    currentY--;
+                                    if (currentY < 0)
+                                        currentY = height - 1;
+                                    y++;
+                                }
+                            }
+                        }
+                    }
+                    gameField[currentX][currentY] = 0;
 
                     GameState.Snake.Builder builder = snake.toBuilder();
                     builder.clearPoints();
@@ -306,7 +348,9 @@ public class GameLogic {
     }
 
     //еще раз проверяем мертвые головы
-    private void checkLastDead(List<GameState.Snake> snakes) {
+    private List<GameState.Snake> checkLastDead(List<GameState.Snake> snakes) {
+        snakes = new ArrayList<>(snakes);
+        ArrayList<GameState.Snake> updateSnake = new ArrayList<>();
         Iterator<Event> iterator = crashHeads.iterator();
         while (iterator.hasNext()) {
             Event e = iterator.next();
@@ -315,21 +359,32 @@ public class GameLogic {
             int head = e.getHost_head();
             if (gameField[i][j] > 1 || gameField[i][j] < -1) {
                 deadSnakes.add(head);
-                iterator.remove();
+
             } else {
             /*
             добавить постановку головы на поле
              */
-                for (GameState.Snake snake : snakes) {
-                    if (snake.getPlayerId() == ((-head) - 1)) {
-                        snake.toBuilder().setPoints(0, GameState.Coord.newBuilder()
+                Iterator<GameState.Snake> iter = snakes.iterator();
+                while (iter.hasNext()) {
+                    GameState.Snake snake = iter.next();
+                    if (snake.getPlayerId() == (Math.abs(head) - 1)) {
+                        iter.remove();
+                        snake = snake.toBuilder().setPoints(0, GameState.Coord.newBuilder()
                                 .setX(i)
                                 .setY(j)
                                 .build()).build();
+                        updateSnake.add(snake);
                     }
+
                 }
             }
+            iterator.remove();
         }
+
+        for (GameState.Snake snake : updateSnake) {
+            snakes.add(snake);
+        }
+        return snakes;
     }
 
     //удаляем мертвых змей
@@ -347,7 +402,7 @@ public class GameLogic {
             for (int j = 0; j < height; j++) {
                 for (int k = 0; k < deadSnakes.size(); k++) {
                     if (gameField[i][j] == deadSnakes.get(k) ||
-                        gameField[i][j] == (-deadSnakes.get(k))) {
+                            gameField[i][j] == (-deadSnakes.get(k))) {
                         if (Math.random() < deadFoodProb) {
                             gameField[i][j] = 1;
                             apples.add(new Event(i, j, 0));

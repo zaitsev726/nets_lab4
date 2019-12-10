@@ -3,13 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="451534b3-aff1-4650-a504-49655ddbeba0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/SteerMsgQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/SteerMsgQueue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/GameField.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/GameField.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Global/ChangestateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Global/ChangestateController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/GameLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/GameLogic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/Players.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/Players.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/SteerMsgQueue.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/SteerMsgQueue.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/GameField.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/GameField.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/GameLogic.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/GameLogic.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -215,49 +210,49 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="837" y="222" key="#xdebugger.evaluate/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575824703861" />
-    <state width="1877" height="348" key="GridCell.Tab.0.bottom" timestamp="1575973082709">
+    <state width="1877" height="294" key="GridCell.Tab.0.bottom" timestamp="1575996117698">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="140" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575872312113" />
+    <state width="1877" height="294" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575996117698" />
     <state width="1877" height="348" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082709" />
     <state width="1784" height="220" key="GridCell.Tab.0.bottom/93.0.1827.1080@93.0.1827.1080" timestamp="1575903602112" />
-    <state width="1877" height="348" key="GridCell.Tab.0.center" timestamp="1575973082707">
+    <state width="1877" height="294" key="GridCell.Tab.0.center" timestamp="1575996117698">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="140" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575872312113" />
+    <state width="1877" height="294" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575996117698" />
     <state width="1877" height="348" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082707" />
     <state width="1784" height="220" key="GridCell.Tab.0.center/93.0.1827.1080@93.0.1827.1080" timestamp="1575903602112" />
-    <state width="1877" height="348" key="GridCell.Tab.0.left" timestamp="1575973082706">
+    <state width="1877" height="294" key="GridCell.Tab.0.left" timestamp="1575996117698">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="140" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575872312113" />
+    <state width="1877" height="294" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575996117698" />
     <state width="1877" height="348" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082706" />
     <state width="1784" height="220" key="GridCell.Tab.0.left/93.0.1827.1080@93.0.1827.1080" timestamp="1575903602111" />
-    <state width="1877" height="348" key="GridCell.Tab.0.right" timestamp="1575973082707">
+    <state width="1877" height="294" key="GridCell.Tab.0.right" timestamp="1575996117698">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="140" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575872312113" />
+    <state width="1877" height="294" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575996117698" />
     <state width="1877" height="348" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082707" />
     <state width="1784" height="220" key="GridCell.Tab.0.right/93.0.1827.1080@93.0.1827.1080" timestamp="1575903602112" />
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1575973082716">
+    <state width="1877" height="294" key="GridCell.Tab.1.bottom" timestamp="1575996147998">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575869697739" />
+    <state width="1877" height="294" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575996147998" />
     <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082716" />
-    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1575973082714">
+    <state width="1877" height="294" key="GridCell.Tab.1.center" timestamp="1575996147998">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575869697739" />
+    <state width="1877" height="294" key="GridCell.Tab.1.center/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575996147998" />
     <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082714" />
-    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1575973082711">
+    <state width="1877" height="294" key="GridCell.Tab.1.left" timestamp="1575996147998">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575869697739" />
+    <state width="1877" height="294" key="GridCell.Tab.1.left/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575996147998" />
     <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082711" />
-    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1575973082714">
+    <state width="1877" height="294" key="GridCell.Tab.1.right" timestamp="1575996147998">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575869697739" />
+    <state width="1877" height="294" key="GridCell.Tab.1.right/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575996147998" />
     <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082714" />
     <state x="536" y="194" key="Maven.ArtifactSearchDialog" timestamp="1575697743742">
       <screen x="93" y="0" width="1827" height="1080" />
@@ -299,33 +294,21 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/SnakeGame/GameLogic.java</url>
-          <line>220</line>
-          <option name="timeStamp" value="46" />
+          <line>369</line>
+          <option name="timeStamp" value="67" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/SnakeGame/GameLogic.java</url>
-          <line>312</line>
-          <option name="timeStamp" value="48" />
+          <line>373</line>
+          <option name="timeStamp" value="68" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/SnakeGame/GameLogic.java</url>
-          <line>361</line>
-          <option name="timeStamp" value="53" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/SnakeGame/GameLogic.java</url>
-          <line>348</line>
-          <option name="timeStamp" value="55" />
+          <line>151</line>
+          <option name="timeStamp" value="99" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="Application">
-        <watch expression="queuePlayers" language="JAVA" />
-        <watch expression="gameField[i][j]" language="JAVA" />
-        <watch expression="SnakesProto.Direction.RIGHT" language="JAVA" custom="me.ippolitov.fit.snakes.SnakesProto" />
-      </configuration>
-    </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/SnakeOnline$Main.ic" NAME="Main Coverage Results" MODIFIED="1575728242407" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
