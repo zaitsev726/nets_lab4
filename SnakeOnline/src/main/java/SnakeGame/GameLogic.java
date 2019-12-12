@@ -151,6 +151,9 @@ public class GameLogic {
             if (gameField[i][j] > 1 || gameField[i][j] < -1) {
                 crashHeads.add(new Event(i, j, head));
                 System.out.println("***************************************************столкнулися");
+                GameState.Snake.Builder builder = snake.toBuilder();//
+                builder.setPoints(0, GameState.Coord.newBuilder().setX(i).setY(j).build());
+                snake = builder.build();//
             }
             if (gameField[i][j] == 1) {
                 appleHeads.add(new Event(i, j, head));
@@ -277,25 +280,8 @@ public class GameLogic {
                     List<GameState.Coord> coords = snake.getPointsList();
                     GameState.Coord lastPointOfTail = coords.get(coords.size() - 1);
                     //!(x == 0 && y == 0)
-
-                    int currentX = lastPointOfTail.getX();
-                    int currentY = lastPointOfTail.getY();
-                    if (currentX > 0)
-                        currentX--;
-                    if (currentX < 0)
-                        currentX++;
-                    if (currentY > 0)
-                        currentY--;
-                    if (currentY < 0)
-                        currentY++;
-                    coords = new ArrayList<>(coords);
-                    coords.remove(coords.size() - 1);
-                    if (!(currentX == 0 && currentY == 0))
-                        coords.add(GameState.Coord.newBuilder().setX(currentX).setY(currentY).build());
-
-
-                    currentX = coords.get(0).getX();
-                    currentY = coords.get(0).getY();
+                    int currentX = coords.get(0).getX();
+                    int currentY = coords.get(0).getY();
                     for (int i = 1; i < coords.size(); i++) {
                         GameState.Coord coord = (SnakesProto.GameState.Coord) coords.get(i);
                         int x = coord.getX();
@@ -333,6 +319,24 @@ public class GameLogic {
                         }
                     }
                     gameField[currentX][currentY] = 0;
+
+                    currentX = lastPointOfTail.getX();
+                    currentY = lastPointOfTail.getY();
+                    if (currentX > 0)
+                        currentX--;
+                    if (currentX < 0)
+                        currentX++;
+                    if (currentY > 0)
+                        currentY--;
+                    if (currentY < 0)
+                        currentY++;
+                    coords = new ArrayList<>(coords);
+                    coords.remove(coords.size() - 1);
+                    if (!(currentX == 0 && currentY == 0))
+                        coords.add(GameState.Coord.newBuilder().setX(currentX).setY(currentY).build());
+
+
+
 
                     GameState.Snake.Builder builder = snake.toBuilder();
                     builder.clearPoints();
