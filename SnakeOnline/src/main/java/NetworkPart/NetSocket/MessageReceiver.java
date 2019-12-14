@@ -1,6 +1,8 @@
 package NetworkPart.NetSocket;
 
+import Global.GlobalController;
 import MessageProcessing.MessageHandler;
+import NetworkPart.NetSocket.SendPart.ResendQueue;
 import me.ippolitov.fit.snakes.SnakesProto;
 
 import java.io.IOException;
@@ -12,10 +14,15 @@ public class MessageReceiver extends Thread{
     private static final int BUF_SIZE = 4096;
     private DatagramSocket socket;
     private MessageHandler handler;
-    public MessageReceiver(DatagramSocket socket){
+    private GlobalController controller;
+    private ResendQueue resend;
+
+    public MessageReceiver(DatagramSocket socket, GlobalController controller, ResendQueue resend){
         this.socket = socket;
-        this.start();
-        handler = new MessageHandler();
+        this.controller = controller;
+        this.resend = resend;
+
+        handler = new MessageHandler(controller,resend);
     }
 
     @Override
@@ -35,4 +42,5 @@ public class MessageReceiver extends Thread{
         }
 
     }
+
 }

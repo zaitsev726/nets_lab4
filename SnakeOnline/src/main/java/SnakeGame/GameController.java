@@ -3,6 +3,8 @@ package SnakeGame;
 import Global.GlobalController;
 import me.ippolitov.fit.snakes.SnakesProto;
 
+import java.util.ArrayList;
+
 public class GameController {
     private GameLogic logic;
     private GameField field;
@@ -26,9 +28,20 @@ public class GameController {
         logic.makeNextStep();
         SnakesProto.GameState state = logic.createNewState(delay,pingDelay,nodeTimeout);
 
+        controller.sendState(state);
         /*
         отправка стейта всем
          */
         return state;
+    }
+
+    public void clearField(){
+
+        field = new GameField(0,0);
+        logic = new GameLogic(0,0,0,0,0);
+        Players.getInstance().setPlayers(new ArrayList<SnakesProto.GamePlayer>());
+        Players.getInstance().setSnakes(new ArrayList<SnakesProto.GameState.Snake>());
+        delay = 0;
+        nodeTimeout = 0;
     }
 }

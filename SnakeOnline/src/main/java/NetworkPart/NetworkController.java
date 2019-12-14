@@ -1,61 +1,66 @@
 package NetworkPart;
 
-import NetworkPart.NetSocket.NetworkSocket;
+import Global.GlobalController;
+import NetworkPart.NetSocket.MessageReceiver;
+import NetworkPart.NetSocket.SendPart.ImmediateQueue;
+import NetworkPart.NetSocket.SendPart.MessageSender;
+import NetworkPart.NetSocket.SendPart.ResendQueue;
+import me.ippolitov.fit.snakes.SnakesProto;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
 public class NetworkController {
-    private static volatile NetworkController instance;
     private int port;
     private InetAddress IP;
-    private NetworkSocket networkSocket;
 
-    private NetworkController(){
+    private DatagramSocket socket;
+    private GlobalController controller;
+    private MessageReceiver receiver;
+    private MessageSender sender;
+    private ImmediateQueue queue;
+    private ResendQueue resendQueue;
+
+    public NetworkController(GlobalController globalController){
+        this.controller = globalController;
+        this.queue = new ImmediateQueue();
+        this.resendQueue = new ResendQueue();
 
         try {
             IP = getLocalAddress();
-        } catch (UnknownHostException e) {
+        } catch (UnknownHostException | SocketException e) {
             e.printStackTrace();
+        }
+        try {
+            socket = new DatagramSocket(port, IP);
         } catch (SocketException e) {
             e.printStackTrace();
         }
 
-        System.out.println(IP);
+        receiver = new MessageReceiver(socket, controller,resendQueue);
+        sender = new MessageSender(socket, controller,queue, resendQueue);
 
-    }
-
-    public static NetworkController getInstance(){
-        NetworkController localInstance = instance;
-        if(localInstance == null){
-            synchronized (NetworkController.class){
-                localInstance = instance;
-                if(localInstance == null)
-                    instance = localInstance = new NetworkController();
-            }
-        }
-        return localInstance;
+        receiver.start();
+        sender.start();
     }
 
     public void setPort(int port){
-        if(port >= 2000 && port <= 6000) {
+        if(port >= 1024 && port <= 49151) {
             this.port = port;
-            networkSocket = new NetworkSocket();
         }
     }
+
     public int getPort(){
         return port;
     }
-    public void setIP(InetAddress IP){
-        this.IP = IP;
-    }
-    public InetAddress getIP(){return  IP;}
+    public InetAddress getIP(){return IP;}
 
+    public void sendNewMessage(SnakesProto.GameMessage message){
+        queue.addNewMessage(message);
+    }
+    public void deleteAnnouncementMsg(){resendQueue.deleteAnnouncementMsg();}
     private InetAddress getLocalAddress() throws UnknownHostException, SocketException {
         List<NetworkInterface> netInts = Collections.list(NetworkInterface.getNetworkInterfaces());
 

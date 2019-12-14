@@ -43,8 +43,6 @@ public class GameLogic {
         this.deadFoodProb = deadFoodProb;
 
         gameField = new int[width][height];
-        stateOrder = 1;
-        crashHeads = new ArrayList<>();
     }
 
     //новый шаг
@@ -62,6 +60,7 @@ public class GameLogic {
         ArrayList<GamePlayer> players = Players.getInstance().getPlayers();
         List<GameState.Snake> snakes = Players.getInstance().getSnakes();
         List<GameState.Snake> updatedSnakes = new ArrayList<>();
+        //очистка мапы поворотов
         Map<Integer, SnakesProto.Direction> newDirections = SteerMsgQueue.getInstance().getMap();
 
         GameState.Snake snake = null;
@@ -150,10 +149,9 @@ public class GameLogic {
 
             if (gameField[i][j] > 1 || gameField[i][j] < -1) {
                 crashHeads.add(new Event(i, j, head));
-                System.out.println("***************************************************столкнулися");
-                GameState.Snake.Builder builder = snake.toBuilder();//
+                GameState.Snake.Builder builder = snake.toBuilder();
                 builder.setPoints(0, GameState.Coord.newBuilder().setX(i).setY(j).build());
-                snake = builder.build();//
+                snake = builder.build();
             }
             if (gameField[i][j] == 1) {
                 appleHeads.add(new Event(i, j, head));
@@ -179,13 +177,6 @@ public class GameLogic {
             //добавлять снейки в новый лист !!
         }
 
-        /* for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                System.out.print(gameField[i][j] + " ");
-            }
-            System.out.println("");
-        }*/
-
         checkDeadHeadToHead();
         checkDeadHeadToTail();
         updatedSnakes = moveTail(updatedSnakes, newDirections);
@@ -194,6 +185,7 @@ public class GameLogic {
         addApples(players);
 
         Players.getInstance().setSnakes(updatedSnakes);
+        Players.getInstance().updateAllRoles(); //проверить что правильно и корректно вызывается
         GameField.setGameField(gameField);
     }
 

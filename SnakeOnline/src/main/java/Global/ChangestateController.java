@@ -18,15 +18,20 @@ public class ChangestateController extends Thread{
         this.delay = delay;
 
     }
+
     @Override
     public void run() {
-        interfaceController.repaintField(GameField.updateField(state, false));
+        if(state!= null) {
+            interfaceController.repaintField(GameField.updateField(state));
+        }
         try {
             while (true) {
                 //delay
-                Thread.sleep(300);
+                Thread.sleep(1000);
                 SnakesProto.GameState state = controller.getNextState();
-               interfaceController.repaintField(GameField.updateField(state, false));
+                if (state != null) {
+                    interfaceController.repaintField(GameField.updateField(state));
+                }
             }
         }catch (InterruptedException e) {
             e.printStackTrace();

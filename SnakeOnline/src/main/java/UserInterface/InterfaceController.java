@@ -1,21 +1,23 @@
 package UserInterface;
 
 import Global.GlobalController;
-import NetworkPart.NetworkController;
 import UserInterface.ConnectionPage.ConnectionPanel;
 import UserInterface.Frames.Window;
 import UserInterface.GamePage.GamePanel;
 import UserInterface.MenuPage.MenuPanel;
 import UserInterface.NetInfoEntryPage.NetInfoEntryPanel;
 import UserInterface.NewGamePage.NewGamePanel;
-import me.ippolitov.fit.snakes.SnakesProto;
+import com.google.protobuf.InvalidProtocolBufferException;
+import me.ippolitov.fit.snakes.SnakesProto.GameMessage;
+import me.ippolitov.fit.snakes.SnakesProto.GamePlayer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.net.DatagramPacket;
 import java.util.List;
+import java.util.*;
 
 public class InterfaceController {
     private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -33,12 +35,18 @@ public class InterfaceController {
 
     private GlobalController controller;
 
-    private ArrayList<SnakesProto.GameMessage.AnnouncementMsg> multicastMessages;
+    private HashMap<GameMessage.AnnouncementMsg, DatagramPacket> multicastMessages;
+    private HashMap<GameMessage.AnnouncementMsg, JButton> connectButtons;
+    private HashMap<GameMessage.AnnouncementMsg, Date> lastDate;
+    private HashMap<JButton, DatagramPacket> hosts;
+    public InterfaceController(GlobalController controller) {
+        multicastMessages = new HashMap<>();
+        connectButtons = new HashMap<>();
+        lastDate = new HashMap<>();
+        hosts = new HashMap<>();
 
-    public InterfaceController(GlobalController controller){
-        multicastMessages = new ArrayList<>();
-        window = new Window(sizeWidth,sizeHeight,locationX,locationY);
-        menuPanel = new MenuPanel(sizeWidth,sizeHeight);
+        window = new Window(sizeWidth, sizeHeight, locationX, locationY);
+        menuPanel = new MenuPanel(sizeWidth, sizeHeight);
         newGamePanel = new NewGamePanel();
         gamePanel = new GamePanel();
         connectionPanel = new ConnectionPanel();
@@ -50,7 +58,7 @@ public class InterfaceController {
         window.setVisible(true);
     }
 
-    private void initializationListeners(){
+    private void initializationListeners() {
         initializationMenuListeners();
         initializationNewGamePanelListeners();
         initializationGameListeners();
@@ -74,12 +82,11 @@ public class InterfaceController {
                 // Отображение введенного текста
                 try {
                     int w = Integer.parseInt(netInfoEntryPanel.portField.getText());
-                    if (w > 6000 || w < 2000) {
+                    if (w > 49151 || w < 1024) {
                         JOptionPane.showMessageDialog(window,
-                                "Введите число в диапазоне от 2000 до 6000, а не " + w);
-                    }
-                    else
-                        NetworkController.getInstance().setPort(w);
+                                "Введите число в диапазоне от 1024 до 49151, а не " + w);
+                    } else
+                        controller.setPort(w);
 
                 } catch (NumberFormatException r) {
                     JOptionPane.showMessageDialog(window, "Вы некорректно ввели цифры для port!");
@@ -100,8 +107,8 @@ public class InterfaceController {
         });
         connectionPanel.a.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-              //  window.remove(connectionPanel);
-              //  window.add(connectionPanel);
+                //  window.remove(connectionPanel);
+                //  window.add(connectionPanel);
                 window.revalidate();
                 window.repaint();
             }
@@ -160,8 +167,7 @@ public class InterfaceController {
                     if (w > 100 || w < 10) {
                         JOptionPane.showMessageDialog(window,
                                 "Введите число в диапазоне от 10 до 100, а не " + w);
-                    }
-                    else
+                    } else
                         controller.setWidth(w);
 
                 } catch (NumberFormatException r) {
@@ -177,8 +183,7 @@ public class InterfaceController {
                     if (w > 100 || w < 10) {
                         JOptionPane.showMessageDialog(window,
                                 "Введите число в диапазоне от 10 до 100, а не " + w);
-                    }
-                    else
+                    } else
                         controller.setHeight(w);
                 } catch (NumberFormatException r) {
                     JOptionPane.showMessageDialog(window, "Вы некорректно ввели цифры!");
@@ -193,8 +198,7 @@ public class InterfaceController {
                     if (w > 100 || w < 0) {
                         JOptionPane.showMessageDialog(window,
                                 "Введите число в диапазоне от 0 до 100, а не " + w);
-                    }
-                    else
+                    } else
                         controller.setFoodStatic(w);
                 } catch (NumberFormatException r) {
                     JOptionPane.showMessageDialog(window, "Вы некорректно ввели цифры!");
@@ -209,8 +213,7 @@ public class InterfaceController {
                     if (w > 100 || w < 0) {
                         JOptionPane.showMessageDialog(window,
                                 "Введите число в диапазоне от 0 до 100, а не " + w);
-                    }
-                    else
+                    } else
                         controller.setFoodPerPlayer(w);
                 } catch (NumberFormatException r) {
                     JOptionPane.showMessageDialog(window, "Вы некорректно ввели вещественное число!");
@@ -225,8 +228,7 @@ public class InterfaceController {
                     if (w > 10000 || w < 1) {
                         JOptionPane.showMessageDialog(window,
                                 "Введите число в диапазоне от 1 до 10000, а не " + w);
-                    }
-                    else
+                    } else
                         controller.setStateDelay(w);
                 } catch (NumberFormatException r) {
                     JOptionPane.showMessageDialog(window, "Вы некорректно ввели цифры!");
@@ -241,8 +243,7 @@ public class InterfaceController {
                     if (w > 1 || w < 0) {
                         JOptionPane.showMessageDialog(window,
                                 "Введите число в диапазоне от 0 до 1, а не " + w);
-                    }
-                    else
+                    } else
                         controller.setDeadFoodProb(w);
                 } catch (NumberFormatException r) {
                     JOptionPane.showMessageDialog(window, "Вы некорректно ввели вещественное число!");
@@ -257,8 +258,7 @@ public class InterfaceController {
                     if (w > 10000 || w < 1) {
                         JOptionPane.showMessageDialog(window,
                                 "Введите число в диапазоне от 1 до 10000, а не " + w);
-                    }
-                    else
+                    } else
                         controller.setPingDelay(w);
                 } catch (NumberFormatException r) {
                     JOptionPane.showMessageDialog(window, "Вы некорректно ввели цифры!");
@@ -273,8 +273,7 @@ public class InterfaceController {
                     if (w > 10000 || w < 1) {
                         JOptionPane.showMessageDialog(window,
                                 "Введите число в диапазоне от 1 до 10000, а не " + w);
-                    }
-                    else
+                    } else
                         controller.setNodeTimeout(w);
                 } catch (NumberFormatException r) {
                     JOptionPane.showMessageDialog(window, "Вы некорректно ввели цифры!");
@@ -293,38 +292,66 @@ public class InterfaceController {
 
         newGamePanel.continueButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                    window.remove(newGamePanel);
-                    window.add(gamePanel);
-                    controller.initilizationGame();
-                    System.out.println(controller.getHeight());
-                    System.out.println(controller.getWidth());
-                    gamePanel.addGameField(controller.getWidth(),controller.getHeight());
-                    gamePanel.setFocusable(true);
-                    gamePanel.requestFocus();
-                    window.revalidate();
-                    window.repaint();
-                }
+                window.remove(newGamePanel);
+                window.add(gamePanel);
+                controller.initializationGame();
+                System.out.println(controller.getHeight());
+                System.out.println(controller.getWidth());
+                gamePanel.addGameField(controller.getWidth(), controller.getHeight());
+                gamePanel.setFocusable(true);
+                gamePanel.requestFocus();
+                window.revalidate();
+                window.repaint();
+            }
             //}
         });
     }
 
-    public synchronized void addNewConnectButton(SnakesProto.GameMessage.AnnouncementMsg message){
-        if(message == null)
+    //вот тут какой то велосипед изобретаю
+    public synchronized void addNewConnectButton(DatagramPacket dp) {
+
+        byte[] a1 = Arrays.copyOf(dp.getData(), dp.getLength());
+        GameMessage.AnnouncementMsg message = null;
+        try {
+            message = GameMessage.parseFrom(a1).getAnnouncement();
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+
+        if (message == null)
             return;
 
-        if(multicastMessages.contains(message))
+        if (multicastMessages.containsKey(message)) {
+            lastDate.put(message,new Date());
             return;
+        }
 
-        multicastMessages.add(message);
+        Iterator<Map.Entry<GameMessage.AnnouncementMsg, DatagramPacket>> iterator
+                = multicastMessages.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<GameMessage.AnnouncementMsg, DatagramPacket> next = iterator.next();
+            if (next.getValue().getAddress().equals(dp.getAddress()) &&
+                    next.getValue().getPort() == dp.getPort()) {
+                iterator.remove();
 
-        List<SnakesProto.GamePlayer> players = message.getPlayers().getPlayersList();
-        String hostName ="unknown";
-        for(int i = 0; i < players.size(); i ++){
-            if(players.get(i).getId() == 0)                 //переделать по IP
+                hosts.remove(connectButtons.get(next.getKey()));
+                connectionPanel.panel.remove(connectButtons.get(next.getKey()));
+                connectButtons.remove(next.getKey());
+                lastDate.remove(next.getKey());
+            }
+        }
+
+        multicastMessages.put(message, dp);
+        lastDate.put(message,new Date());
+
+        List<GamePlayer> players = message.getPlayers().getPlayersList();
+        String hostName = "unknown";
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getId() == 0)                 //переделать по IP
                 hostName = players.get(i).getName();
         }
 
-        JButton button = new JButton("Ширина: " + message.getConfig().getWidth() + " " +
+        final JButton button = new JButton("Ширина: " + message.getConfig().getWidth() + " " +
                 "Длина: " + message.getConfig().getHeight() + " " +
                 "StaticFood: " + message.getConfig().getFoodStatic() + " " +
                 "FoodPerPlayer: " + message.getConfig().getFoodPerPlayer() + " " +
@@ -337,14 +364,47 @@ public class InterfaceController {
         !
          */
 
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.initializationConnect(hosts.get(button));
+                window.remove(connectionPanel);
+               window.add(gamePanel);
+
+            }
+        });
+
+        connectButtons.put(message, button);
+        hosts.put(button,dp);
+
         connectionPanel.panel.add(button);
         window.revalidate();
         window.repaint();
     }
 
-    public void repaintField(int[][] a){
-        gamePanel.gameField.repaintField(a,controller.getWidth(),controller.getHeight(),1);
+    public synchronized void removeButton() {
+        Iterator<Map.Entry<GameMessage.AnnouncementMsg, Date>> iterator = lastDate.entrySet().iterator();
+        Date d = new Date();
+        while (iterator.hasNext()) {
+            Map.Entry<GameMessage.AnnouncementMsg, Date> next = iterator.next();
+            if (d.getTime() - next.getValue().getTime() > 5000) {
+                connectionPanel.panel.remove(connectButtons.get(next.getKey()));
+                hosts.remove(connectButtons.get(next.getKey()));
+                connectButtons.remove(next.getKey());
+                multicastMessages.remove(next.getKey());
+                iterator.remove();
+                window.revalidate();
+                window.repaint();
+            }
+        }
+    }
+
+    public void repaintField(int[][] a) {
+        gamePanel.gameField.repaintField(a, controller.getWidth(), controller.getHeight(), 1);
         gamePanel.setFocusable(true);
         gamePanel.requestFocus();
+    }
+
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(window, message);
     }
 }

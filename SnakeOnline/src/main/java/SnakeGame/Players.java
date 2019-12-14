@@ -1,11 +1,12 @@
 package SnakeGame;
 
-import NetworkPart.NetworkController;
+import MessageProcessing.MessageCreator;
 import me.ippolitov.fit.snakes.SnakesProto;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class Players {
      */
     private static Players instance;
     private List<SnakesProto.GamePlayer> queuePlayers = new ArrayList<>();
+    private List<SnakesProto.GamePlayer> roleChangePlayers = new ArrayList<>();
     private List<SnakesProto.GameState.Snake> snakes = new ArrayList<>();
     private ArrayList<SnakesProto.GamePlayer> players = new ArrayList<>();
     private int ID = 1;
@@ -41,7 +43,7 @@ public class Players {
                     .setName("как то получить имя")
                     .setId(0)
                     .setIpAddress(InetAddress.getByName("").toString())
-                    .setPort(NetworkController.getInstance().getPort())
+                    .setPort(1)
                     .setRole(SnakesProto.NodeRole.MASTER)
                     .setScore(2)
                     .build());
@@ -76,13 +78,15 @@ public class Players {
         //  MessageCreator.createNewAckMsg(msg_seq,ID); ???
     }
 
-
+    public boolean canJoin(){
+        return GameField.getCoordForSpawn() != null;
+    }
     public void updatePlayers() {
         Iterator<SnakesProto.GamePlayer> iterator = queuePlayers.iterator();
         while (iterator.hasNext()) {
             SnakesProto.GamePlayer player = iterator.next();
             int[] a = GameField.getCoordForSpawn();
-           // int [] a = randomCoord
+            // int [] a = randomCoord
             //System.out.println(a[0] + " " + a[1]);
             if (a == null) {
                 //отправка сообщений об ошибке
@@ -115,6 +119,56 @@ public class Players {
 
         GameField.paintNewSnake(snake);
         snakes.add(snake);
+    }
+
+    public void updateRole(InetAddress address, int port){
+        //вопрос норм ли если челик получил список, а мы такие оп и удалили чела из него
+        //а там лежит старый м м м м ?
+        Iterator<SnakesProto.GamePlayer> iterator = players.iterator();
+        while (iterator.hasNext()){
+            SnakesProto.GamePlayer player = iterator.next();
+            if(player.getIpAddress().equals(address.toString()) &&
+                player.getPort() == port){
+                if(player.getRole().equals(SnakesProto.NodeRole.DEPUTY)) {
+                    //отправляем ему что он Viewer теперь
+                    MessageCreator.createNewRoleChangeMsg(SnakesProto.NodeRole.MASTER, SnakesProto.NodeRole.VIEWER,
+                            player.getIpAddress(), player.getPort(),1,player.getId());//инфа об айдишнике?
+                    hasDeputy = false;
+                }
+                //как выбрать нового заместителя?
+                roleChangePlayers.add(player);
+            }
+        }
+    }
+
+    public void updateAllRoles(){
+        Iterator<SnakesProto.GamePlayer> iterator = roleChangePlayers.iterator();
+        while (iterator.hasNext()){
+            SnakesProto.GamePlayer player = iterator.next();
+
+            for (SnakesProto.GamePlayer gamePlayer : players) {
+                if (gamePlayer.getPort() == player.getPort() &&
+                        gamePlayer.getIpAddress().equals(player.getIpAddress())) {
+                    if(Collections.replaceAll(
+                            players,
+                            player,
+                            gamePlayer.toBuilder()
+                                    .setRole(SnakesProto.NodeRole.VIEWER)
+                                    .build())//ИЗМЕНИТЬ ИМЕННО ВОТ ЭТУ СКОБКУ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    ) {
+                        int ID_player = gamePlayer.getId();
+                        for (SnakesProto.GameState.Snake snake : snakes) {
+                            if(snake.getPlayerId() == ID_player)
+                                Collections.replaceAll(snakes,
+                                        snake,
+                                        snake.toBuilder()
+                                                .setState(SnakesProto.GameState.Snake.SnakeState.ZOMBIE)
+                                                .build());
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void setPlayers(ArrayList<SnakesProto.GamePlayer> p) {

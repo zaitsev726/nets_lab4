@@ -1,7 +1,6 @@
 package UserInterface.GamePage;
 
 import NetworkPart.NetSocket.SteerMsgQueue;
-import NetworkPart.NetworkController;
 import me.ippolitov.fit.snakes.SnakesProto;
 
 import java.awt.event.KeyAdapter;
@@ -24,21 +23,17 @@ public class FieldKeyListener extends KeyAdapter {
             int key = e.getKeyCode();
             if (key == KeyEvent.VK_LEFT) {
                 steerMsg.setDirection(SnakesProto.Direction.LEFT);
-                SteerMsgQueue.getInstance().addNewDirection(steerMsg.build(), InetAddress.getByName(""), NetworkController.getInstance().getPort());
             }
-            if (key == KeyEvent.VK_RIGHT) {
+            else if (key == KeyEvent.VK_RIGHT) {
                 steerMsg.setDirection(SnakesProto.Direction.RIGHT);
-                SteerMsgQueue.getInstance().addNewDirection(steerMsg.build(), InetAddress.getByName(""), NetworkController.getInstance().getPort());
             }
-            if (key == KeyEvent.VK_DOWN) {
+            else if (key == KeyEvent.VK_DOWN) {
                 steerMsg.setDirection(SnakesProto.Direction.DOWN);
-                SteerMsgQueue.getInstance().addNewDirection(steerMsg.build(), InetAddress.getByName(""), NetworkController.getInstance().getPort());
             }
-            if (key == KeyEvent.VK_UP) {
+            else if (key == KeyEvent.VK_UP) {
                 steerMsg.setDirection(SnakesProto.Direction.UP);
-                SteerMsgQueue.getInstance().addNewDirection(steerMsg.build(), InetAddress.getByName(""), NetworkController.getInstance().getPort());
             }
-
+            SteerMsgQueue.getInstance().addNewDirection(steerMsg.build(), InetAddress.getByName(""), 1);
         }catch (UnknownHostException ex) {
                 ex.printStackTrace();
             }

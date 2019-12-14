@@ -132,7 +132,7 @@ public class GameField {
     }
 
     //обновляем поле
-    public static int[][] updateField(SnakesProto.GameState state, boolean newGame) {
+    public static int[][] updateField(SnakesProto.GameState state) {
 
         synchronized (GameField.class) {
 
