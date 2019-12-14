@@ -149,9 +149,16 @@ public class GameLogic {
 
             if (gameField[i][j] > 1 || gameField[i][j] < -1) {
                 crashHeads.add(new Event(i, j, head));
+<<<<<<< HEAD
                 GameState.Snake.Builder builder = snake.toBuilder();
                 builder.setPoints(0, GameState.Coord.newBuilder().setX(i).setY(j).build());
                 snake = builder.build();
+=======
+                System.out.println("***************************************************столкнулися");
+                GameState.Snake.Builder builder = snake.toBuilder();//
+                builder.setPoints(0, GameState.Coord.newBuilder().setX(i).setY(j).build());
+                snake = builder.build();//
+>>>>>>> master
             }
             if (gameField[i][j] == 1) {
                 appleHeads.add(new Event(i, j, head));
