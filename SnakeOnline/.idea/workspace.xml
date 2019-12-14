@@ -2,60 +2,33 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="451534b3-aff1-4650-a504-49655ddbeba0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/SendPart/ImmediateQueue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/SendPart/ResendQueue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/Lobby.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Global/ChangestateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Global/ChangestateController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Global/GlobalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Global/GlobalController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageCreator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/NetworkPart/Broadcast/MulticastController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/Broadcast/MulticastController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/MessageReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/MessageReceiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/MessageSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/SendPart/MessageSender.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/NetworkSocket.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/SendPart/MessageSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/SendPart/MessageSender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/SendPart/ResendQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/SendPart/ResendQueue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/NetworkPart/NetworkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/NetworkController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/GameController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/GameField.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/GameField.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/GameLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/GameLogic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/Lobby.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/CurrentLobby.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/Players.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/Players.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/FieldKeyListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/FieldKeyListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/GameFieldPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/GameFieldPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/InterfaceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/InterfaceController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Global/ChangestateController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Global/ChangestateController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Global/GlobalController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Global/GlobalController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageCreator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageCreator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageHandler$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageHandler$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageHandler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/NetworkPart/Broadcast/MulticastController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/NetworkPart/Broadcast/MulticastController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/MessageReceiver.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/MessageReceiver.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/MessageSender.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/NetworkSocket.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/SendPart/MessageSender.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/SendPart/MessageSender.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/NetworkPart/NetworkController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/NetworkPart/NetworkController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/GameController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/GameController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/GameField.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/GameField.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/GameLogic$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/GameLogic$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/GameLogic.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/GameLogic.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/Players$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/Players$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/Players.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/Players.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/GamePage/FieldKeyListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/GamePage/FieldKeyListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$10.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$11.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$12.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$13.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$13.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$14.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$14.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$15.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$15.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$16.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$16.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$17.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$17.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$18.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$18.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$7.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$8.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$9.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -139,7 +112,7 @@
     </option>
   </component>
   <component name="RunManager" selected="Application.Main">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="Main" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="SnakeOnline" />
       <method v="2">
@@ -171,6 +144,10 @@
       </MavenSettings>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Maven.SnakeOnline [compile]" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
@@ -238,6 +215,10 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1576407353279">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576407353279" />
     <state x="0" y="0" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1575790604565">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -252,62 +233,62 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="756" y="404" width="407" height="241" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575792357449" />
-    <state x="633" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1575727162145">
+    <state x="633" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1576396360584">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="633" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575727162145" />
+    <state x="633" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576396360584" />
     <state x="695" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/93.0.1827.1080@93.0.1827.1080" timestamp="1575697608620" />
     <state x="837" y="222" key="#xdebugger.evaluate" timestamp="1575824703861">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="837" y="222" key="#xdebugger.evaluate/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1575824703861" />
-    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1576329879706">
+    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1576400368808">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576329879706" />
-    <state width="1877" height="140" key="GridCell.Tab.0.bottom" timestamp="1576348386678">
+    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576400368808" />
+    <state width="1877" height="140" key="GridCell.Tab.0.bottom" timestamp="1576421167826">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="140" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576348386678" />
+    <state width="1877" height="140" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576421167826" />
     <state width="1877" height="348" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082709" />
     <state width="1784" height="220" key="GridCell.Tab.0.bottom/93.0.1827.1080@93.0.1827.1080" timestamp="1575903602112" />
-    <state width="1877" height="140" key="GridCell.Tab.0.center" timestamp="1576348386678">
+    <state width="1877" height="140" key="GridCell.Tab.0.center" timestamp="1576421167826">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="140" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576348386678" />
+    <state width="1877" height="140" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576421167826" />
     <state width="1877" height="348" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082707" />
     <state width="1784" height="220" key="GridCell.Tab.0.center/93.0.1827.1080@93.0.1827.1080" timestamp="1575903602112" />
-    <state width="1877" height="140" key="GridCell.Tab.0.left" timestamp="1576348386677">
+    <state width="1877" height="140" key="GridCell.Tab.0.left" timestamp="1576421167826">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="140" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576348386677" />
+    <state width="1877" height="140" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576421167826" />
     <state width="1877" height="348" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082706" />
     <state width="1784" height="220" key="GridCell.Tab.0.left/93.0.1827.1080@93.0.1827.1080" timestamp="1575903602111" />
-    <state width="1877" height="140" key="GridCell.Tab.0.right" timestamp="1576348386678">
+    <state width="1877" height="140" key="GridCell.Tab.0.right" timestamp="1576421167826">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="140" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576348386678" />
+    <state width="1877" height="140" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576421167826" />
     <state width="1877" height="348" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082707" />
     <state width="1784" height="220" key="GridCell.Tab.0.right/93.0.1827.1080@93.0.1827.1080" timestamp="1575903602112" />
-    <state width="1877" height="294" key="GridCell.Tab.1.bottom" timestamp="1576347796537">
+    <state width="1877" height="294" key="GridCell.Tab.1.bottom" timestamp="1576420505829">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="294" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576347796537" />
+    <state width="1877" height="294" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576420505829" />
     <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082716" />
-    <state width="1877" height="294" key="GridCell.Tab.1.center" timestamp="1576347796537">
+    <state width="1877" height="294" key="GridCell.Tab.1.center" timestamp="1576420505829">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="294" key="GridCell.Tab.1.center/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576347796537" />
+    <state width="1877" height="294" key="GridCell.Tab.1.center/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576420505829" />
     <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082714" />
-    <state width="1877" height="294" key="GridCell.Tab.1.left" timestamp="1576347796537">
+    <state width="1877" height="294" key="GridCell.Tab.1.left" timestamp="1576420505829">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="294" key="GridCell.Tab.1.left/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576347796537" />
+    <state width="1877" height="294" key="GridCell.Tab.1.left/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576420505829" />
     <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082711" />
-    <state width="1877" height="294" key="GridCell.Tab.1.right" timestamp="1576347796537">
+    <state width="1877" height="294" key="GridCell.Tab.1.right" timestamp="1576420505829">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="294" key="GridCell.Tab.1.right/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576347796537" />
+    <state width="1877" height="294" key="GridCell.Tab.1.right/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576420505829" />
     <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082714" />
     <state x="536" y="194" key="Maven.ArtifactSearchDialog" timestamp="1575697743742">
       <screen x="93" y="0" width="1827" height="1080" />
@@ -333,10 +314,10 @@
       <screen x="93" y="0" width="1827" height="1080" />
     </state>
     <state x="736" y="305" key="extract.method.dialog/93.0.1827.1080@93.0.1827.1080" timestamp="1575702011210" />
-    <state x="616" y="240" width="672" height="677" key="run.anything.popup" timestamp="1576246889087">
+    <state x="616" y="240" width="672" height="677" key="run.anything.popup" timestamp="1576396957444">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="616" y="240" width="672" height="677" key="run.anything.popup/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576246889087" />
+    <state x="616" y="240" width="672" height="677" key="run.anything.popup/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576396957444" />
     <state x="605" y="226" width="707" height="653" key="search.everywhere.popup" timestamp="1575964189527">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -348,9 +329,25 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
+          <condition expression="currentX == -1 || currentY == -1" language="JAVA" />
+          <url>file://$PROJECT_DIR$/src/main/java/SnakeGame/GameField.java</url>
+          <line>89</line>
+          <option name="timeStamp" value="48" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/MessageProcessing/MessageHandler.java</url>
+          <line>39</line>
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/MessageProcessing/MessageHandler.java</url>
+          <line>56</line>
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/Global/GlobalController.java</url>
-          <line>100</line>
-          <option name="timeStamp" value="2" />
+          <line>136</line>
+          <option name="timeStamp" value="67" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

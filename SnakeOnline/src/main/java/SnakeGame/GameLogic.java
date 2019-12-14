@@ -53,8 +53,7 @@ public class GameLogic {
 
         gameField = GameField.getGameField();
 
-        for (int k = 0; k < apples.size(); k++)
-            gameField[apples.get(k).getX()][apples.get(k).getY()] = 1;
+        for (Event apple : apples) gameField[apple.getX()][apple.getY()] = 1;
 
         Players.getInstance().updatePlayers();
         ArrayList<GamePlayer> players = Players.getInstance().getPlayers();
@@ -471,7 +470,7 @@ public class GameLogic {
         stateBuilder.setStateOrder(stateOrder)
                 .setConfig(config)
                 .setPlayers(playersBuilder.build());
-
+        System.out.println("stateOrder " + stateOrder );
         stateOrder++;
         for (int i = 0; i < apples.size(); i++) {
             stateBuilder.addFoods(GameState.Coord.newBuilder()

@@ -26,7 +26,7 @@ public class NetworkController {
     public NetworkController(GlobalController globalController){
         this.controller = globalController;
         this.queue = new ImmediateQueue();
-        this.resendQueue = new ResendQueue();
+        this.resendQueue = new ResendQueue(controller);
 
         try {
             IP = getLocalAddress();
@@ -58,9 +58,12 @@ public class NetworkController {
     public InetAddress getIP(){return IP;}
 
     public void sendNewMessage(SnakesProto.GameMessage message){
+        if(message.getTypeCase().equals(SnakesProto.GameMessage.TypeCase.STATE))
+            System.out.println("отправялем стейт челам");
         queue.addNewMessage(message);
     }
     public void deleteAnnouncementMsg(){resendQueue.deleteAnnouncementMsg();}
+    public void deleteOldStates(){resendQueue.deleteOldStates();}
     private InetAddress getLocalAddress() throws UnknownHostException, SocketException {
         List<NetworkInterface> netInts = Collections.list(NetworkInterface.getNetworkInterfaces());
 

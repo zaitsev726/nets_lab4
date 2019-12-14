@@ -135,20 +135,23 @@ public class GameField {
     public static int[][] updateField(SnakesProto.GameState state) {
 
         synchronized (GameField.class) {
-
-                gameField = new int[state.getConfig().getWidth()][state.getConfig().getWidth()];
+            System.out.println("***" + state.getStateOrder());
+                gameField = new int[state.getConfig().getWidth()][state.getConfig().getHeight()];
+                width = state.getConfig().getWidth();
+                height = state.getConfig().getHeight();
                 for (int i = 0; i < state.getConfig().getWidth(); i++) {
-                    for (int j = 0; j < state.getConfig().getHeight(); j++) {
-                        gameField[i][j] = 0;
-                    }
+                        for (int j = 0; j < state.getConfig().getHeight(); j++) {
+                            gameField[i][j] = 0;
+                        }
                 }
 
             List<SnakesProto.GameState.Snake> snakes = state.getSnakesList();
 
-            for (int i = 0; i < snakes.size(); i++) { 
+            for (int i = 0; i < snakes.size(); i++) {
                 SnakesProto.GameState.Snake snake = snakes.get(i);
                 paintSnake(snake);
             }
+
             for (int i = 0; i < state.getFoodsCount(); i++) {
                 SnakesProto.GameState.Coord foodCoord = state.getFoods(i);
                 if (gameField[foodCoord.getX()][foodCoord.getY()] != 0) {
@@ -164,10 +167,6 @@ public class GameField {
 
     //отрисовываем новую змею
     public static void paintNewSnake(SnakesProto.GameState.Snake snake) {
-        if (gameField != null) {
-            synchronized (GameField.class) {
-                paintSnake(snake);
-            }
-        }
+    paintSnake(snake);
     }
 }

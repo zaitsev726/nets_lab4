@@ -36,7 +36,7 @@ public class MessageHandler {
                                         .setScore(0)
                                         .build();
         lastMessage.put(player,new Date());
-
+        System.out.println("приняли месседж");
         switch (message.getTypeCase()) {
             case PING:
                 //ничего не делаем т.к. уже добавили в мапу
@@ -52,8 +52,11 @@ public class MessageHandler {
             case STATE:
                 //обновление стейта
                 SnakesProto.GameState state = message.getState().getState();
-                Players.getInstance().setPlayers((ArrayList<SnakesProto.GamePlayer>) state.getPlayers().getPlayersList());
+                Players.getInstance().setPlayers(new ArrayList<SnakesProto.GamePlayer>(state.getPlayers().getPlayersList()));
                 Players.getInstance().setSnakes(state.getSnakesList());
+                controller.sendAck(message.getMsgSeq(),Players.getInstance().getHostID());
+                System.out.println("State order" + state.getStateOrder());
+
                 controller.setState(state);
                 break;
             case ANNOUNCEMENT:
@@ -62,7 +65,7 @@ public class MessageHandler {
             case JOIN:
                 //передаем сообщение в players
                 //System.out.println("***приняли ДЖОИН!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                Players.getInstance().addNewPlayerInQueue(message.getJoin(), address,port,msg_seq);
+                Players.getInstance().addNewPlayerInQueue(message, address,port,msg_seq);
                 break;
             case ERROR:
                 controller.errorMessage(message.getError());

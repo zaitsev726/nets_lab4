@@ -366,10 +366,23 @@ public class InterfaceController {
 
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                controller.initializationConnect(hosts.get(button));
+                DatagramPacket dp = hosts.get(button);
+                byte[] a1 = Arrays.copyOf(dp.getData(), dp.getLength());
+                GameMessage.AnnouncementMsg message = null;
+                try {
+                    message = GameMessage.parseFrom(a1).getAnnouncement();
+                } catch (InvalidProtocolBufferException m) {
+                    m.printStackTrace();
+                }
+                controller.initializationConnect(dp);
                 window.remove(connectionPanel);
-               window.add(gamePanel);
+                window.add(gamePanel);
 
+                gamePanel.addGameField(message.getConfig().getWidth(),message.getConfig().getHeight());
+                gamePanel.setFocusable(true);
+                gamePanel.requestFocus();
+                window.revalidate();
+                window.repaint();
             }
         });
 
@@ -398,8 +411,8 @@ public class InterfaceController {
         }
     }
 
-    public void repaintField(int[][] a) {
-        gamePanel.gameField.repaintField(a, controller.getWidth(), controller.getHeight(), 1);
+    public void repaintField(int[][] a, int width, int height, int ID) {
+        gamePanel.gameField.repaintField(a, width, height, ID);
         gamePanel.setFocusable(true);
         gamePanel.requestFocus();
     }

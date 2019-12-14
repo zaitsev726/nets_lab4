@@ -4,7 +4,7 @@ import MessageProcessing.MessageCreator;
 import NetworkPart.Broadcast.MulticastController;
 import NetworkPart.NetworkController;
 import SnakeGame.GameController;
-import SnakeGame.Lobby;
+import SnakeGame.CurrentLobby;
 import SnakeGame.Players;
 import UserInterface.InterfaceController;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -20,7 +20,7 @@ public class GlobalController {
     private ChangestateController stateController = null;
     private MulticastController multicastController;
     private NetworkController networkController;
-    private Lobby lobby;
+    private CurrentLobby lobby;
 
     private int width = 0;
     private int height = 0;
@@ -30,7 +30,7 @@ public class GlobalController {
     private float deadFoodProb = (float) 0.0;
     private int pingDelay = 0;
     private int nodeTimeout = 0;
-    private SnakesProto.GameState state = null;
+    private volatile SnakesProto.GameState state = null;
     private String name = "default";
 
     public void setWidth(int width) { this.width = width; }
@@ -50,6 +50,7 @@ public class GlobalController {
     public int getHeight() { return height; }
 
     public GlobalController(){
+        Players.getInstance().setController(this);
         interfaceController = new InterfaceController(this);
         gameController = null;
         networkController = new NetworkController(this);
@@ -65,7 +66,7 @@ public class GlobalController {
 
     public void initializationGame(){
 
-        lobby = new Lobby(true);
+        lobby = new CurrentLobby(true);
         Players.getInstance().addNewPlayerInQueue();
         gameController = new GameController(width,height,foodStatic,foodPerPlayer,
                 stateDelay,deadFoodProb,pingDelay,nodeTimeout,this);
@@ -76,6 +77,7 @@ public class GlobalController {
 
         stateController.start();
     }
+
     public void initializationConnect(DatagramPacket dp){
         byte[] a1 = Arrays.copyOf(dp.getData(), dp.getLength());
         SnakesProto.GameMessage.AnnouncementMsg message = null;
@@ -85,7 +87,7 @@ public class GlobalController {
             e.printStackTrace();
         }
 
-        lobby = new Lobby(dp.getAddress().toString(),dp.getPort(),false);
+        lobby = new CurrentLobby(dp.getAddress().toString(),dp.getPort(),false);
         networkController.sendNewMessage(MessageCreator.createNewJoinMsg(name));
         stateController = new ChangestateController(this, getNextState(),
                 interfaceController, message.getConfig().getStateDelayMs());
@@ -93,19 +95,22 @@ public class GlobalController {
         stateController.start();
     }
 
-    public SnakesProto.GameState getNextState(){
+    public synchronized SnakesProto.GameState getNextState(){
         //если мы хост
-        if(lobby.isMaster()) {
-            state = gameController.makeNextState();
-            networkController.deleteAnnouncementMsg();
-            networkController.sendNewMessage(MessageCreator.createNewAnnouncementMsg(
-                    state.getPlayers(),
-                    state.getConfig(),
-                    Players.getInstance().canJoin()
-            ));
-        }
-        //если мы не хост
-        return state;
+            if (lobby.isMaster()) {
+                state = gameController.makeNextState();
+                networkController.deleteAnnouncementMsg();
+                networkController.sendNewMessage(MessageCreator.createNewAnnouncementMsg(
+                        state.getPlayers(),
+                        state.getConfig(),
+                        Players.getInstance().canJoin()
+                ));
+            }
+            if (!lobby.isMaster())
+                System.out.println("yes");
+            //если мы не хост
+            return state;
+
     }
     public void setPort(int port){
         networkController.setPort(port);
@@ -115,16 +120,17 @@ public class GlobalController {
         interfaceController.showMessage(error.getErrorMessage());
     }
 
-    public void setState(SnakesProto.GameState state){
-        if(this.state == null)
-            this.state = state;
+    public synchronized void setState(SnakesProto.GameState state){
+            if (this.state == null)
+                this.state = state;
 
-        if(this.state.getStateOrder() < state.getStateOrder()){
-            this.state = state;
-        }
+            if (this.state.getStateOrder() < state.getStateOrder()) {
+                this.state = state;
+            }
     }
 
     public void sendState(SnakesProto.GameState state){
+        networkController.deleteOldStates();
         ArrayList<SnakesProto.GamePlayer> players = Players.getInstance().getPlayers();
         for(int i = 0; i < players.size(); i++){
             //как то узнаем то что это не мы
@@ -133,4 +139,10 @@ public class GlobalController {
         }
     }
 
+    public void sendAck(long msg_seq, int receiver_ID){
+        networkController.sendNewMessage(MessageCreator.createNewAckMsg(msg_seq,receiver_ID));
+    }
+
+    public void setOurId(int receiverId) { lobby.setOur_ID(receiverId); }
+    public int getID(){return lobby.getOur_ID();}
 }

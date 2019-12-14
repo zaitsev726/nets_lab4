@@ -1,14 +1,14 @@
 package SnakeGame;
 
+import Global.GlobalController;
 import MessageProcessing.MessageCreator;
+import com.google.protobuf.InvalidProtocolBufferException;
 import me.ippolitov.fit.snakes.SnakesProto;
 
+import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Players {
     /*
@@ -22,8 +22,10 @@ public class Players {
     private List<SnakesProto.GamePlayer> roleChangePlayers = new ArrayList<>();
     private List<SnakesProto.GameState.Snake> snakes = new ArrayList<>();
     private ArrayList<SnakesProto.GamePlayer> players = new ArrayList<>();
+    private ArrayList<DatagramPacket> confirmJoin = new ArrayList<>();
     private int ID = 1;
     private boolean hasDeputy = false;
+    private GlobalController controller;
 
     public static Players getInstance() {
         Players localInstance = instance;
@@ -53,7 +55,22 @@ public class Players {
     }
 
 
-    public void addNewPlayerInQueue(SnakesProto.GameMessage.JoinMsg join, InetAddress address, int port, long msg_seq) {
+    public synchronized void addNewPlayerInQueue(SnakesProto.GameMessage message, InetAddress address, int port, long msg_seq) {
+        for (DatagramPacket datagramPacket : confirmJoin) {
+            if (datagramPacket.getAddress().toString().equals(address.toString()) &&
+                    datagramPacket.getPort() == port)
+                return;
+        }
+
+        for(SnakesProto.GamePlayer player : players){
+            if(player.getIpAddress().equals(address.toString()) &&
+                player.getPort() == port) {
+                controller.sendAck(message.getMsgSeq(),player.getId());
+                return;
+            }
+        }
+        SnakesProto.GameMessage.JoinMsg join = message.getJoin();
+        confirmJoin.add(new DatagramPacket(message.toByteArray(),message.toByteArray().length,address,port));
 
         SnakesProto.NodeRole role;
         if (join.getOnlyView())
@@ -91,13 +108,29 @@ public class Players {
             if (a == null) {
                 //отправка сообщений об ошибке
                 //пофиксить трабл с заместителем
+                confirmJoin.clear();
                 queuePlayers.clear();
                 return;
             } else {
                 player = player.toBuilder().setId(ID).build();
                 players.add(player);
                 createNewSnake(a);
-
+                Iterator<DatagramPacket> iterator1 = confirmJoin.iterator();
+                while (iterator1.hasNext()){
+                    DatagramPacket next = iterator1.next();
+                    if(next.getAddress().toString().equals(player.getIpAddress()) &&
+                        next.getPort() == player.getPort()){
+                        byte[] a1 = Arrays.copyOf(next.getData(), next.getLength());
+                        SnakesProto.GameMessage message = null;
+                        try {
+                             message = SnakesProto.GameMessage.parseFrom(a1);
+                        } catch (InvalidProtocolBufferException e) {
+                            e.printStackTrace();
+                        }
+                        controller.sendAck(message.getMsgSeq(), ID);
+                        iterator1.remove();
+                    }
+                }
                 ID++;
                 iterator.remove();
             }
@@ -117,7 +150,6 @@ public class Players {
                 .addPoints(coord(b[0], b[1]))
                 .build();
 
-        GameField.paintNewSnake(snake);
         snakes.add(snake);
     }
 
@@ -230,5 +262,13 @@ public class Players {
                 return a;
         }
         return null;
+    }
+    public void setController(GlobalController controller){this.controller = controller;}
+    public int getHostID(){
+        for(SnakesProto.GamePlayer player: players){
+            if(player.getRole().equals(SnakesProto.NodeRole.MASTER))
+                return player.getId();
+        }
+        return 1;
     }
 }

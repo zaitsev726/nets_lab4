@@ -1,5 +1,6 @@
 package NetworkPart.NetSocket.SendPart;
 
+import Global.GlobalController;
 import me.ippolitov.fit.snakes.SnakesProto;
 
 import java.util.Date;
@@ -9,9 +10,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ResendQueue {
     private ConcurrentHashMap<SnakesProto.GameMessage, Date> resendQueue;
+    private GlobalController controller;
 
-    public ResendQueue() {
+    public ResendQueue(GlobalController controller) {
         resendQueue = new ConcurrentHashMap<>();
+        this.controller = controller;
     }
 
     public void addNewResendMessage(SnakesProto.GameMessage message) {
@@ -39,12 +42,17 @@ public class ResendQueue {
 
 
     public void deleteMessage(SnakesProto.GameMessage message) {
+
         synchronized (ResendQueue.class) {
             int msg_seq = (int) message.getMsgSeq();
             Iterator<Map.Entry<SnakesProto.GameMessage, Date>> iterator = resendQueue.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry<SnakesProto.GameMessage, Date> next = iterator.next();
                 if (next.getKey().getMsgSeq() == msg_seq)
+                    if(next.getKey().getTypeCase().equals(SnakesProto.GameMessage.TypeCase.JOIN)) {
+                        System.out.println("ПОДТВЕРДИЛИ ВХОД " + message.getReceiverId());
+                        controller.setOurId(message.getReceiverId());
+                    }
                     iterator.remove();
             }
         }
@@ -56,6 +64,18 @@ public class ResendQueue {
                 while (iterator.hasNext()) {
                     Map.Entry<SnakesProto.GameMessage, Date> next = iterator.next();
                     if (next.getKey().getTypeCase().equals(SnakesProto.GameMessage.TypeCase.ANNOUNCEMENT))
+                        iterator.remove();
+                }
+            }
+        }
+    }
+    public void deleteOldStates(){
+        synchronized (ResendQueue.class) {
+            if (!resendQueue.isEmpty()) {
+                Iterator<Map.Entry<SnakesProto.GameMessage, Date>> iterator = resendQueue.entrySet().iterator();
+                while (iterator.hasNext()) {
+                    Map.Entry<SnakesProto.GameMessage, Date> next = iterator.next();
+                    if (next.getKey().getTypeCase().equals(SnakesProto.GameMessage.TypeCase.STATE))
                         iterator.remove();
                 }
             }

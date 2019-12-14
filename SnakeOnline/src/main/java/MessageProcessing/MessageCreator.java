@@ -33,15 +33,18 @@ public class MessageCreator {
     /**
      * готово
      */
-    public static void createNewAckMsg(long msg_seq, int ID) {
+    public static SnakesProto.GameMessage createNewAckMsg(long msg_seq, int ID) {
         synchronized (MessageCreator.class) {
             SnakesProto.GameMessage message = SnakesProto.GameMessage.newBuilder()
+                    .setAck(SnakesProto.GameMessage.AckMsg.newBuilder().build())
                     .setMsgSeq(msg_seq)
                     .setReceiverId(ID)
                     .build();
             MessageManagement.addNewMessage(message);
+            return message;
         }
     }
+
     public static void createNewSteerMsg(){
 
     }
@@ -81,7 +84,7 @@ public class MessageCreator {
         synchronized (MessageCreator.class) {
                 SnakesProto.GameMessage message = SnakesProto.GameMessage.newBuilder()
                         .setMsgSeq(message_ID)
-                        .setReceiverId(receiver_id)
+                        //.setReceiverId(receiver_id)
                         .setState(SnakesProto.GameMessage.StateMsg.newBuilder().setState(state).build())
                         .build();
                 //добавление в очередь на отрпавку

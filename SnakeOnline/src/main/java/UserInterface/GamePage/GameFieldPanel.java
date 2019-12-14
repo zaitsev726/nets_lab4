@@ -11,7 +11,7 @@ public class GameFieldPanel extends JPanel{
     private Image ourBody;
     private Image ourHead;
     private Image apple;
-    private int[][] gameField = null;
+    private volatile int[][] gameField = null;
     private int width = 0;
     private int height = 0;
     private int ID = 0;
@@ -28,7 +28,7 @@ public class GameFieldPanel extends JPanel{
         ourHead = new ImageIcon(this.getClass().getResource("..\\..\\ourHead.png")).getImage();
     }
 
-    public void repaintField(int[][] gameField, int width, int height, int ID) {
+    public synchronized void repaintField(int[][] gameField, int width, int height, int ID) {
         this.gameField = gameField;
         this.width = width;
         this.height = height;
@@ -46,13 +46,12 @@ public class GameFieldPanel extends JPanel{
         if(gameField!= null){
             for(int i = 0; i < width; i ++){
                 for(int j = 0; j < height; j ++){
+
                     if(gameField[i][j] == (ID + 1)){
                         g.drawImage(ourBody,i*DOT_SIZE,j*DOT_SIZE,this);
-                    }
-                    else if(gameField[i][j] == (-(ID + 1))){
+                    } else if(gameField[i][j] == (-(ID + 1))){
                         g.drawImage(ourHead,i*DOT_SIZE,j*DOT_SIZE,this);
-                    }
-                    else if(gameField[i][j] == 1){
+                    } else if(gameField[i][j] == 1){
                         g.drawImage(apple, i*DOT_SIZE,j*DOT_SIZE, this);
                     }else if(gameField[i][j] > 1){
                         g.drawImage(enemyBody, i*DOT_SIZE,j*DOT_SIZE, this);

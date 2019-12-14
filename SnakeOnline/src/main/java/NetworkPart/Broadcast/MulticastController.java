@@ -37,7 +37,7 @@ public class MulticastController extends Thread {
                 multicastSocket.receive(dp);
                 System.out.println(dp.getLength());
 
-                System.out.println("**приняли мультикаст**");
+                //System.out.println("**приняли мультикаст**");
                 interfaceController.addNewConnectButton(dp);
                 interfaceController.removeButton();
 

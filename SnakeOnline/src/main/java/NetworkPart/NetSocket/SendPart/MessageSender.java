@@ -46,6 +46,7 @@ public class MessageSender extends Thread {
             currentPlayers = Players.getInstance().getPlayers();
             Date date = new Date();
             LinkedBlockingQueue q = queue.getQ();
+            
             try {
                 SnakesProto.GameMessage message = (SnakesProto.GameMessage) q.poll(minToResend, TimeUnit.MILLISECONDS);
 
@@ -58,27 +59,30 @@ public class MessageSender extends Thread {
 
                             break;
                         case ACK:
-
+                            sendAck(message);
                             return;
                         case STATE:
                             //если мастер то
                             sendState(message);
+                            resend.addNewResendMessage(message);
                             break;
                         case ANNOUNCEMENT:
                             sendAnnouncementMsg(message);
+                            resend.addNewResendMessage(message);
                             break;
                         case JOIN:
                             sendJoin(message);
+                            resend.addNewResendMessage(message);
                             break;
                         case ERROR:
-
+                            resend.addNewResendMessage(message);
                             break;
                         case ROLE_CHANGE:
-
+                            resend.addNewResendMessage(message);
                             break;
                     }
 
-                    resend.addNewResendMessage(message);
+
                     minToResend = ping_delay_ms - (int) resend.getMinToResend();
                 }
 
@@ -138,6 +142,20 @@ public class MessageSender extends Thread {
 
     public void sendAck(SnakesProto.GameMessage message) {
         //отправляем мастеру подтверждение его сообщения
+        DatagramPacket dp = null;
+        try {
+            for (SnakesProto.GamePlayer currentPlayer : currentPlayers) {
+                //как то узнаем что мы хост
+                if (currentPlayer.getId() == message.getReceiverId()) {
+                    dp = new DatagramPacket(message.toByteArray(), message.toByteArray().length,
+                            InetAddress.getByName(currentPlayer.getIpAddress().substring(1)),
+                            currentPlayer.getPort());
+                    socket.send(dp);
+                }
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     public void sendState(SnakesProto.GameMessage message) {
@@ -149,6 +167,7 @@ public class MessageSender extends Thread {
                     dp = new DatagramPacket(message.toByteArray(), message.toByteArray().length,
                             InetAddress.getByName(currentPlayer.getIpAddress().substring(1)),
                             currentPlayer.getPort());
+                    System.out.println("отправляем стейт челууууууууцу");
                     socket.send(dp);
                 }
             }
@@ -174,7 +193,7 @@ public class MessageSender extends Thread {
     }
 
     public void sendAnnouncementMsg(SnakesProto.GameMessage message) {
-        System.out.println("ОТПРАВЛЯЕМ МУЛЬТИКАСТ");
+        //System.out.println("ОТПРАВЛЯЕМ МУЛЬТИКАСТ");
         try {
             DatagramPacket dp = new DatagramPacket(message.toByteArray(), message.toByteArray().length,
                     InetAddress.getByName("239.192.0.4"), 9192);
