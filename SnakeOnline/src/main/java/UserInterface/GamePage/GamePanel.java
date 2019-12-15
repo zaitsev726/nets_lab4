@@ -1,5 +1,6 @@
 package UserInterface.GamePage;
 
+import Global.GlobalController;
 import UserInterface.Layouts.VerticalLayout;
 
 import javax.swing.*;
@@ -12,7 +13,7 @@ public class GamePanel extends JPanel {
     private JPanel scorePanel;
     private JPanel currentGamePanel;
 
-    public GamePanel() {
+    public GamePanel(GlobalController controller) {
         this.setLayout(null);
 
         gameField = new GameFieldPanel();
@@ -63,7 +64,7 @@ public class GamePanel extends JPanel {
 
         this.setFocusable(true);
         this.requestFocus();
-        addKeyListener(new FieldKeyListener(gameField));
+        addKeyListener(new FieldKeyListener(gameField,controller));
 
         this.add(scorePane);
         this.add(currentPane);

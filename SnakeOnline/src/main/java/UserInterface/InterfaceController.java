@@ -39,6 +39,7 @@ public class InterfaceController {
     private HashMap<GameMessage.AnnouncementMsg, JButton> connectButtons;
     private HashMap<GameMessage.AnnouncementMsg, Date> lastDate;
     private HashMap<JButton, DatagramPacket> hosts;
+
     public InterfaceController(GlobalController controller) {
         multicastMessages = new HashMap<>();
         connectButtons = new HashMap<>();
@@ -48,7 +49,7 @@ public class InterfaceController {
         window = new Window(sizeWidth, sizeHeight, locationX, locationY);
         menuPanel = new MenuPanel(sizeWidth, sizeHeight);
         newGamePanel = new NewGamePanel();
-        gamePanel = new GamePanel();
+        gamePanel = new GamePanel(controller);
         connectionPanel = new ConnectionPanel();
         netInfoEntryPanel = new NetInfoEntryPanel();
         this.controller = controller;
@@ -118,6 +119,7 @@ public class InterfaceController {
     private void initializationGameListeners() {
         gamePanel.backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                controller.sendRoleChange();
                 controller.removeGame();
                 window.remove(gamePanel);
                 window.add(newGamePanel);

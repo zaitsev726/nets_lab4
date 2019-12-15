@@ -18,11 +18,11 @@ public class Players {
     > назначает роли игрокам
      */
     private static Players instance;
-    private List<SnakesProto.GamePlayer> queuePlayers = new ArrayList<>();
-    private List<SnakesProto.GamePlayer> roleChangePlayers = new ArrayList<>();
-    private List<SnakesProto.GameState.Snake> snakes = new ArrayList<>();
-    private ArrayList<SnakesProto.GamePlayer> players = new ArrayList<>();
-    private ArrayList<DatagramPacket> confirmJoin = new ArrayList<>();
+    private volatile List<SnakesProto.GamePlayer> queuePlayers = new ArrayList<>();
+    private volatile List<SnakesProto.GamePlayer> roleChangePlayers = new ArrayList<>();
+    private volatile List<SnakesProto.GameState.Snake> snakes = new ArrayList<>();
+    private volatile ArrayList<SnakesProto.GamePlayer> players = new ArrayList<>();
+    private volatile ArrayList<DatagramPacket> confirmJoin = new ArrayList<>();
     private int ID = 1;
     private boolean hasDeputy = false;
     private GlobalController controller;
@@ -62,15 +62,16 @@ public class Players {
                 return;
         }
 
-        for(SnakesProto.GamePlayer player : players){
-            if(player.getIpAddress().equals(address.toString()) &&
-                player.getPort() == port) {
-                controller.sendAck(message.getMsgSeq(),player.getId());
+        for (SnakesProto.GamePlayer player : players) {
+            if (player.getIpAddress().equals(address.toString()) &&
+                    player.getPort() == port &&
+                    !player.getRole().equals(SnakesProto.NodeRole.VIEWER)) {
+                controller.sendAck(message.getMsgSeq(), player.getId());
                 return;
             }
         }
         SnakesProto.GameMessage.JoinMsg join = message.getJoin();
-        confirmJoin.add(new DatagramPacket(message.toByteArray(),message.toByteArray().length,address,port));
+        confirmJoin.add(new DatagramPacket(message.toByteArray(), message.toByteArray().length, address, port));
 
         SnakesProto.NodeRole role;
         if (join.getOnlyView())
@@ -95,9 +96,10 @@ public class Players {
         //  MessageCreator.createNewAckMsg(msg_seq,ID); ???
     }
 
-    public boolean canJoin(){
+    public boolean canJoin() {
         return GameField.getCoordForSpawn() != null;
     }
+
     public void updatePlayers() {
         Iterator<SnakesProto.GamePlayer> iterator = queuePlayers.iterator();
         while (iterator.hasNext()) {
@@ -116,18 +118,20 @@ public class Players {
                 players.add(player);
                 createNewSnake(a);
                 Iterator<DatagramPacket> iterator1 = confirmJoin.iterator();
-                while (iterator1.hasNext()){
+                while (iterator1.hasNext()) {
                     DatagramPacket next = iterator1.next();
-                    if(next.getAddress().toString().equals(player.getIpAddress()) &&
-                        next.getPort() == player.getPort()){
+                    if (next.getAddress().toString().equals(player.getIpAddress()) &&
+                            next.getPort() == player.getPort()) {
                         byte[] a1 = Arrays.copyOf(next.getData(), next.getLength());
                         SnakesProto.GameMessage message = null;
                         try {
-                             message = SnakesProto.GameMessage.parseFrom(a1);
+                            message = SnakesProto.GameMessage.parseFrom(a1);
                         } catch (InvalidProtocolBufferException e) {
                             e.printStackTrace();
                         }
                         controller.sendAck(message.getMsgSeq(), ID);
+                        if (player.getRole().equals(SnakesProto.NodeRole.MASTER))
+                            controller.setOurId(ID);
                         iterator1.remove();
                     }
                 }
@@ -153,71 +157,79 @@ public class Players {
         snakes.add(snake);
     }
 
-    public void updateRole(InetAddress address, int port){
+    public void updateRole(InetAddress address, int port) {
         //вопрос норм ли если челик получил список, а мы такие оп и удалили чела из него
         //а там лежит старый м м м м ?
         Iterator<SnakesProto.GamePlayer> iterator = players.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             SnakesProto.GamePlayer player = iterator.next();
-            if(player.getIpAddress().equals(address.toString()) &&
-                player.getPort() == port){
-                if(player.getRole().equals(SnakesProto.NodeRole.DEPUTY)) {
+            if (player.getIpAddress().equals(address.toString()) &&
+                    player.getPort() == port) {
+                if (player.getRole().equals(SnakesProto.NodeRole.DEPUTY)) {
                     //отправляем ему что он Viewer теперь
-                    MessageCreator.createNewRoleChangeMsg(SnakesProto.NodeRole.MASTER, SnakesProto.NodeRole.VIEWER,
-                            player.getIpAddress(), player.getPort(),1,player.getId());//инфа об айдишнике?
+                    MessageCreator.createNewRoleChangeMsg(
+                            SnakesProto.NodeRole.MASTER,
+                            SnakesProto.NodeRole.VIEWER,
+                            controller.getID(),
+                            player.getId());
                     hasDeputy = false;
                 }
                 //как выбрать нового заместителя?
-                roleChangePlayers.add(player);
+                if (!roleChangePlayers.contains(player))
+                    roleChangePlayers.add(player);
             }
         }
     }
 
-    public void updateAllRoles(){
+    public void updateAllRoles() {
         Iterator<SnakesProto.GamePlayer> iterator = roleChangePlayers.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             SnakesProto.GamePlayer player = iterator.next();
 
             for (SnakesProto.GamePlayer gamePlayer : players) {
                 if (gamePlayer.getPort() == player.getPort() &&
                         gamePlayer.getIpAddress().equals(player.getIpAddress())) {
-                    if(Collections.replaceAll(
+                    Collections.replaceAll(
                             players,
-                            player,
+                            gamePlayer,
                             gamePlayer.toBuilder()
                                     .setRole(SnakesProto.NodeRole.VIEWER)
-                                    .build())//ИЗМЕНИТЬ ИМЕННО ВОТ ЭТУ СКОБКУ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    ) {
-                        int ID_player = gamePlayer.getId();
-                        for (SnakesProto.GameState.Snake snake : snakes) {
-                            if(snake.getPlayerId() == ID_player)
-                                Collections.replaceAll(snakes,
-                                        snake,
-                                        snake.toBuilder()
-                                                .setState(SnakesProto.GameState.Snake.SnakeState.ZOMBIE)
-                                                .build());
+                                    .build());
+                    int ID_player = gamePlayer.getId();
+                    for (SnakesProto.GameState.Snake snake : snakes) {
+                        if (snake.getPlayerId() == ID_player) {
+                            Collections.replaceAll(snakes,
+                                    snake,
+                                    snake.toBuilder()
+                                            .setState(SnakesProto.GameState.
+                                                    Snake.SnakeState.ZOMBIE)
+                                            .build());
                         }
                     }
                 }
             }
+            iterator.remove();
         }
     }
 
     public void setPlayers(ArrayList<SnakesProto.GamePlayer> p) {
+       /* for(SnakesProto.GamePlayer player: players){
+            if(!p.contains(player)){
+
+                controller.sendRoleChange(
+                        SnakesProto.NodeRole.VIEWER,
+                        SnakesProto.NodeRole.MASTER,
+                        player.getId());
+            }
+        }*/
         players = p;
     }
 
-    public void setSnakes(List<SnakesProto.GameState.Snake> p) {
-        snakes = p;
-    }
+    public void setSnakes(List<SnakesProto.GameState.Snake> p) { snakes = p; }
 
-    public ArrayList<SnakesProto.GamePlayer> getPlayers() {
-        return players;
-    }
+    public ArrayList<SnakesProto.GamePlayer> getPlayers() { return players; }
 
-    public List<SnakesProto.GameState.Snake> getSnakes() {
-        return snakes;
-    }
+    public List<SnakesProto.GameState.Snake> getSnakes() { return snakes; }
 
     private SnakesProto.GameState.Coord coord(int x, int y) {
         return SnakesProto.GameState.Coord.newBuilder().setX(x).setY(y).build();
@@ -263,12 +275,26 @@ public class Players {
         }
         return null;
     }
-    public void setController(GlobalController controller){this.controller = controller;}
-    public int getHostID(){
-        for(SnakesProto.GamePlayer player: players){
-            if(player.getRole().equals(SnakesProto.NodeRole.MASTER))
+
+    public void setController(GlobalController controller) {
+        this.controller = controller;
+    }
+    public GlobalController getController(){return controller;}
+
+    public int getHostID() {
+        for (SnakesProto.GamePlayer player : players) {
+            if (player.getRole().equals(SnakesProto.NodeRole.MASTER))
                 return player.getId();
         }
         return 1;
+    }
+
+    public void clearPlayers() {
+        players = new ArrayList<>();
+        snakes = new ArrayList<>();
+        ID = 1;
+    }
+    public void selectNewDeputy(List<Players> players){
+
     }
 }

@@ -14,12 +14,8 @@ public class MessageCreator {
         JoinMsg join = 7;
         ErrorMsg error = 8;
         RoleChangeMsg role_change = 9;
-
      */
 
-    /**
-     * готово
-     */
     public static void createNewPing(){
         synchronized (MessageCreator.class) {
             SnakesProto.GameMessage message = SnakesProto.GameMessage.newBuilder()
@@ -30,9 +26,6 @@ public class MessageCreator {
         }
     }
 
-    /**
-     * готово
-     */
     public static SnakesProto.GameMessage createNewAckMsg(long msg_seq, int ID) {
         synchronized (MessageCreator.class) {
             SnakesProto.GameMessage message = SnakesProto.GameMessage.newBuilder()
@@ -40,12 +33,22 @@ public class MessageCreator {
                     .setMsgSeq(msg_seq)
                     .setReceiverId(ID)
                     .build();
-            MessageManagement.addNewMessage(message);
+            //MessageManagement.addNewMessage(message);
             return message;
         }
     }
 
-    public static void createNewSteerMsg(){
+    public static SnakesProto.GameMessage createNewSteerMsg(SnakesProto.Direction direction){
+        synchronized (MessageCreator.class){
+
+            SnakesProto.GameMessage message = SnakesProto.GameMessage.newBuilder()
+                    .setMsgSeq(message_ID)
+                    .setSteer(SnakesProto.GameMessage.SteerMsg.newBuilder()
+                            .setDirection(direction).build())
+                    .build();
+                    message_ID++;
+            return message;
+        }
 
     }
 
@@ -66,25 +69,28 @@ public class MessageCreator {
         }
     }
 
-    public static void createNewRoleChangeMsg(SnakesProto.NodeRole sender, SnakesProto.NodeRole receiver,
-                                              String IP, int port, int sender_id, int receiver_id){
-        SnakesProto.GameMessage message = SnakesProto.GameMessage.newBuilder()
-                .setMsgSeq(message_ID)
-                .setSenderId(sender_id)
-                .setReceiverId(receiver_id)
-                .setRoleChange(SnakesProto.GameMessage.RoleChangeMsg.newBuilder()
-                        .setSenderRole(sender)
-                        .setReceiverRole(receiver)
-                        .build())
-                .build();
-        message_ID++;
+    public static SnakesProto.GameMessage createNewRoleChangeMsg(SnakesProto.NodeRole sender, SnakesProto.NodeRole receiver,
+                                                                 int sender_id, int receiver_id){
+        synchronized (MessageCreator.class) {
+            SnakesProto.GameMessage message = SnakesProto.GameMessage.newBuilder()
+                    .setMsgSeq(message_ID)
+                    .setSenderId(sender_id)
+                    .setReceiverId(receiver_id)
+                    .setRoleChange(SnakesProto.GameMessage.RoleChangeMsg.newBuilder()
+                            .setSenderRole(sender)
+                            .setReceiverRole(receiver)
+                            .build())
+                    .build();
+            message_ID++;
+            return message;
+        }
     }
 
     public static SnakesProto.GameMessage createNewStateMsg(SnakesProto.GameState state, int receiver_id){
         synchronized (MessageCreator.class) {
                 SnakesProto.GameMessage message = SnakesProto.GameMessage.newBuilder()
                         .setMsgSeq(message_ID)
-                        //.setReceiverId(receiver_id)
+                        .setReceiverId(receiver_id)
                         .setState(SnakesProto.GameMessage.StateMsg.newBuilder().setState(state).build())
                         .build();
                 //добавление в очередь на отрпавку
@@ -98,7 +104,7 @@ public class MessageCreator {
             SnakesProto.GameMessage message = SnakesProto.GameMessage.newBuilder()
                     .setMsgSeq(message_ID)
                     .setJoin(SnakesProto.GameMessage.JoinMsg.newBuilder()
-                            .setOnlyView(true)
+                            .setOnlyView(false)
                             .setPlayerType(SnakesProto.PlayerType.HUMAN)
                             .setName(name)
                             .build())

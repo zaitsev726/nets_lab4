@@ -11,7 +11,8 @@ public class ImmediateQueue {
         q = new LinkedBlockingQueue<>();
     }
 
-    public void addNewMessage(GameMessage message){ q.add(message); }
+    public void addNewMessage(GameMessage message){
+        System.out.println("добавили сообщение в очередь ");q.add(message); }
 
     public LinkedBlockingQueue<GameMessage> getQ() { return q; }
 }

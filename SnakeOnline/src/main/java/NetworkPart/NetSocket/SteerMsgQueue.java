@@ -36,25 +36,28 @@ public class SteerMsgQueue {
         for (int i = 0; i < players.size(); i++) {
             System.out.println("дошел");
             SnakesProto.GamePlayer player = players.get(i);
-            SnakesProto.GameState.Snake snake = null;
+            if (!player.getRole().equals(SnakesProto.NodeRole.VIEWER)) {
+                SnakesProto.GameState.Snake snake = null;
 
-            for(int j = 0; j < snakes.size(); j ++){
-                if(snakes.get(j).getPlayerId() == player.getId())
-                    snake = snakes.get(j);
-            }
-            System.out.println(snake == null);
-            if(snake != null) {
-
-                if (player.getPort() == port && player.getIpAddress().equals(ip_address)
-                        && isOppositeDirection(snake, msg.getDirection())) {
-                    ID = player.getId();
-                    System.out.println("пршел");
+                for (int j = 0; j < snakes.size(); j++) {
+                    if (snakes.get(j).getPlayerId() == player.getId())
+                        snake = snakes.get(j);
                 }
-            }else
-                return;
-        }
-        if (ID != 0) {
-            map.put(ID, msg.getDirection());
+                System.out.println(snake == null);
+                if (snake != null) {
+
+                    if (player.getPort() == port && player.getIpAddress().equals(ip_address)
+                            && isOppositeDirection(snake, msg.getDirection())) {
+                        ID = player.getId();
+                        System.out.println("пршел");
+                    }
+                } else
+                    return;
+
+                if (ID != 0) {
+                    map.put(ID, msg.getDirection());
+                }
+            }
         }
     }
 

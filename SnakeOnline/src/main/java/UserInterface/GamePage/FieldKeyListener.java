@@ -1,41 +1,36 @@
 package UserInterface.GamePage;
 
-import NetworkPart.NetSocket.SteerMsgQueue;
+import Global.GlobalController;
 import me.ippolitov.fit.snakes.SnakesProto;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 public class FieldKeyListener extends KeyAdapter {
     GameFieldPanel panel;
-    public FieldKeyListener(GameFieldPanel p){
+    GlobalController controller;
+    public FieldKeyListener(GameFieldPanel p, GlobalController controller){
         panel = p;
+        this.controller = controller;
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         System.out.println("нажал");
-        try {
-            SnakesProto.GameMessage.SteerMsg.Builder steerMsg = SnakesProto.GameMessage.SteerMsg.newBuilder();
+            SnakesProto.Direction direction = null;
             super.keyPressed(e);
             int key = e.getKeyCode();
             if (key == KeyEvent.VK_LEFT) {
-                steerMsg.setDirection(SnakesProto.Direction.LEFT);
+                direction = SnakesProto.Direction.LEFT;
+            } else if (key == KeyEvent.VK_RIGHT) {
+                direction = SnakesProto.Direction.RIGHT;
+            } else if (key == KeyEvent.VK_DOWN) {
+                direction = SnakesProto.Direction.DOWN;
+            } else if (key == KeyEvent.VK_UP) {
+                direction = SnakesProto.Direction.UP;
             }
-            else if (key == KeyEvent.VK_RIGHT) {
-                steerMsg.setDirection(SnakesProto.Direction.RIGHT);
-            }
-            else if (key == KeyEvent.VK_DOWN) {
-                steerMsg.setDirection(SnakesProto.Direction.DOWN);
-            }
-            else if (key == KeyEvent.VK_UP) {
-                steerMsg.setDirection(SnakesProto.Direction.UP);
-            }
-            SteerMsgQueue.getInstance().addNewDirection(steerMsg.build(), InetAddress.getByName(""), 1);
-        }catch (UnknownHostException ex) {
-                ex.printStackTrace();
-            }
+            if (direction != null)
+                controller.sendSteer(direction);
+
     }
 }

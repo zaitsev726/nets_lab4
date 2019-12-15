@@ -33,37 +33,6 @@ public class MessageManagement extends Thread {
 
     @Override
     public void run() {
-        while (true) {
-            if (!queue.isEmpty()) {
-                Date d = new Date();
-
-                for (Iterator<Map.Entry<SnakesProto.GameMessage, Date>> it = queue.entrySet().iterator(); it.hasNext(); ) {
-                    Map.Entry<SnakesProto.GameMessage, Date> iterator = it.next();
-                    switch (iterator.getKey().getTypeCase()) {
-                        case PING:
-                            if (d.getTime() - iterator.getValue().getTime() > PING_TIME) {
-                                queue.put(iterator.getKey(), d);
-                                createPingPacket(iterator.getKey());
-                            }
-                            break;
-                        case STEER:
-                            break;
-                        case ACK:
-
-                        case STATE:
-
-                        case ANNOUNCEMENT:
-
-                        case JOIN:
-                        case ERROR:
-                        case ROLE_CHANGE:
-                        case TYPE_NOT_SET:
-
-                    }
-
-                }
-            }
-        }
     }
 
 

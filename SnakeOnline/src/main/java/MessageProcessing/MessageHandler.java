@@ -42,7 +42,6 @@ public class MessageHandler {
                 //ничего не делаем т.к. уже добавили в мапу
                 break;
             case STEER:
-                //не уверен что это так и оно работает
                 SteerMsgQueue.getInstance().addNewDirection(message.getSteer(),address,port);
                 break;
             case ACK:
@@ -55,28 +54,36 @@ public class MessageHandler {
                 Players.getInstance().setPlayers(new ArrayList<SnakesProto.GamePlayer>(state.getPlayers().getPlayersList()));
                 Players.getInstance().setSnakes(state.getSnakesList());
                 controller.sendAck(message.getMsgSeq(),Players.getInstance().getHostID());
+                controller.setHostID(state.getPlayers().getPlayersList());
+                controller.setHostIP(address.toString());
+                controller.setHostPort(port);
                 System.out.println("State order" + state.getStateOrder());
 
                 controller.setState(state);
                 break;
             case ANNOUNCEMENT:
-                //не должны такое ловить
-                return;
+                break;
             case JOIN:
-                //передаем сообщение в players
-                //System.out.println("***приняли ДЖОИН!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 Players.getInstance().addNewPlayerInQueue(message, address,port,msg_seq);
                 break;
             case ERROR:
                 controller.errorMessage(message.getError());
                 break;
             case ROLE_CHANGE:
+                controller.sendAck(message.getMsgSeq(), message.getSenderId());
                 //если получили извне сообщение о том что кто то выходит
-
+                if(message.getRoleChange().getReceiverRole().equals(SnakesProto.NodeRole.MASTER))
+                    Players.getInstance().updateRole(address,port);
                 //если получает сообщение не мастер
-                if(message.getRoleChange().getSenderRole().equals(SnakesProto.NodeRole.VIEWER))
+                if(message.getRoleChange().getSenderRole().equals(SnakesProto.NodeRole.VIEWER)
+                    && message.getRoleChange().getReceiverRole().equals(SnakesProto.NodeRole.MASTER))
                     Players.getInstance().updateRole(address, port);
 
+                if(message.getRoleChange().getReceiverRole().equals(SnakesProto.NodeRole.DEPUTY)){
+                    controller.updateGame( null);
+                }
+                //если будет кнопка join то получать сообщение о смерти от мастера
+                //пока что они игнорятся
                 break;
             case TYPE_NOT_SET:
                 break;

@@ -5,6 +5,7 @@ public class CurrentLobby {
     private int host_port;
     private boolean master = false;
     private int our_ID;
+    private int host_ID;
 
     public CurrentLobby(boolean master){
         this.master = master;
@@ -23,7 +24,17 @@ public class CurrentLobby {
     public String getHost_IP() { return host_IP; }
     public int getHost_port() { return host_port; }
     public boolean isMaster() { return master; }
+    public int getHost_ID() {return host_ID;}
 
+    public void setHost_IP(String host_IP) {
+        this.host_IP = host_IP;
+    }
+
+    public void setHost_port(int host_port) {
+        this.host_port = host_port;
+    }
+
+    public void setHost_ID(int id){this.host_ID = id;}
     public void setOur_ID(int id){this.our_ID = id; }
     public int getOur_ID(){return our_ID;}
 }

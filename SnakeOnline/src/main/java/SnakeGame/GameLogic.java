@@ -33,7 +33,7 @@ public class GameLogic {
     private List<Event> apples = new ArrayList<>();
 
     public GameLogic(int width, int height, int foodStatic, float foodPerPlayer,
-                     float deadFoodProb) {
+                     float deadFoodProb, int stateOrder) {
         /*create your game*/
 
         GameLogic.width = width;
@@ -41,7 +41,7 @@ public class GameLogic {
         this.foodStatic = foodStatic;
         this.foodPerPlayer = foodPerPlayer;
         this.deadFoodProb = deadFoodProb;
-
+        this.stateOrder = stateOrder;
         gameField = new int[width][height];
     }
 
@@ -336,8 +336,8 @@ public class GameLogic {
                     }
                     snake = builder.build();
                 }
-                updatedSnakes.add(snake);
             }
+            updatedSnakes.add(snake);
         }
         return updatedSnakes;
     }
@@ -352,7 +352,8 @@ public class GameLogic {
             int i = e.getX();
             int j = e.getY();
             int head = e.getHost_head();
-            if (gameField[i][j] > 1 || gameField[i][j] < -1) {
+            if (gameField[i][j] > 1 || gameField[i][j] < -1) {//
+            if (gameField[i][j] > 1 || gameField[i][j] < -1) {//
                 deadSnakes.add(head);
 
             } else {
@@ -384,7 +385,7 @@ public class GameLogic {
 
     //удаляем мертвых змей
     private void removeDeadSnakes(List<GameState.Snake> snakes, ArrayList<GamePlayer> players) {
-
+        ArrayList<GamePlayer> updatedPlayers = new ArrayList<>();
         //восстановление яблок
         for (Event appleHead : appleHeads) {
             if (deadSnakes.contains(appleHead.getHost_head())) {
@@ -410,22 +411,45 @@ public class GameLogic {
         }
 
         Iterator<GameState.Snake> iterator = snakes.iterator();
+        boolean isMasterDead = false;
         while (iterator.hasNext()) {
             GameState.Snake snake = iterator.next();
             int ID = snake.getPlayerId() + 1;
             for (int i = 0; i < deadSnakes.size(); i++) {
-                if (ID == Math.abs(deadSnakes.get(i)))
+                if (ID == Math.abs(deadSnakes.get(i))) {
                     iterator.remove();
-                Iterator<GamePlayer> iter = players.iterator();
-                while (iter.hasNext()) {
-                    GamePlayer player = iter.next();
-                    if ((player.getId() + 1) == ID) {
-                        iter.remove();
+                 //   snakes.add(snake.toBuilder().setState(GameState.Snake.SnakeState.ZOMBIE).build());
+                    Iterator<GamePlayer> iter = players.iterator();
+                    while (iter.hasNext()) {
+                        GamePlayer player = iter.next();
+                        if ((player.getId() + 1) == ID) {
+                            if(!player.getRole().equals(SnakesProto.NodeRole.MASTER)) {
+                                Players.getInstance().getController().sendRoleChange(
+                                        SnakesProto.NodeRole.VIEWER,
+                                        SnakesProto.NodeRole.MASTER,
+                                        player.getId());            //перевыбор зама
+                                //player = player.toBuilder().setRole(SnakesProto.NodeRole.VIEWER).build();
+                            }
+                            else{
+                                isMasterDead = true;
+                            }
+                            iter.remove();
+                            updatedPlayers.add(player.toBuilder().setRole(SnakesProto.NodeRole.VIEWER).build());
+                        }
                     }
                 }
             }
         }
+        players.addAll(updatedPlayers);
         Players.getInstance().setPlayers(players);
+        if(isMasterDead) {
+            for (GamePlayer gamePlayer : players) {
+                if (gamePlayer.getRole().equals(SnakesProto.NodeRole.DEPUTY)){
+                    Players.getInstance().getController().sendRoleChange();
+                    Players.getInstance().getController().masterDead(gamePlayer);
+                }
+            }
+        }
     }
 
     //добавляем яблоки

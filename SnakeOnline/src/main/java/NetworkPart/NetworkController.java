@@ -60,6 +60,9 @@ public class NetworkController {
     public void sendNewMessage(SnakesProto.GameMessage message){
         if(message.getTypeCase().equals(SnakesProto.GameMessage.TypeCase.STATE))
             System.out.println("отправялем стейт челам");
+        if(message.getTypeCase().equals(SnakesProto.GameMessage.TypeCase.STEER))
+            System.out.println("JNGHFDKZTN JWERFHGIUERHJGERI");
+
         queue.addNewMessage(message);
     }
     public void deleteAnnouncementMsg(){resendQueue.deleteAnnouncementMsg();}
