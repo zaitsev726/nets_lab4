@@ -2,22 +2,29 @@ package UserInterface.GamePage;
 
 import Global.GlobalController;
 import UserInterface.Layouts.VerticalLayout;
+import me.ippolitov.fit.snakes.SnakesProto;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class GamePanel extends JPanel {
     public GameFieldPanel gameField;
+    public JPanel scorePanel;
     public JButton backButton;
+    public JButton viewModButton;
 
     private JPanel chatPanel;
-    private JPanel scorePanel;
     private JPanel currentGamePanel;
-
+    private HashMap<SnakesProto.GamePlayer, JLabel> score;
     public GamePanel(GlobalController controller) {
         this.setLayout(null);
-
+        score = new HashMap<>();
         gameField = new GameFieldPanel();
         backButton = new JButton("BACK");
+        viewModButton = new JButton("VIEW MOD");
 
         chatPanel = new JPanel();
         scorePanel = new JPanel();
@@ -31,7 +38,8 @@ public class GamePanel extends JPanel {
         scorePane.setBounds(1010, 5, 490, 225);
         currentPane.setBounds(1010,235, 245,115);
         backButton.setBounds(1260, 235, 240, 115);
-        chatPane.setBounds(1010, 355, 490, 650);
+        viewModButton.setBounds(1010, 355, 490,115);
+        chatPane.setBounds(1010, 475, 490, 530);
 
 
         scorePanel.setBackground(Color.green);
@@ -39,6 +47,7 @@ public class GamePanel extends JPanel {
         chatPanel.setBackground(Color.CYAN);
 
         scorePanel.setLayout(new VerticalLayout(465, 25));
+     /*   scorePanel.add(new JLabel("123123"));
         scorePanel.add(new JLabel("123123"));
         scorePanel.add(new JLabel("123123"));
         scorePanel.add(new JLabel("123123"));
@@ -46,8 +55,7 @@ public class GamePanel extends JPanel {
         scorePanel.add(new JLabel("123123"));
         scorePanel.add(new JLabel("123123"));
         scorePanel.add(new JLabel("123123"));
-        scorePanel.add(new JLabel("123123"));
-        scorePanel.add(new JLabel("123123"));
+        scorePanel.add(new JLabel("123123"));*/
 
         currentGamePanel.setLayout(new VerticalLayout(225,25));
         currentGamePanel.add(new JLabel("Ведущий "));
@@ -69,6 +77,7 @@ public class GamePanel extends JPanel {
         this.add(scorePane);
         this.add(currentPane);
         this.add(backButton);
+        this.add(viewModButton);
         this.add(chatPane);
 
     }
@@ -86,5 +95,26 @@ public class GamePanel extends JPanel {
         requestFocus();
         this.repaint();
 
+    }
+
+    public void repaintScore(List<SnakesProto.GamePlayer> players) {//не работает
+        if(!score.isEmpty()){
+            for(Map.Entry<SnakesProto.GamePlayer, JLabel> entry : score.entrySet()){
+                scorePanel.remove(entry.getValue());
+            }
+        }
+        score.clear();
+        for(SnakesProto.GamePlayer player: players){
+            if(!player.getRole().equals(SnakesProto.NodeRole.VIEWER)) {
+                JLabel label = new JLabel(player.getName() + " счет: " + player.getScore());
+                score.put(player, label);
+                scorePanel.add(label);
+            }
+        }
+        scorePanel.revalidate();
+        //scorePanel.repaint();
+       // repaint();
+        setFocusable(true);
+        requestFocus();
     }
 }

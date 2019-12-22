@@ -8,35 +8,21 @@ import me.ippolitov.fit.snakes.SnakesProto;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class MessageHandler {
     private GlobalController controller;
     private ResendQueue resendQueue;
-    private ConcurrentHashMap<SnakesProto.GamePlayer, Date> lastMessage;
     public MessageHandler(GlobalController controller, ResendQueue resendQueue){
         this.controller = controller;
         this.resendQueue = resendQueue;
-        lastMessage = new ConcurrentHashMap<>();
     }
 
-    /*вопрос что использовать?
-        есть структура плеер в котором можно заполнять два поля, но хорошо ли применять к ним иквелс?
-        или создать свою структуру. переопределить метод иквелс и там уже флекс?
-    * */
+
+
     public void handlingMessage(SnakesProto.GameMessage message, InetAddress address, int port, long msg_seq){
        //если пришло любое сообщение обновляем информацию о пользователе
-        SnakesProto.GamePlayer player = SnakesProto.GamePlayer.newBuilder()
-                                        .setName("")
-                                        .setId(0)
-                                        .setIpAddress(address.toString())
-                                        .setPort(port)
-                                        .setRole(SnakesProto.NodeRole.NORMAL)
-                                        .setScore(0)
-                                        .build();
-        lastMessage.put(player,new Date());
-        System.out.println("приняли месседж");
+
+       // System.out.println("приняли месседж");
         switch (message.getTypeCase()) {
             case PING:
                 //ничего не делаем т.к. уже добавили в мапу
@@ -50,16 +36,18 @@ public class MessageHandler {
                 break;
             case STATE:
                 //обновление стейта
-                SnakesProto.GameState state = message.getState().getState();
-                Players.getInstance().setPlayers(new ArrayList<SnakesProto.GamePlayer>(state.getPlayers().getPlayersList()));
-                Players.getInstance().setSnakes(state.getSnakesList());
-                controller.sendAck(message.getMsgSeq(),Players.getInstance().getHostID());
-                controller.setHostID(state.getPlayers().getPlayersList());
-                controller.setHostIP(address.toString());
-                controller.setHostPort(port);
-                System.out.println("State order" + state.getStateOrder());
+                if(!controller.getMaster()) {
+                    SnakesProto.GameState state = message.getState().getState();
+                    Players.getInstance().setPlayers(new ArrayList<SnakesProto.GamePlayer>(state.getPlayers().getPlayersList()));
+                    Players.getInstance().setSnakes(state.getSnakesList());
+                    controller.sendAck(message.getMsgSeq(), Players.getInstance().getHostID());
+                    controller.setHostID(state.getPlayers().getPlayersList());
+                    controller.setHostIP(address.toString());
+                    controller.setHostPort(port);
+               //     System.out.println("State order" + state.getStateOrder());
 
-                controller.setState(state);
+                    controller.setState(state);
+                }
                 break;
             case ANNOUNCEMENT:
                 break;
@@ -79,9 +67,15 @@ public class MessageHandler {
                     && message.getRoleChange().getReceiverRole().equals(SnakesProto.NodeRole.MASTER))
                     Players.getInstance().updateRole(address, port);
 
-                if(message.getRoleChange().getReceiverRole().equals(SnakesProto.NodeRole.DEPUTY)){
-                    controller.updateGame( null);
+                if(message.getRoleChange().getReceiverRole().equals(SnakesProto.NodeRole.DEPUTY)
+                && message.getRoleChange().getSenderRole().equals(SnakesProto.NodeRole.VIEWER)){
+                    controller.updateGame( null,true);
                 }
+                if(message.getRoleChange().getReceiverRole().equals(SnakesProto.NodeRole.DEPUTY)
+                && message.getRoleChange().getSenderRole().equals(SnakesProto.NodeRole.NORMAL)){
+                    controller.updateGame( null,false);
+                }
+
                 //если будет кнопка join то получать сообщение о смерти от мастера
                 //пока что они игнорятся
                 break;

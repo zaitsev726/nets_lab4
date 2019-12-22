@@ -294,7 +294,37 @@ public class Players {
         snakes = new ArrayList<>();
         ID = 1;
     }
-    public void selectNewDeputy(List<Players> players){
+    public void setID(List<SnakesProto.GamePlayer> players){
+        for(SnakesProto.GamePlayer gamePlayer : players){
+            if(gamePlayer.getId() >= ID){
+                ID = gamePlayer.getId() + 1;
+            }
+        }
+    }
+    public void selectNewDeputy(List<SnakesProto.GamePlayer> players){
+        ArrayList<SnakesProto.GamePlayer> updatedPlayers = new ArrayList<>();
+        for(SnakesProto.GamePlayer gamePlayer : players){
+            if(gamePlayer.getRole().equals(SnakesProto.NodeRole.NORMAL) && !hasDeputy){
+                hasDeputy = true;
+                updatedPlayers.add(gamePlayer.toBuilder().setRole(SnakesProto.NodeRole.DEPUTY).build());
+            }
+            else
+                updatedPlayers.add(gamePlayer);
+        }
+        setPlayers(updatedPlayers);
+    }
 
+    public void selectNewDeputy(List<SnakesProto.GamePlayer> players, boolean deputy){
+        ArrayList<SnakesProto.GamePlayer> updatedPlayers = new ArrayList<>();
+        for(SnakesProto.GamePlayer gamePlayer : players){
+            if(gamePlayer.getRole().equals(SnakesProto.NodeRole.NORMAL) && !deputy){
+                this.hasDeputy = true;
+                deputy = true;
+                updatedPlayers.add(gamePlayer.toBuilder().setRole(SnakesProto.NodeRole.DEPUTY).build());
+            }
+            else
+                updatedPlayers.add(gamePlayer);
+        }
+        setPlayers(updatedPlayers);
     }
 }

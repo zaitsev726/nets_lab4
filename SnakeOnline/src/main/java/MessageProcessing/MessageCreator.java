@@ -16,13 +16,14 @@ public class MessageCreator {
         RoleChangeMsg role_change = 9;
      */
 
-    public static void createNewPing(){
+    public static SnakesProto.GameMessage  createNewPing(){
         synchronized (MessageCreator.class) {
             SnakesProto.GameMessage message = SnakesProto.GameMessage.newBuilder()
                     .setMsgSeq(message_ID)
                     .setPing(SnakesProto.GameMessage.PingMsg.newBuilder().build())
                     .build();
             message_ID++;
+            return message;
         }
     }
 

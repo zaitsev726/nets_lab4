@@ -1,6 +1,7 @@
 package NetworkPart;
 
 import Global.GlobalController;
+import MessageProcessing.MessageManagement;
 import NetworkPart.NetSocket.MessageReceiver;
 import NetworkPart.NetSocket.SendPart.ImmediateQueue;
 import NetworkPart.NetSocket.SendPart.MessageSender;
@@ -20,6 +21,7 @@ public class NetworkController {
     private GlobalController controller;
     private MessageReceiver receiver;
     private MessageSender sender;
+    private MessageManagement management;
     private ImmediateQueue queue;
     private ResendQueue resendQueue;
 
@@ -27,7 +29,6 @@ public class NetworkController {
         this.controller = globalController;
         this.queue = new ImmediateQueue();
         this.resendQueue = new ResendQueue(controller);
-
         try {
             IP = getLocalAddress();
         } catch (UnknownHostException | SocketException e) {
@@ -40,9 +41,11 @@ public class NetworkController {
         }
 
         receiver = new MessageReceiver(socket, controller,resendQueue);
+        management = new MessageManagement(globalController.getNodeTimeout(),receiver,controller);
         sender = new MessageSender(socket, controller,queue, resendQueue);
 
         receiver.start();
+       // management.start();
         sender.start();
     }
 

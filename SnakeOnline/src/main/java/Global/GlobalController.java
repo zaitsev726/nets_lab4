@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GlobalController {
+public class GlobalController{
     private InterfaceController interfaceController;
     private GameController gameController;
     private ChangestateController stateController = null;
@@ -26,49 +26,26 @@ public class GlobalController {
     private NetworkController networkController;
     private CurrentLobby lobby;
 
-    private int width = 0;
-    private int height = 0;
-    private int foodStatic = 0;
-    private float foodPerPlayer = (float) 0.0;
-    private int stateDelay = 0;
-    private float deadFoodProb = (float) 0.0;
-    private int pingDelay = 0;
-    private int nodeTimeout = 0;
+    private int width = 40;
+    private int height = 30;
+    private int foodStatic = 1;
+    private float foodPerPlayer = (float) 1.0;
+    private int stateDelay = 1000;
+    private float deadFoodProb = (float) 0.1;
+    private int pingDelay = 100;
+    private int nodeTimeout = 800;
     private volatile SnakesProto.GameState state = null;
     private String name = "default";
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public void setFoodStatic(int foodStatic) {
-        this.foodStatic = foodStatic;
-    }
-
-    public void setFoodPerPlayer(float foodPerPlayer) {
-        this.foodPerPlayer = foodPerPlayer;
-    }
-
-    public void setStateDelay(int stateDelay) {
-        this.stateDelay = stateDelay;
-    }
-
-    public void setDeadFoodProb(float deadFoodProb) {
-        this.deadFoodProb = deadFoodProb;
-    }
-
-    public void setPingDelay(int pingDelay) {
-        this.pingDelay = pingDelay;
-    }
-
-    public void setNodeTimeout(int nodeTimeout) {
-        this.nodeTimeout = nodeTimeout;
-    }
-
+    public void setWidth(int width) { if(width!=0) this.width = width; }
+    public void setHeight(int height) { if(height != 0) this.height = height; }
+    public void setFoodStatic(int foodStatic) { if(foodStatic != 0) this.foodStatic = foodStatic; }
+    public void setFoodPerPlayer(float foodPerPlayer) { if(foodPerPlayer!= 0.0) this.foodPerPlayer = foodPerPlayer; }
+    public void setStateDelay(int stateDelay) { if(stateDelay != 0) this.stateDelay = stateDelay; }
+    public void setDeadFoodProb(float deadFoodProb) { if(deadFoodProb!= 0.0) this.deadFoodProb = deadFoodProb; }
+    public void setPingDelay(int pingDelay) { if(pingDelay != 0) this.pingDelay = pingDelay; }
+    public void setNodeTimeout(int nodeTimeout) { if(nodeTimeout != 0) this.nodeTimeout = nodeTimeout; }
+    public int getNodeTimeout(){return nodeTimeout;}
     public void setName(String name) {
         this.name = name;
     }
@@ -110,16 +87,50 @@ public class GlobalController {
         if (gameController != null) {
             gameController.clearField();
         }
+
+     //   networkController.deleteOldStates();//
         gameController = null;
     }
     public void masterDead(SnakesProto.GamePlayer deputy){
         //gameController.clearField();
+        int ID = lobby.getOur_ID();
         lobby = new CurrentLobby(deputy.getIpAddress(), deputy.getPort(), false);
+        lobby.setOur_ID(ID);
+        networkController.deleteOldStates();//
         stateController.interrupt();
+        networkController.deleteOldStates();//
         stateController = new ChangestateController(this,
                 this.state,
                 interfaceController, stateDelay);
+        stateController.start();
+    }
 
+    public void masterExit(){
+        if (lobby.isMaster()) {
+            for (SnakesProto.GamePlayer player : Players.getInstance().getPlayers()) {
+                if (player.getRole().equals(SnakesProto.NodeRole.DEPUTY)) {
+                    networkController.sendNewMessage(MessageCreator.createNewRoleChangeMsg(
+                            SnakesProto.NodeRole.NORMAL,
+                            SnakesProto.NodeRole.DEPUTY,
+                            lobby.getOur_ID(),
+                            player.getId()));
+
+                    masterDead(player);
+                }
+            }
+        } else
+            networkController.sendNewMessage(MessageCreator.createNewRoleChangeMsg(
+                    SnakesProto.NodeRole.VIEWER,
+                    SnakesProto.NodeRole.MASTER,
+                    lobby.getOur_ID(),
+                    lobby.getHost_ID()));
+       /* ArrayList<SnakesProto.GamePlayer> players = Players.getInstance().getPlayers();
+        for (SnakesProto.GamePlayer gamePlayer : players) {
+            if (gamePlayer.getRole().equals(SnakesProto.NodeRole.DEPUTY)){
+                Players.getInstance().getController().sendRoleChange();
+                Players.getInstance().getController().masterDead(gamePlayer);
+            }
+        }*/
     }
     public void initializationGame() {
 
@@ -131,7 +142,6 @@ public class GlobalController {
         stateController = new ChangestateController(this,
                 gameController.makeNextState(),
                 interfaceController, stateDelay);
-
         stateController.start();
     }
 
@@ -163,21 +173,23 @@ public class GlobalController {
     public synchronized SnakesProto.GameState getNextState() {
         //если мы хост
         // if(lobby != null) {
-        if (lobby.isMaster()) {
-            state = gameController.makeNextState();
-            networkController.deleteAnnouncementMsg();
-            networkController.sendNewMessage(MessageCreator.createNewAnnouncementMsg(
-                    state.getPlayers(),
-                    state.getConfig(),
-                    Players.getInstance().canJoin()
-            ));
+        synchronized (GlobalController.class) {
+            if (lobby.isMaster()) {
+                state = gameController.makeNextState();
+                networkController.deleteAnnouncementMsg();
+                networkController.sendNewMessage(MessageCreator.createNewAnnouncementMsg(
+                        state.getPlayers(),
+                        state.getConfig(),
+                        Players.getInstance().canJoin()
+                ));
+            }
+            if (!lobby.isMaster())
+                System.out.println("yes");
+            //если мы не хост
+            return state;
+            // }
+            //   return null;
         }
-        if (!lobby.isMaster())
-            System.out.println("yes");
-        //если мы не хост
-        return state;
-        // }
-        //   return null;
     }
 
     public void setPort(int port) {
@@ -193,7 +205,7 @@ public class GlobalController {
             this.state = state;
 
         if (this.state.getStateOrder() < state.getStateOrder()) {
-            this.state = state;
+                this.state = state;
         }
     }
 
@@ -286,60 +298,88 @@ public class GlobalController {
         return lobby.getHost_ID();
     }
 
-    public void updateGame(SnakesProto.GameState state) {
-        SnakesProto.GamePlayer player = null;
-        if(state == null){
-            state = this.state;
-        }
-
-        for (SnakesProto.GamePlayer p : Players.getInstance().getPlayers()) {
-            if (p.getId() == lobby.getOur_ID()) {
-                player = p;
+    public void updateGame(SnakesProto.GameState state, boolean deleteMaster) {
+        synchronized (GlobalController.class) {
+            boolean isMaterDead = false;
+            SnakesProto.GamePlayer player = null;
+            if (state == null) {
+                state = this.state;
+                isMaterDead = true;
             }
-        }
-        //System.out.println(player.getRole());
-        if (player.getRole().equals(SnakesProto.NodeRole.DEPUTY)) {
-            ArrayList<SnakesProto.GamePlayer> players = new ArrayList<>();
-            ArrayList<SnakesProto.GameState.Snake> snakes = new ArrayList<>(state.getSnakesList());
-            for (SnakesProto.GamePlayer gamePlayer : state.getPlayers().getPlayersList()) {
-                if (gamePlayer.getRole().equals(SnakesProto.NodeRole.DEPUTY)) {
-                    try {
-                        players.add(gamePlayer.toBuilder()
-                                .setRole(SnakesProto.NodeRole.MASTER)
-                                .setPort(1)
-                                .setIpAddress(InetAddress.getByName("").toString())
-                                .build());
-                    } catch (UnknownHostException e) {
-                        e.printStackTrace();
-                    }
-                } else if (gamePlayer.getRole().equals(SnakesProto.NodeRole.MASTER)) {
-                    players.add(gamePlayer.toBuilder()
-                            .setRole(SnakesProto.NodeRole.VIEWER)
-                            .setIpAddress(lobby.getHost_IP())
-                            .setPort(lobby.getHost_port())
-                            .build());
-                    for (SnakesProto.GameState.Snake snake : state.getSnakesList()) {
-                        if (snake.getPlayerId() == gamePlayer.getId()) {
-                            snakes.remove(snake);
-                            snakes.add(snake.toBuilder().setState(SnakesProto.GameState.Snake.SnakeState.ZOMBIE).build());
+
+            for (SnakesProto.GamePlayer p : state.getPlayers().getPlayersList()) {
+                if (p.getId() == lobby.getOur_ID()) {
+                    player = p;
+                }
+            }
+            //System.out.println(player.getRole());
+            if (player.getRole().equals(SnakesProto.NodeRole.DEPUTY)) {
+                ArrayList<SnakesProto.GamePlayer> players = new ArrayList<>();
+                ArrayList<SnakesProto.GameState.Snake> snakes = new ArrayList<>(state.getSnakesList());
+                for (SnakesProto.GamePlayer gamePlayer : state.getPlayers().getPlayersList()) {
+                    if (gamePlayer.getRole().equals(SnakesProto.NodeRole.DEPUTY)) {
+                        try {
+                            players.add(gamePlayer.toBuilder()
+                                    .setRole(SnakesProto.NodeRole.MASTER)
+                                    .setPort(1)
+                                    .setIpAddress(InetAddress.getByName("").toString())
+                                    .build());
+                        } catch (UnknownHostException e) {
+                            e.printStackTrace();
                         }
-                    }
-                } else
-                    players.add(gamePlayer);
+                    } else if (gamePlayer.getRole().equals(SnakesProto.NodeRole.MASTER)) {
+                        players.add(gamePlayer.toBuilder()
+                                .setRole(SnakesProto.NodeRole.VIEWER)
+                                .setIpAddress(lobby.getHost_IP())
+                                .setPort(lobby.getHost_port())
+                                .build());
+                        for (SnakesProto.GameState.Snake snake : state.getSnakesList()) {
+                            if (snake.getPlayerId() == gamePlayer.getId()) {
+                                snakes.remove(snake);
+                                if(!isMaterDead || !deleteMaster)
+                                    snakes.add(snake.toBuilder().setState(SnakesProto.GameState.Snake.SnakeState.ZOMBIE).build());
+                            }
+                        }
+                    } else
+                        players.add(gamePlayer);
+                }
+                Players.getInstance().setPlayers(players);
+                Players.getInstance().setSnakes(snakes);
+                Players.getInstance().setID(players);
+                Players.getInstance().selectNewDeputy(players);//
+                SnakesProto.GameState.Builder currentState = SnakesProto.GameState.newBuilder();
+
+                currentState.setConfig(state.getConfig());
+                SnakesProto.GamePlayers.Builder playersBuilder = SnakesProto.GamePlayers.newBuilder();
+                for(SnakesProto.GamePlayer gamePlayer : players){
+                    playersBuilder.addPlayers(gamePlayer);
+                }
+                for(SnakesProto.GameState.Snake snake : snakes){
+                    currentState.addSnakes(snake);
+                }
+                List<SnakesProto.GameState.Coord> foods = state.getFoodsList();
+                for(SnakesProto.GameState.Coord coord : foods){
+                    currentState.addFoods(coord);
+                }
+                currentState.setPlayers(playersBuilder.build());
+                currentState.setStateOrder(state.getStateOrder());
+                this.state = currentState.build();
+
+                lobby = new CurrentLobby(true);
+                lobby.setOur_ID(player.getId());
+                lobby.setHost_ID(player.getId());
+                gameController = new GameController(width, height, foodStatic, foodPerPlayer,
+                        stateDelay, deadFoodProb, pingDelay, nodeTimeout, this, state.getStateOrder());
+
+                stateController = new ChangestateController(this,
+                        state,
+                        interfaceController, stateDelay);
 
             }
-            Players.getInstance().setPlayers(players);
-            Players.getInstance().setSnakes(snakes);
-            lobby = new CurrentLobby(true);
-            lobby.setOur_ID(player.getId());
-            lobby.setHost_ID(player.getId());
-            gameController = new GameController(width, height, foodStatic, foodPerPlayer,
-                    stateDelay, deadFoodProb, pingDelay, nodeTimeout, this, state.getStateOrder());
-
-            stateController = new ChangestateController(this,
-                    state,
-                    interfaceController, stateDelay);
-
         }
+    }
+
+    public boolean inGame() {
+        return lobby != null;
     }
 }

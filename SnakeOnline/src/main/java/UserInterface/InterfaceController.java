@@ -122,12 +122,17 @@ public class InterfaceController {
                 controller.sendRoleChange();
                 controller.removeGame();
                 window.remove(gamePanel);
-                window.add(newGamePanel);
+                window.add(connectionPanel);
                 window.revalidate();
                 window.repaint();
             }
         });
-
+        gamePanel.viewModButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.masterExit();    //заменить на любой чел выходит!
+                controller.setOurId(0);
+            }
+        });
     }
 
     private void initializationMenuListeners() {
@@ -169,9 +174,9 @@ public class InterfaceController {
                     if (w > 100 || w < 10) {
                         JOptionPane.showMessageDialog(window,
                                 "Введите число в диапазоне от 10 до 100, а не " + w);
-                    } else
+                    } else {
                         controller.setWidth(w);
-
+                    }
                 } catch (NumberFormatException r) {
                     JOptionPane.showMessageDialog(window, "Вы некорректно ввели цифры!");
                 }
@@ -413,10 +418,15 @@ public class InterfaceController {
         }
     }
 
-    public void repaintField(int[][] a, int width, int height, int ID) {
+    public void repaintField(int[][] a, int width, int height, int ID, List<GamePlayer> players) {
+      //  gamePanel.repaintScore(players);
+        gamePanel.repaintScore(players);
         gamePanel.gameField.repaintField(a, width, height, ID);
+
+        gamePanel.repaint();
         gamePanel.setFocusable(true);
         gamePanel.requestFocus();
+
     }
 
     public void showMessage(String message) {

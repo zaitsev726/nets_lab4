@@ -28,7 +28,8 @@ public class ChangestateController extends Thread{
             interfaceController.repaintField(GameField.updateField(state),
                     state.getConfig().getWidth(),
                     state.getConfig().getHeight(),
-                    controller.getID());
+                    controller.getID(),
+                    state.getPlayers().getPlayersList());
             lastState = state;
             lastDate = new Date();
         }
@@ -36,25 +37,27 @@ public class ChangestateController extends Thread{
             lastDate = new Date();
             while (true) {
                 //delay
-                System.out.println("IDIDIDIDIIDID" + controller.getID());
+              //  System.out.println("IDIDIDIDIIDID" + controller.getID());
                 Thread.sleep(100);
                 state = controller.getNextState();
 
                 if (state != null) {
-                    System.out.println("Номер текущего стейта" + state.getStateOrder());
+               //     System.out.println("Номер текущего стейта" + state.getStateOrder());
                     System.out.println();
                     interfaceController.repaintField(GameField.updateField(state),
                             state.getConfig().getWidth(),
                             state.getConfig().getHeight(),
-                            controller.getID());
+                            controller.getID(),
+                            state.getPlayers().getPlayersList());
 
                         if (lastState == null || state.getStateOrder() > lastState.getStateOrder()) {
                             lastState = state;
                             lastDate = new Date();
                         }
 //                    System.out.println("РАЗНИЦА " + ((new Date().getTime()) - lastDate.getTime()));
-                        if ((new Date().getTime()) - lastDate.getTime() > 2000) {
-                            controller.updateGame(lastState);
+                        if ((new Date().getTime()) - lastDate.getTime() > 500) {
+                            controller.updateGame(lastState,false);
+                            lastDate = new Date();
                         }
                     }
             }

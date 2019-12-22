@@ -242,6 +242,7 @@ public class GameLogic {
                     if (head == appleHeads.get(i).getHost_head()) {
                         //если скушали яблоко
                         appleHead = true;
+
                         SnakesProto.Direction direction = snake.getHeadDirection();
                        /* if (!map.containsKey(snake.getPlayerId())) {
                             //хвост остается на месте после съедения яблока
@@ -353,7 +354,7 @@ public class GameLogic {
             int j = e.getY();
             int head = e.getHost_head();
             if (gameField[i][j] > 1 || gameField[i][j] < -1) {//
-            if (gameField[i][j] > 1 || gameField[i][j] < -1) {//
+            //if (gameField[i][j] > 1 || gameField[i][j] < -1) {
                 deadSnakes.add(head);
 
             } else {
@@ -387,10 +388,13 @@ public class GameLogic {
     private void removeDeadSnakes(List<GameState.Snake> snakes, ArrayList<GamePlayer> players) {
         ArrayList<GamePlayer> updatedPlayers = new ArrayList<>();
         //восстановление яблок
-        for (Event appleHead : appleHeads) {
+        Iterator<Event> eventIterator = appleHeads.iterator();
+        while(eventIterator.hasNext()) {
+            Event appleHead = eventIterator.next();
             if (deadSnakes.contains(appleHead.getHost_head())) {
                 gameField[appleHead.getX()][appleHead.getY()] = 1;
                 apples.add(new Event(appleHead.getX(), appleHead.getY(), 0));
+                eventIterator.remove();
             }
         }
 
@@ -412,6 +416,7 @@ public class GameLogic {
 
         Iterator<GameState.Snake> iterator = snakes.iterator();
         boolean isMasterDead = false;
+        boolean isDeputyDead = false;
         while (iterator.hasNext()) {
             GameState.Snake snake = iterator.next();
             int ID = snake.getPlayerId() + 1;
@@ -429,19 +434,42 @@ public class GameLogic {
                                         SnakesProto.NodeRole.MASTER,
                                         player.getId());            //перевыбор зама
                                 //player = player.toBuilder().setRole(SnakesProto.NodeRole.VIEWER).build();
+                                if(player.getRole().equals(SnakesProto.NodeRole.DEPUTY)){
+                                    isDeputyDead = true;
+                                }
+                                updatedPlayers.add(player.toBuilder().setRole(SnakesProto.NodeRole.VIEWER).build());
                             }
                             else{
                                 isMasterDead = true;
                             }
                             iter.remove();
-                            updatedPlayers.add(player.toBuilder().setRole(SnakesProto.NodeRole.VIEWER).build());
                         }
                     }
                 }
             }
         }
+
+
+        players.addAll(updatedPlayers);
+
+        Iterator<GamePlayer> iter = players.iterator();
+        while (iter.hasNext()) {
+            GamePlayer player = iter.next();
+            eventIterator = appleHeads.iterator();
+            while (eventIterator.hasNext()){
+                Event event = eventIterator.next();
+                if(player.getId() == (Math.abs(event.getHost_head())-1)){
+                    iter.remove();
+                    updatedPlayers.add(player.toBuilder().setScore(player.getScore() + 1).build());
+                    eventIterator.remove();
+                }
+            }
+        }
         players.addAll(updatedPlayers);
         Players.getInstance().setPlayers(players);
+        if(isDeputyDead){
+            Players.getInstance().selectNewDeputy(players,false);//
+        }
         if(isMasterDead) {
             for (GamePlayer gamePlayer : players) {
                 if (gamePlayer.getRole().equals(SnakesProto.NodeRole.DEPUTY)){

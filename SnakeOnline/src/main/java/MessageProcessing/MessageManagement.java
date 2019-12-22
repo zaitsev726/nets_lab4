@@ -1,60 +1,49 @@
 package MessageProcessing;
 
+import Global.GlobalController;
+import NetworkPart.NetSocket.MessageReceiver;
+import SnakeGame.Players;
 import me.ippolitov.fit.snakes.SnakesProto;
 
-import java.net.DatagramPacket;
-import java.util.*;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class MessageManagement extends Thread {
-    private static final long PING_TIME = 1000;
+public class MessageManagement extends Thread{
 
-    private static volatile Map<SnakesProto.GameMessage, Date> queue = new ConcurrentHashMap<>();
-    public static volatile List<DatagramPacket> messages = new ArrayList<>();
+    private int node_timeout_ms  ;
+    private MessageReceiver receiver;
+    private GlobalController controller;
 
-    public MessageManagement() {
-        start();
+    public MessageManagement(int node_timeout_ms, MessageReceiver receiver, GlobalController controller){
+        this.node_timeout_ms = node_timeout_ms;
+        this.receiver = receiver;
+        this.controller = controller;
     }
-
-    public synchronized static void addNewMessage(SnakesProto.GameMessage message) {
-        if (queue.isEmpty()) {
-            queue.put(message, new Date());
-        } else {
-            for (Iterator<Map.Entry<SnakesProto.GameMessage, Date>> it = queue.entrySet().iterator(); it.hasNext(); ) {
-                Map.Entry<SnakesProto.GameMessage, Date> iterator = it.next();
-                if (iterator.getKey().equals(message)) {
-                    return;
-                }
-            }
-            queue.put(message, new Date());
-        }
-    }
-
-
     @Override
     public void run() {
-    }
-
-
-    private void createPingPacket(SnakesProto.GameMessage message) {
-/*
-        ArrayList players = Players.getInstance().getPlayers();
-        for (int i = 0; i < players.size(); i++) {
-            SnakesProto.GamePlayer g = (SnakesProto.GamePlayer) players.get(i);
-            try {
-                if (!g.getIpAddress().equals("") && GameLogic.getOwner() == true) {
-
-                    messages.add(new DatagramPacket(message.toByteArray(), message.toByteArray().length,
-                            InetAddress.getByName(g.getIpAddress().substring(1)), g.getPort()));
-
-                } else if (g.getIpAddress().equals("") && GameLogic.getOwner() == false) {
-
-                    messages.add(new DatagramPacket(message.toByteArray(), message.toByteArray().length,
-                            InetAddress.getByName(GameLogic.getHost_IP().substring(1)), g.getPort()));
+        while (true) {
+            Date now = new Date();
+            ConcurrentHashMap<SnakesProto.GamePlayer, Date> lastMessage = receiver.getLastMessage();
+            Iterator<Map.Entry<SnakesProto.GamePlayer, Date>> iterator = lastMessage.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<SnakesProto.GamePlayer, Date> player = iterator.next();
+                if (now.getTime() - player.getValue().getTime() > node_timeout_ms) {
+                    if (controller.getMaster()) {
+                        for (SnakesProto.GamePlayer gamePlayer : Players.getInstance().getPlayers()) {
+                            if (gamePlayer.getIpAddress().equals(player.getKey().getIpAddress()) &&
+                                    gamePlayer.getPort() == player.getKey().getPort()) {
+                                controller.sendRoleChange(SnakesProto.NodeRole.VIEWER,
+                                        SnakesProto.NodeRole.MASTER,
+                                        gamePlayer.getId());
+                                iterator.remove();
+                            }
+                        }
+                    } else
+                        controller.updateGame(null, false);
                 }
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
             }
-        }*/
+        }
     }
 }

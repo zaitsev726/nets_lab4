@@ -111,11 +111,13 @@ public class GameField {
                 boolean canSpawn = true;
                 for (int i = 0; i < width; i++) {
                     for (int j = 0; j < height; j++) {
+                        canSpawn = true;
                         if (gameField[i][j] == 0) {
                             for (int k = 0; k < 5; k++) {
                                 for (int m = 0; m < 5; m++) {
-                                    if (gameField[k][m] != 0)
+                                    if (gameField[i+k][j+m] != 0 && canSpawn) {
                                         canSpawn = false;
+                                    }
                                 }
                             }
                             if (canSpawn) {

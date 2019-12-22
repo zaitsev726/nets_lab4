@@ -41,95 +41,110 @@ public class MessageSender extends Thread {
 
     @Override
     public void run() {
+        Date lastMessage = new Date();
         while (true) {
-            currentPlayers = Players.getInstance().getPlayers();
-            Date date = new Date();
-            LinkedBlockingQueue q = queue.getQ();
+                currentPlayers = Players.getInstance().getPlayers();
+                Date date = new Date();
+                LinkedBlockingQueue q = queue.getQ();
 
-            try {
-                SnakesProto.GameMessage message = (SnakesProto.GameMessage) q.poll(minToResend, TimeUnit.MILLISECONDS);
+                try {
+                    SnakesProto.GameMessage message = (SnakesProto.GameMessage) q.poll(minToResend, TimeUnit.MILLISECONDS);
 
-                if (message != null) {
-                    switch (message.getTypeCase()) {
-                        case PING:
+                    if (message != null) {
+                        lastMessage = new Date();
+                        switch (message.getTypeCase()) {
+                            case PING:
 
-                            break;
-                        case STEER:
-                            sendSteer(message);
-                            break;
-                        case ACK:
-                            sendAck(message);
-                            break;
-                        case STATE:
-                            sendState(message);
-                            System.out.println("номер отправленного стейта " + message.getState().getState().getStateOrder());
-                            resend.addNewResendMessage(message);
-                            break;
-                        case ANNOUNCEMENT:
-                            sendAnnouncementMsg(message);
-                            resend.addNewResendMessage(message);
-                            break;
-                        case JOIN:
-                            sendJoin(message);
-                            resend.addNewResendMessage(message);
-                            break;
-                        case ERROR:
-                            resend.addNewResendMessage(message);
-                            break;
-                        case ROLE_CHANGE:
-                            sendRoleChange(message);
-                            resend.addNewResendMessage(message);
-                            break;
-                    }
-                    minToResend = ping_delay_ms - (int) resend.getMinToResend();
-                }
-
-            } catch (InterruptedException | NullPointerException e) {
-                e.printStackTrace();
-            }
-
-            synchronized (ResendQueue.class) {//или конкурент хеш мап?
-                ConcurrentHashMap<SnakesProto.GameMessage, Date> map = resend.getResendQueue();
-                for (Map.Entry<SnakesProto.GameMessage, Date> next : map.entrySet()) {
-                    if ((date.getTime() - next.getValue().getTime()) > ping_delay_ms) {
-                        switch (next.getKey().getTypeCase()) {
-                            case ANNOUNCEMENT:
-                                sendAnnouncementMsg(next.getKey());
                                 break;
-                            case JOIN:
-                                sendJoin(next.getKey());
+                            case STEER:
+                                sendSteer(message);
+                                break;
+                            case ACK:
+                                sendAck(message);
                                 break;
                             case STATE:
-                                sendState(next.getKey());
-                            default:
+                                sendState(message);
+                                System.out.println("номер отправленного стейта " + message.getState().getState().getStateOrder());
+                                resend.addNewResendMessage(message);
+                                break;
+                            case ANNOUNCEMENT:
+                                sendAnnouncementMsg(message);
+                                resend.addNewResendMessage(message);
+                                break;
+                            case JOIN:
+                                sendJoin(message);
+                                resend.addNewResendMessage(message);
+                                break;
+                            case ERROR:
+                                resend.addNewResendMessage(message);
+                                break;
+                            case ROLE_CHANGE:
+                                sendRoleChange(message);
+                                resend.addNewResendMessage(message);
+                                break;
                         }
-                        resend.addNewResendMessage(next.getKey());
+                        minToResend = ping_delay_ms - (int) resend.getMinToResend();
+                    }
+
+                } catch (InterruptedException | NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+                synchronized (ResendQueue.class) {//или конкурент хеш мап?
+                    ConcurrentHashMap<SnakesProto.GameMessage, Date> map = resend.getResendQueue();
+                    for (Map.Entry<SnakesProto.GameMessage, Date> next : map.entrySet()) {
+                        if ((date.getTime() - next.getValue().getTime()) > ping_delay_ms) {
+                            lastMessage = new Date();
+                            switch (next.getKey().getTypeCase()) {
+                                case ANNOUNCEMENT:
+                                    sendAnnouncementMsg(next.getKey());
+                                    break;
+                                case JOIN:
+                                    sendJoin(next.getKey());
+                                    break;
+                                case STATE:
+                                    sendState(next.getKey());
+                                default:
+                            }
+                            resend.addNewResendMessage(next.getKey());
+                        }
                     }
                 }
+                 /*if ((new Date()).getTime() - lastMessage.getTime() > ping_delay_ms) {
+                    sendPing(MessageCreator.createNewPing());
+                    lastMessage = new Date();
+                }*/
             }
-        }
+
     }
 
     public void sendPing(SnakesProto.GameMessage message) {
-        //проверка мастер мы или нет
-        SnakesProto.GamePlayer player = null;
-        for (int i = 0; i < currentPlayers.size(); i++) {
-            if (currentPlayers.get(i).getId() == message.getReceiverId()) {
-                player = currentPlayers.get(i);
+        try {
+            if (controller.getMaster()) {
+                for (SnakesProto.GamePlayer gamePlayer : currentPlayers) {
+                    if(!gamePlayer.getRole().equals(SnakesProto.NodeRole.VIEWER) &&
+                        !gamePlayer.getRole().equals(SnakesProto.NodeRole.MASTER))
+                    socket.send(new DatagramPacket(message.toByteArray(), message.toByteArray().length,
+                            InetAddress.getByName(gamePlayer.getIpAddress().substring(1)),
+                            gamePlayer.getPort()));
+                }
             }
-        }
-        if (player != null) {
-            try {
-                DatagramPacket dp = new DatagramPacket(message.toByteArray(), message.toByteArray().length,
-                        InetAddress.getByName((player.getIpAddress()).substring(1)), player.getPort());
-                socket.send(dp);
-            } catch (IOException e) {
-                e.printStackTrace();
+            else{
+                for (SnakesProto.GamePlayer gamePlayer : currentPlayers) {
+                    if(gamePlayer.getRole().equals(SnakesProto.NodeRole.MASTER))
+                        if (!gamePlayer.getIpAddress().equals("localhost/127.0.0.1"))
+                            socket.send(new DatagramPacket(message.toByteArray(), message.toByteArray().length,
+                                    InetAddress.getByName(gamePlayer.getIpAddress().substring(1)),
+                                    gamePlayer.getPort()));
+                        else
+                            socket.send(new DatagramPacket(message.toByteArray(), message.toByteArray().length,
+                                InetAddress.getLocalHost(),
+                                gamePlayer.getPort()));
+                }
             }
-
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        //если мастер то отправляем всем, если не мастер то тока мастеру
-
     }
 
     public void sendSteer(SnakesProto.GameMessage message) {
@@ -180,7 +195,7 @@ public class MessageSender extends Thread {
         try {
             for (SnakesProto.GamePlayer currentPlayer : currentPlayers) {
                 //как то узнаем что мы хост
-                if(controller.getHostID() == 0){
+                if (controller.getHostID() == 0) {
                     controller.setHostID(currentPlayers);
                 }
                 if (currentPlayer.getId() != controller.getHostID()) {
@@ -220,15 +235,15 @@ public class MessageSender extends Thread {
         DatagramPacket dp = null;
         try {
             for (SnakesProto.GamePlayer player : currentPlayers) {
-                if(player.getId() == message.getReceiverId()) {
-                    if(!player.getRole().equals(SnakesProto.NodeRole.MASTER))
+                if (player.getId() == message.getReceiverId()) {
+                    if (!player.getRole().equals(SnakesProto.NodeRole.MASTER))
                         dp = new DatagramPacket(message.toByteArray(), message.toByteArray().length,
                                 InetAddress.getByName(player.getIpAddress().substring(1)),
                                 player.getPort());
                     else
                         dp = new DatagramPacket(message.toByteArray(), message.toByteArray().length,
-                            InetAddress.getByName(controller.getHostIP().substring(1)),
-                            controller.getHostPort());
+                                InetAddress.getByName(controller.getHostIP().substring(1)),
+                                controller.getHostPort());
                     socket.send(dp);
                 }
             }

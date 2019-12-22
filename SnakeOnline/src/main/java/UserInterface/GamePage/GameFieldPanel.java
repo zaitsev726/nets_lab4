@@ -43,11 +43,11 @@ public class GameFieldPanel extends JPanel{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if(gameField!= null){
-            for(int i = 0; i < width; i ++){
-                for(int j = 0; j < height; j ++){
+        if(gameField!= null) {
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
 
-                    if(gameField[i][j] == (ID + 1)){
+                /*    if(gameField[i][j] == (ID + 1)){
                         g.drawImage(ourBody,i*DOT_SIZE,j*DOT_SIZE,this);
                     } else if(gameField[i][j] == (-(ID + 1))){
                         g.drawImage(ourHead,i*DOT_SIZE,j*DOT_SIZE,this);
@@ -57,6 +57,21 @@ public class GameFieldPanel extends JPanel{
                         g.drawImage(enemyBody, i*DOT_SIZE,j*DOT_SIZE, this);
                     }else if(gameField[i][j] < -1){
                         g.drawImage(enemyHead, i*DOT_SIZE,j*DOT_SIZE, this);
+                    }
+                }*/
+
+                    if (gameField[i][j] == 1) {
+                        g.drawImage(apple, i * DOT_SIZE, j * DOT_SIZE, this);
+                    } else if (gameField[i][j] > 1) {
+                        if (gameField[i][j] == (ID + 1))
+                            g.drawImage(ourBody, i * DOT_SIZE, j * DOT_SIZE, this);
+                        else
+                            g.drawImage(enemyBody, i * DOT_SIZE, j * DOT_SIZE, this);
+                    } else if (gameField[i][j] < -1) {
+                        if (gameField[i][j] == (-(ID + 1)))
+                            g.drawImage(ourHead, i * DOT_SIZE, j * DOT_SIZE, this);
+                        else
+                            g.drawImage(enemyHead, i * DOT_SIZE, j * DOT_SIZE, this);
                     }
                 }
             }
