@@ -1,6 +1,7 @@
 package NetworkPart.NetSocket.SendPart;
 
 import Global.GlobalController;
+import MessageProcessing.MessageCreator;
 import SnakeGame.Players;
 import me.ippolitov.fit.snakes.SnakesProto;
 
@@ -28,11 +29,11 @@ public class MessageSender extends Thread {
     public MessageSender(DatagramSocket socket, GlobalController controller, ImmediateQueue queue, ResendQueue resendQueue) {
         this.socket = socket;
         this.queue = queue;
-        this.ping_delay_ms = 100; //default value
+        this.ping_delay_ms = controller.getPingDelay(); //default value
         this.controller = controller;
 
         resend = resendQueue;
-        minToResend = 1000; //хз какое число тут брать
+        minToResend = 10000;
     }
 
     public void setPing_delay_ms(int ping_delay_ms) {
@@ -43,7 +44,7 @@ public class MessageSender extends Thread {
     public void run() {
         Date lastMessage = new Date();
         while (true) {
-                currentPlayers = Players.getInstance().getPlayers();
+                currentPlayers = (ArrayList<SnakesProto.GamePlayer>)Players.getInstance().getPlayers().clone();
                 Date date = new Date();
                 LinkedBlockingQueue q = queue.getQ();
 
@@ -104,21 +105,24 @@ public class MessageSender extends Thread {
                                     break;
                                 case STATE:
                                     sendState(next.getKey());
-                                default:
+                                    default:
                             }
                             resend.addNewResendMessage(next.getKey());
                         }
                     }
                 }
-                 /*if ((new Date()).getTime() - lastMessage.getTime() > ping_delay_ms) {
-                    sendPing(MessageCreator.createNewPing());
-                    lastMessage = new Date();
-                }*/
+                 if ((new Date()).getTime() - lastMessage.getTime() > ping_delay_ms) {
+                     if(controller.inGame()) {
+                         sendPing(MessageCreator.createNewPing());
+                         lastMessage = new Date();
+                     }
+                }
             }
 
     }
 
     public void sendPing(SnakesProto.GameMessage message) {
+
         try {
             if (controller.getMaster()) {
                 for (SnakesProto.GamePlayer gamePlayer : currentPlayers) {

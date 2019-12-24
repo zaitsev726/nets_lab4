@@ -42,7 +42,7 @@ public class Players {
     public void addNewPlayerInQueue() {
         try {
             queuePlayers.add(SnakesProto.GamePlayer.newBuilder()
-                    .setName("как то получить имя")
+                    .setName(controller.getName())
                     .setId(0)
                     .setIpAddress(InetAddress.getByName("").toString())
                     .setPort(1)
@@ -227,7 +227,7 @@ public class Players {
 
     public void setSnakes(List<SnakesProto.GameState.Snake> p) { snakes = p; }
 
-    public ArrayList<SnakesProto.GamePlayer> getPlayers() { return players; }
+    public ArrayList<SnakesProto.GamePlayer> getPlayers() {return players; }
 
     public List<SnakesProto.GameState.Snake> getSnakes() { return snakes; }
 

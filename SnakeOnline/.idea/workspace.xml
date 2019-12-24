@@ -5,33 +5,24 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Global/ChangestateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Global/ChangestateController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Global/GlobalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Global/GlobalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageCreator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MessageProcessing/MessageManagement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/MessageReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/MessageReceiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/NetworkPart/Broadcast/MulticastController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/Broadcast/MulticastController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/SendPart/MessageSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/NetSocket/SendPart/MessageSender.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/NetworkPart/NetworkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NetworkPart/NetworkController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/GameField.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/GameField.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/GameLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/GameLogic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SnakeGame/Players.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SnakeGame/Players.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/GameFieldPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/GameFieldPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/GamePage/GamePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/InterfaceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/InterfaceController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UserInterface/NetInfoEntryPage/NetInfoEntryPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInterface/NetInfoEntryPage/NetInfoEntryPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Global/ChangestateController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Global/ChangestateController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Global/GlobalController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Global/GlobalController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageCreator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageCreator.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageHandler$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageHandler$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageHandler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageManagement.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/MessageProcessing/MessageManagement.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/MessageReceiver.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/MessageReceiver.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/NetworkPart/Broadcast/MulticastController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/NetworkPart/Broadcast/MulticastController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/SendPart/MessageSender$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/SendPart/MessageSender$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/SendPart/MessageSender.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/NetworkPart/NetSocket/SendPart/MessageSender.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/NetworkPart/NetworkController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/NetworkPart/NetworkController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/GameField.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/GameField.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/GameLogic.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/GameLogic.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/SnakeGame/Players.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SnakeGame/Players.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/GamePage/GameFieldPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/GamePage/GameFieldPanel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/GamePage/GamePanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/GamePage/GamePanel.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$10.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$11.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$12.class" afterDir="false" />
@@ -42,12 +33,17 @@
       <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$17.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$17.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$18.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$18.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$19.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$19.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$20.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$4.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$5.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$6.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$7.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$8.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController$9.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/InterfaceController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInterface/NetInfoEntryPage/NetInfoEntryPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserInterface/NetInfoEntryPage/NetInfoEntryPanel.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -275,49 +271,49 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1576950293978" />
-    <state width="1877" height="337" key="GridCell.Tab.0.bottom" timestamp="1577014225473">
+    <state width="1877" height="337" key="GridCell.Tab.0.bottom" timestamp="1577208812086">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="337" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1577014225473" />
+    <state width="1877" height="337" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1577208812086" />
     <state width="1877" height="337" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1576940028595" />
     <state width="1784" height="220" key="GridCell.Tab.0.bottom/93.0.1827.1080@93.0.1827.1080" timestamp="1575903602112" />
-    <state width="1877" height="337" key="GridCell.Tab.0.center" timestamp="1577014225473">
+    <state width="1877" height="337" key="GridCell.Tab.0.center" timestamp="1577208812086">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="337" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1577014225473" />
+    <state width="1877" height="337" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1577208812086" />
     <state width="1877" height="337" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1576940028595" />
     <state width="1784" height="220" key="GridCell.Tab.0.center/93.0.1827.1080@93.0.1827.1080" timestamp="1575903602112" />
-    <state width="1877" height="337" key="GridCell.Tab.0.left" timestamp="1577014225473">
+    <state width="1877" height="337" key="GridCell.Tab.0.left" timestamp="1577208812086">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="337" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1577014225473" />
+    <state width="1877" height="337" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1577208812086" />
     <state width="1877" height="337" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1576940028595" />
     <state width="1784" height="220" key="GridCell.Tab.0.left/93.0.1827.1080@93.0.1827.1080" timestamp="1575903602111" />
-    <state width="1877" height="337" key="GridCell.Tab.0.right" timestamp="1577014225473">
+    <state width="1877" height="337" key="GridCell.Tab.0.right" timestamp="1577208812086">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="337" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1577014225473" />
+    <state width="1877" height="337" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1577208812086" />
     <state width="1877" height="337" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1576940028595" />
     <state width="1784" height="220" key="GridCell.Tab.0.right/93.0.1827.1080@93.0.1827.1080" timestamp="1575903602112" />
-    <state width="1877" height="294" key="GridCell.Tab.1.bottom" timestamp="1577012645879">
+    <state width="1877" height="294" key="GridCell.Tab.1.bottom" timestamp="1577208812084">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="294" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1577012645879" />
+    <state width="1877" height="294" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1577208812084" />
     <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082716" />
-    <state width="1877" height="294" key="GridCell.Tab.1.center" timestamp="1577012645879">
+    <state width="1877" height="294" key="GridCell.Tab.1.center" timestamp="1577208812084">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="294" key="GridCell.Tab.1.center/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1577012645879" />
+    <state width="1877" height="294" key="GridCell.Tab.1.center/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1577208812084" />
     <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082714" />
-    <state width="1877" height="294" key="GridCell.Tab.1.left" timestamp="1577012645879">
+    <state width="1877" height="294" key="GridCell.Tab.1.left" timestamp="1577208812084">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="294" key="GridCell.Tab.1.left/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1577012645879" />
+    <state width="1877" height="294" key="GridCell.Tab.1.left/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1577208812084" />
     <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082711" />
-    <state width="1877" height="294" key="GridCell.Tab.1.right" timestamp="1577012645879">
+    <state width="1877" height="294" key="GridCell.Tab.1.right" timestamp="1577208812084">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="294" key="GridCell.Tab.1.right/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1577012645879" />
+    <state width="1877" height="294" key="GridCell.Tab.1.right/0.0.1920.1040/1920.-62.1360.728@0.0.1920.1040" timestamp="1577208812084" />
     <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1575973082714" />
     <state x="536" y="194" key="Maven.ArtifactSearchDialog" timestamp="1575697743742">
       <screen x="93" y="0" width="1827" height="1080" />
@@ -366,35 +362,29 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/MessageProcessing/MessageManagement.java</url>
-          <line>32</line>
-          <option name="timeStamp" value="188" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Global/ChangestateController.java</url>
-          <line>58</line>
-          <option name="timeStamp" value="189" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Global/GlobalController.java</url>
-          <line>345</line>
-          <option name="timeStamp" value="190" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/Global/GlobalController.java</url>
           <line>311</line>
-          <option name="timeStamp" value="191" />
+          <option name="timeStamp" value="194" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/MessageProcessing/MessageManagement.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="200" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/UserInterface/InterfaceController.java</url>
+          <line>344</line>
+          <option name="timeStamp" value="206" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/UserInterface/InterfaceController.java</url>
+          <line>322</line>
+          <option name="timeStamp" value="211" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="Application">
-        <watch expression="gameField" language="JAVA" />
-        <watch expression="gameField != null" language="JAVA" />
-      </configuration>
-    </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/SnakeOnline$Main.ic" NAME="Main Coverage Results" MODIFIED="1575728242407" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/SnakeOnline$Main.ic" NAME="Main Coverage Results" MODIFIED="1577204543541" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

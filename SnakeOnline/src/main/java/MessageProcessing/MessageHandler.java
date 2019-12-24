@@ -17,8 +17,6 @@ public class MessageHandler {
         this.resendQueue = resendQueue;
     }
 
-
-
     public void handlingMessage(SnakesProto.GameMessage message, InetAddress address, int port, long msg_seq){
        //если пришло любое сообщение обновляем информацию о пользователе
 

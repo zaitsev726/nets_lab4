@@ -36,13 +36,11 @@ public class ChangestateController extends Thread{
         try {
             lastDate = new Date();
             while (true) {
-                //delay
-              //  System.out.println("IDIDIDIDIIDID" + controller.getID());
-                Thread.sleep(100);
+              //  Thread.sleep(delay);
+                    Thread.sleep(100);
                 state = controller.getNextState();
 
                 if (state != null) {
-               //     System.out.println("Номер текущего стейта" + state.getStateOrder());
                     System.out.println();
                     interfaceController.repaintField(GameField.updateField(state),
                             state.getConfig().getWidth(),
@@ -54,11 +52,11 @@ public class ChangestateController extends Thread{
                             lastState = state;
                             lastDate = new Date();
                         }
-//                    System.out.println("РАЗНИЦА " + ((new Date().getTime()) - lastDate.getTime()));
-                        if ((new Date().getTime()) - lastDate.getTime() > 500) {
+
+                     /*   if ((new Date().getTime()) - lastDate.getTime() > 500) {
                             controller.updateGame(lastState,false);
                             lastDate = new Date();
-                        }
+                        }*/
                     }
             }
         }catch (InterruptedException e) {

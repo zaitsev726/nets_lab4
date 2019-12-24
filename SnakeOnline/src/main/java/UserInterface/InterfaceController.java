@@ -35,10 +35,10 @@ public class InterfaceController {
 
     private GlobalController controller;
 
-    private HashMap<GameMessage.AnnouncementMsg, DatagramPacket> multicastMessages;
-    private HashMap<GameMessage.AnnouncementMsg, JButton> connectButtons;
-    private HashMap<GameMessage.AnnouncementMsg, Date> lastDate;
-    private HashMap<JButton, DatagramPacket> hosts;
+    private volatile HashMap<GameMessage, DatagramPacket> multicastMessages;
+    private volatile HashMap<GameMessage, Date> lastDate;
+    private volatile HashMap<GameMessage, JButton> connectButtons;
+    private volatile HashMap<JButton, DatagramPacket> hosts;
 
     public InterfaceController(GlobalController controller) {
         multicastMessages = new HashMap<>();
@@ -78,23 +78,13 @@ public class InterfaceController {
             }
         });
 
-        netInfoEntryPanel.portField.addActionListener(new ActionListener() {
+        netInfoEntryPanel.nameField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Отображение введенного текста
-                try {
-                    int w = Integer.parseInt(netInfoEntryPanel.portField.getText());
-                    if (w > 49151 || w < 1024) {
-                        JOptionPane.showMessageDialog(window,
-                                "Введите число в диапазоне от 1024 до 49151, а не " + w);
-                    } else
-                        controller.setPort(w);
-
-                } catch (NumberFormatException r) {
-                    JOptionPane.showMessageDialog(window, "Вы некорректно ввели цифры для port!");
-                }
+                String w = netInfoEntryPanel.nameField.getText();
+                controller.setName(w);
             }
         });
-
     }
 
     private void initializationConnectionListeners() {
@@ -314,98 +304,98 @@ public class InterfaceController {
         });
     }
 
-    //вот тут какой то велосипед изобретаю
     public synchronized void addNewConnectButton(DatagramPacket dp) {
 
         byte[] a1 = Arrays.copyOf(dp.getData(), dp.getLength());
-        GameMessage.AnnouncementMsg message = null;
+        GameMessage.AnnouncementMsg announcementMsg = null;
+        GameMessage message = null;
         try {
-            message = GameMessage.parseFrom(a1).getAnnouncement();
+            message = GameMessage.parseFrom(a1);
+            announcementMsg = message.getAnnouncement();
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
 
-        if (message == null)
+        if (announcementMsg == null)
             return;
 
-        if (multicastMessages.containsKey(message)) {
-            lastDate.put(message,new Date());
-            return;
+        //приходит ли нам один и тот же Announcement
+        for(Map.Entry<GameMessage, DatagramPacket> entry : multicastMessages.entrySet()){
+            if(entry.getValue().getAddress().toString().equals(dp.getAddress().toString()) &&
+                entry.getValue().getPort() == dp.getPort()){
+                if(entry.getKey().getAnnouncement().equals(announcementMsg)) {
+                    lastDate.remove(entry.getKey());
+                    lastDate.put(message,new Date());
+                    return;
+                }
+            }
         }
 
-        Iterator<Map.Entry<GameMessage.AnnouncementMsg, DatagramPacket>> iterator
+        //если нету такого пакета
+     //   if(!needToSwap){
+
+         //   return;
+       // }
+    /*
+    private HashMap<GameMessage, DatagramPacket> multicastMessages;
+    private HashMap<GameMessage, Date> lastDate;
+    private HashMap<GameMessage, JButton> connectButtons;
+    private HashMap<JButton, DatagramPacket> hosts;
+     */
+        Iterator<Map.Entry<GameMessage, DatagramPacket>> iterator
                 = multicastMessages.entrySet().iterator();
+        //если Announcement поменялся
         while (iterator.hasNext()) {
-            Map.Entry<GameMessage.AnnouncementMsg, DatagramPacket> next = iterator.next();
+            Map.Entry<GameMessage, DatagramPacket> next = iterator.next();
+            //находим старый месседж
             if (next.getValue().getAddress().equals(dp.getAddress()) &&
                     next.getValue().getPort() == dp.getPort()) {
-                iterator.remove();
-
+                lastDate.remove(next.getKey());
                 hosts.remove(connectButtons.get(next.getKey()));
                 connectionPanel.panel.remove(connectButtons.get(next.getKey()));
                 connectButtons.remove(next.getKey());
-                lastDate.remove(next.getKey());
+                iterator.remove();
             }
         }
 
         multicastMessages.put(message, dp);
-        lastDate.put(message,new Date());
+        lastDate.put(message, new Date());
 
-        List<GamePlayer> players = message.getPlayers().getPlayersList();
+        List<GamePlayer> players = announcementMsg.getPlayers().getPlayersList();
         String hostName = "unknown";
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getId() == 0)                 //переделать по IP
-                hostName = players.get(i).getName();
+        for (GamePlayer player : players) {
+            if (player.getId() == 0)
+                hostName = player.getName();
         }
 
-        final JButton button = new JButton("Ширина: " + message.getConfig().getWidth() + " " +
-                "Длина: " + message.getConfig().getHeight() + " " +
-                "StaticFood: " + message.getConfig().getFoodStatic() + " " +
-                "FoodPerPlayer: " + message.getConfig().getFoodPerPlayer() + " " +
-                "Delay: " + message.getConfig().getPingDelayMs() + " " +
-                "Prob: " + message.getConfig().getDeadFoodProb() + " " +
+        JButton button = new JButton("Ширина: " + announcementMsg.getConfig().getWidth() + " " +
+                "Длина: " + announcementMsg.getConfig().getHeight() + " " +
+                "StaticFood: " + announcementMsg.getConfig().getFoodStatic() + " " +
+                "FoodPerPlayer: " + announcementMsg.getConfig().getFoodPerPlayer() + " " +
+                "Delay: " + announcementMsg.getConfig().getPingDelayMs() + " " +
+                "Prob: " + announcementMsg.getConfig().getDeadFoodProb() + " " +
                 "Host: " + hostName + " " +
-                "Can join: " + message.getCanJoin());
-        /*
-        актион листенеры
-        !
-         */
+                "Can join: " + announcementMsg.getCanJoin() +  " " +
+                "IP: " + dp.getAddress() + " " +
+                "Port: " + dp.getPort());
 
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                DatagramPacket dp = hosts.get(button);
-                byte[] a1 = Arrays.copyOf(dp.getData(), dp.getLength());
-                GameMessage.AnnouncementMsg message = null;
-                try {
-                    message = GameMessage.parseFrom(a1).getAnnouncement();
-                } catch (InvalidProtocolBufferException m) {
-                    m.printStackTrace();
-                }
-                controller.initializationConnect(dp);
-                window.remove(connectionPanel);
-                window.add(gamePanel);
-
-                gamePanel.addGameField(message.getConfig().getWidth(),message.getConfig().getHeight());
-                gamePanel.setFocusable(true);
-                gamePanel.requestFocus();
-                window.revalidate();
-                window.repaint();
-            }
-        });
+        button.addActionListener(new Listener(button));
 
         connectButtons.put(message, button);
         hosts.put(button,dp);
 
-        connectionPanel.panel.add(button);
+        connectionPanel.panel.add(button,BorderLayout.CENTER);
+        connectionPanel.panel.add(button,BorderLayout.CENTER);
+        connectionPanel.panel.revalidate();
         window.revalidate();
-        window.repaint();
+        //window.repaint();
     }
 
     public synchronized void removeButton() {
-        Iterator<Map.Entry<GameMessage.AnnouncementMsg, Date>> iterator = lastDate.entrySet().iterator();
+        Iterator<Map.Entry<GameMessage, Date>> iterator = lastDate.entrySet().iterator();
         Date d = new Date();
         while (iterator.hasNext()) {
-            Map.Entry<GameMessage.AnnouncementMsg, Date> next = iterator.next();
+            Map.Entry<GameMessage, Date> next = iterator.next();
             if (d.getTime() - next.getValue().getTime() > 5000) {
                 connectionPanel.panel.remove(connectButtons.get(next.getKey()));
                 hosts.remove(connectButtons.get(next.getKey()));
@@ -419,7 +409,6 @@ public class InterfaceController {
     }
 
     public void repaintField(int[][] a, int width, int height, int ID, List<GamePlayer> players) {
-      //  gamePanel.repaintScore(players);
         gamePanel.repaintScore(players);
         gamePanel.gameField.repaintField(a, width, height, ID);
 
@@ -431,5 +420,31 @@ public class InterfaceController {
 
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(window, message);
+    }
+
+    public class Listener implements ActionListener {
+        private JButton button;
+        public Listener(JButton button){
+            this.button = button;
+        }
+        public void actionPerformed(ActionEvent e) {
+            DatagramPacket dp = hosts.get(button);
+            byte[] a1 = Arrays.copyOf(dp.getData(), dp.getLength());
+            GameMessage.AnnouncementMsg message = null;
+            try {
+                message = GameMessage.parseFrom(a1).getAnnouncement();
+            } catch (InvalidProtocolBufferException m) {
+                m.printStackTrace();
+            }
+            controller.initializationConnect(dp);
+            window.remove(connectionPanel);
+            window.add(gamePanel);
+
+            gamePanel.addGameField(message.getConfig().getWidth(),message.getConfig().getHeight());
+            gamePanel.setFocusable(true);
+            gamePanel.requestFocus();
+            window.revalidate();
+            window.repaint();
+        }
     }
 }

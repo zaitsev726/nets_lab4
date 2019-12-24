@@ -45,7 +45,16 @@ public class GlobalController{
     public void setDeadFoodProb(float deadFoodProb) { if(deadFoodProb!= 0.0) this.deadFoodProb = deadFoodProb; }
     public void setPingDelay(int pingDelay) { if(pingDelay != 0) this.pingDelay = pingDelay; }
     public void setNodeTimeout(int nodeTimeout) { if(nodeTimeout != 0) this.nodeTimeout = nodeTimeout; }
+    public int getWidth() {
+        return width;
+    }
+    public int getHeight() {
+        return height;
+    }
+    public int getStateDelay(){return stateDelay;}
+    public int getPingDelay(){return pingDelay;}
     public int getNodeTimeout(){return nodeTimeout;}
+
     public void setName(String name) {
         this.name = name;
     }
@@ -60,14 +69,6 @@ public class GlobalController{
 
     public int getHostPort() {
         return lobby.getHost_port();
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
     }
 
     public GlobalController() {
@@ -192,20 +193,18 @@ public class GlobalController{
         }
     }
 
-    public void setPort(int port) {
-        networkController.setPort(port);
-    }
-
     public void errorMessage(SnakesProto.GameMessage.ErrorMsg error) {
         interfaceController.showMessage(error.getErrorMessage());
     }
 
-    public synchronized void setState(SnakesProto.GameState state) {
-        if (this.state == null)
-            this.state = state;
-
-        if (this.state.getStateOrder() < state.getStateOrder()) {
+    public void setState(SnakesProto.GameState state) {
+        synchronized (GlobalController.class) {
+            if (this.state == null)
                 this.state = state;
+
+            if (this.state.getStateOrder() < state.getStateOrder()) {
+                this.state = state;
+            }
         }
     }
 
@@ -230,7 +229,7 @@ public class GlobalController{
                         SnakesProto.GameMessage.SteerMsg.newBuilder().setDirection(direction)
                                 .build(),
                         InetAddress.getByName(""),
-                        1);//1 - временно
+                        1);
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
@@ -297,6 +296,7 @@ public class GlobalController{
     public int getHostID() {
         return lobby.getHost_ID();
     }
+    public String getName(){return name;}
 
     public void updateGame(SnakesProto.GameState state, boolean deleteMaster) {
         synchronized (GlobalController.class) {

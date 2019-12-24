@@ -45,8 +45,8 @@ public class NetworkController {
         sender = new MessageSender(socket, controller,queue, resendQueue);
 
         receiver.start();
-       // management.start();
         sender.start();
+        management.start();
     }
 
     public void setPort(int port){
